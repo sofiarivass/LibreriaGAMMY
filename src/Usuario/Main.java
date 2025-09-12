@@ -8,7 +8,7 @@ public class Main {
 	public static void main(String[] args) {
 		// MENU PRINCIPAL
 		int opcion = JOptionPane.showOptionDialog(null,
-				"¡Bienvenido al sistema de Librería GAMMY!\nPor favor elija una opción", "", 0, 1, null, MenuPrincipal.values(), MenuPrincipal.values());
+				"¡Bienvenido al sistema de Librería GAMMY!\nPor favor elija una opción", "Menú Principal", 0, 1, null, MenuPrincipal.values(), MenuPrincipal.values());
 
 	}
 
