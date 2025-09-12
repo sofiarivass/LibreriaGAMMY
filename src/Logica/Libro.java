@@ -38,10 +38,128 @@ public class Libro {
 		this.precio = precio;
 		this.stock = stock;
 	}
-	
+
 	// Getters y Setters
-	
+	public int getIsbn() {
+		return isbn;
+	}
+	public void setIsbn(int isbn) {
+		this.isbn = isbn;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getAutor() {
+		return autor;
+	}
+	public void setAutor(String autor) {
+		this.autor = autor;
+	}
+
+	public String getEditorial() {
+		return editorial;
+	}
+	public void setEditorial(String editorial) {
+		this.editorial = editorial;
+	}
+
+	public String getAnioPublicacion() {
+		return anioPublicacion;
+	}
+	public void setAnioPublicacion(String anioPublicacion) {
+		this.anioPublicacion = anioPublicacion;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public String getIdioma() {
+		return idioma;
+	}
+	public void setIdioma(String idioma) {
+		this.idioma = idioma;
+	}
+
+	public String getPublicoObjetivo() {
+		return publicoObjetivo;
+	}
+	public void setPublicoObjetivo(String publicoObjetivo) {
+		this.publicoObjetivo = publicoObjetivo;
+	}
+
+	public String getNumPaginas() {
+		return numPaginas;
+	}
+	public void setNumPaginas(String numPaginas) {
+		this.numPaginas = numPaginas;
+	}
+
+	public boolean isFirmado() {
+		return firmado;
+	}
+	public void setFirmado(boolean firmado) {
+		this.firmado = firmado;
+	}
+
+	public String getEdicion() {
+		return edicion;
+	}
+	public void setEdicion(String edicion) {
+		this.edicion = edicion;
+	}
+
+	public boolean isEdicionEspecial() {
+		return edicionEspecial;
+	}
+	public void setEdicionEspecial(boolean edicionEspecial) {
+		this.edicionEspecial = edicionEspecial;
+	}
+
+	public String getMaterialTapa() {
+		return materialTapa;
+	}
+	public void setMaterialTapa(String materialTapa) {
+		this.materialTapa = materialTapa;
+	}
+
+	public boolean isSaga() {
+		return saga;
+	}
+	public void setSaga(boolean saga) {
+		this.saga = saga;
+	}
+
+	public double getPrecio() {
+		return precio;
+	}
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
+
+	public int getStock() {
+		return stock;
+	}
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
+
 	// Métodos
-	
+	@Override
+	public String toString() {
+		return "Libro [isbn=" + isbn + ", titulo=" + titulo + ", autor=" + autor + ", editorial=" + editorial
+				+ ", anioPublicacion=" + anioPublicacion + ", genero=" + genero + ", idioma=" + idioma
+				+ ", publicoObjetivo=" + publicoObjetivo + ", numPaginas=" + numPaginas + ", firmado=" + firmado
+				+ ", edicion=" + edicion + ", edicionEspecial=" + edicionEspecial + ", materialTapa=" + materialTapa
+				+ ", saga=" + saga + ", precio=" + precio + ", stock=" + stock + "]";
+	}
 	
 }

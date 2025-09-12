@@ -2,7 +2,6 @@ package Logica;
 import java.util.LinkedList;
 
 public class Admin extends Usuario {
-	// nota: --> no se si la lista hacerla static desde aqui o crear un singleton aparte
 	private LinkedList<Usuario> listaEmpleados = new LinkedList<Usuario>();
 
 	public Admin(String usuario, String contrasenia, String tipo, boolean estado, LinkedList<Usuario> listaEmpleados) {
@@ -11,6 +10,18 @@ public class Admin extends Usuario {
 	}
 	
 	// Getter y Setters
-	
+	public LinkedList<Usuario> getListaEmpleados() {
+		return listaEmpleados;
+	}
+	public void setListaEmpleados(LinkedList<Usuario> listaEmpleados) {
+		this.listaEmpleados = listaEmpleados;
+	}
+
 	// Métodos
+	@Override
+	public String toString() {
+		return "Admin [listaEmpleados=" + listaEmpleados + "]";
+	}
+	
+	
 }

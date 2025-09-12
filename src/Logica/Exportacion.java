@@ -15,10 +15,33 @@ public class Exportacion extends Venta {
 		this.destino = destino;
 		this.estadoEnvio = estadoEnvio;
 	}
-	
+
 	// Getters y Setters
-	
+	public String getOrigen() {
+		return origen;
+	}
+	public void setOrigen(String origen) {
+		this.origen = origen;
+	}
+
+	public String getDestino() {
+		return destino;
+	}
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
+
+	public String getEstadoEnvio() {
+		return estadoEnvio;
+	}
+	public void setEstadoEnvio(String estadoEnvio) {
+		this.estadoEnvio = estadoEnvio;
+	}
+
 	// Métodos
-	
+	@Override
+	public String toString() {
+		return "Exportacion [origen=" + origen + ", destino=" + destino + ", estadoEnvio=" + estadoEnvio + "]";
+	}
 	
 }
