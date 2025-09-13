@@ -1,5 +1,5 @@
 package Enums;
 
 public enum EstadisticasVentaPopularidad {
-	filtrar_saga, filtrar_autor, filtrar_películas_series, Volver
+	Filtrar_Saga, Filtrar_Autor, Filtrar_Películas_Series, Volver
 }

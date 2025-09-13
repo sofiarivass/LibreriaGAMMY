@@ -1,5 +1,5 @@
 package Enums;
 
 public enum MenuVendedorInternacional {
-	Gestionar_Inventario, Gestionar_Clientes, Gestionar_Exportaciones, Seguimiento_Envíos, SALIR
+	Gestionar_Clientes, Gestionar_Exportaciones, Seguimiento_Envíos, Gestionar_Inventario, SALIR
 }
