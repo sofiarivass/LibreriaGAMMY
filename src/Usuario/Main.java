@@ -84,8 +84,11 @@ public class Main {
 									case 2: // eliminar descuento
 										JOptionPane.showMessageDialog(null, "eliminando descuento");
 										break;
+									case 3: // mostrar descuentos
+										JOptionPane.showMessageDialog(null, "mostrando descuentos");
+										break;
 									}
-								} while (opcionAdmin3 != 3);
+								} while (opcionAdmin3 != 4);
 								break;
 							case 3:
 								JOptionPane.showMessageDialog(null, "Hasta pronto, Admin!!");
@@ -110,8 +113,11 @@ public class Main {
 									case 0: // Modificar o eliminar datos de un cliente
 										JOptionPane.showMessageDialog(null, "Modificar o eliminar datos de un cliente");
 										break;
+									case 1: // Mostrar Clientes
+										JOptionPane.showMessageDialog(null, "mostrando clientes");
+										break;
 									}
-								} while (opcionVenta1 != 1);
+								} while (opcionVenta1 != 2);
 								break;
 							case 1: // gestionar ventas
 								do {
@@ -158,8 +164,11 @@ public class Main {
 									case 0: // Modificar o eliminar datos de un cliente
 										JOptionPane.showMessageDialog(null, "Modificar o eliminar datos de un cliente");
 										break;
+									case 1: // Mostrar Clientes
+										JOptionPane.showMessageDialog(null, "mostrando clientes");
+										break;
 									}
-								} while (opcionVI1 != 1);
+								} while (opcionVI1 != 2);
 								break;
 							case 1: // gestionar exportaciones
 								do {

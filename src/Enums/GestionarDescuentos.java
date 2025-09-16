@@ -1,5 +1,5 @@
 package Enums;
 
 public enum GestionarDescuentos {
-	Agregar, Editar, Eliminar, Volver
+	Agregar, Editar, Eliminar, Mostrar_Descuentos, Volver
 }
