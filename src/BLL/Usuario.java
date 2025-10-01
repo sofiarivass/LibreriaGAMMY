@@ -1,4 +1,8 @@
-package Logica;
+package BLL;
+
+import javax.swing.JOptionPane;
+
+import DLL.UsuarioDTO;
 
 public class Usuario {
 	private String usuario;
@@ -47,10 +51,23 @@ public class Usuario {
 		this.estado = estado;
 	}
 
-	// Métodos
 	@Override
 	public String toString() {
 		return "Usuario [usuario=" + usuario + ", contrasenia=" + contrasenia + ", tipo=" + tipo + ", estado=" + estado
 				+ "]";
 	}
+	
+	public static Usuario Login() {
+		//aca se piden los datos de login y se envian a la funcion del DTO
+		
+		Usuario pepe = UsuarioDTO.Login("pepe1", "123");
+		if (pepe == null) {
+			JOptionPane.showMessageDialog(null, "error");
+		} else {
+			JOptionPane.showMessageDialog(null, pepe.toString());
+		}
+		
+		return pepe;
+	}
+
 }

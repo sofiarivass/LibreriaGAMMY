@@ -1,4 +1,4 @@
-package Logica;
+package BLL;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;

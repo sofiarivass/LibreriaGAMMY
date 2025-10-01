@@ -1,15 +1,22 @@
-package Usuario;
+package UI;
 
 import javax.swing.JOptionPane;
+
+import BLL.Usuario;
 import Enums.*;
 
 public class Main {
 
 	public static void main(String[] args) {
-		//test 123
+		
+		//prueba
+		Usuario.Login();
+		
+		
+		
 		int opcionLogin, opcionUsuario, opcionAdmin, opcionAdmin1, opcionAdmin2, opcionAdmin3, opcionVI, opcionVI1,
 				opcionVI2, opcionVI3, opcionVenta, opcionVenta1, opcionVenta2;
-
+		
 		// MENU PRINCIPAL
 		do {
 			opcionLogin = JOptionPane.showOptionDialog(null,

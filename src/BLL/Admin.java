@@ -1,4 +1,4 @@
-package Logica;
+package BLL;
 import java.util.LinkedList;
 
 public class Admin extends Usuario {
