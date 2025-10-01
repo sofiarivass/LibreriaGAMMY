@@ -1,4 +1,4 @@
-package Logica;
+package BLL;
 
 public class Libro {
 	private int isbn;
