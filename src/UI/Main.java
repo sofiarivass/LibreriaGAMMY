@@ -93,7 +93,7 @@ public class Main {
 							} while (opcionAdmin3 != 4);
 							break;
 						case 3:
-							JOptionPane.showMessageDialog(null, "Hasta pronto, Admin!!");
+							JOptionPane.showMessageDialog(null, "Hasta pronto, " + user.getNombre() + " (" + user.getUsuario() +")!");
 							// opcion salir
 							break;
 						}
@@ -142,7 +142,7 @@ public class Main {
 							} while (opcionVenta2 != 4);
 							break;
 						case 2:
-							JOptionPane.showMessageDialog(null, "Hasta pronto, Vendedor Local!!");
+							JOptionPane.showMessageDialog(null, "Hasta pronto, " + user.getNombre() + " (" + user.getUsuario() +")!");
 							// opcion salir
 							break;
 						}
@@ -215,7 +215,7 @@ public class Main {
 							} while (opcionVI3 != 4);
 							break;
 						case 4:
-							JOptionPane.showMessageDialog(null, "Hasta pronto, Vendedor Internacional!!");
+							JOptionPane.showMessageDialog(null, "Hasta pronto, " + user.getNombre() + " (" + user.getUsuario() +")!");
 							// opcion salir
 							break;
 						}
