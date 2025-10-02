@@ -4,13 +4,12 @@ import java.util.LinkedList;
 
 public class VendedorInternacional extends Usuario {
 	private static LinkedList<Venta> listaRegistros;
-	private String nombre;
-	
-	public VendedorInternacional(String usuario, String contrasenia, String tipo, boolean estado, String nombre) {
-		super(usuario, contrasenia, tipo, estado);
-		this.nombre = nombre;
+
+	public VendedorInternacional(int id_usuario, String usuario, String nombre, String contrasenia, boolean estado,
+			int fk_tipo_empleado) {
+		super(id_usuario, usuario, nombre, contrasenia, estado, fk_tipo_empleado);
 	}
-	
+
 	// Getters y Setters
 
 	public static LinkedList<Venta> getListaRegistros() {
@@ -21,18 +20,4 @@ public class VendedorInternacional extends Usuario {
 		VendedorInternacional.listaRegistros = listaRegistros;
 	}
 
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	
-	// Métodos
-	@Override
-	public String toString() {
-		return "VendedorInternacional [nombre=" + nombre + "]";
-	}
-	
 }

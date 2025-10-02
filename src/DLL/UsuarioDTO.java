@@ -21,10 +21,12 @@ public class UsuarioDTO {
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				int id = rs.getInt("id_usuario");
-				String tipo = rs.getString("estado");
+				int id_usuario = rs.getInt("id_usuario");
+				String nombre = rs.getString("nombre");
+				boolean estado = rs.getBoolean("estado");
+				int fk_tipo_empleado = rs.getInt("fk_tipo_empleado");
 
-				user = new Usuario(usuario, contrasenia, tipo, true);
+				user = new Usuario(id_usuario, usuario, nombre, contrasenia, estado, fk_tipo_empleado);
 			}
 
 		} catch (Exception e) {

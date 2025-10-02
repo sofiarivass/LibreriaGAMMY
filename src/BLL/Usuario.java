@@ -5,19 +5,32 @@ import javax.swing.JOptionPane;
 import DLL.UsuarioDTO;
 
 public class Usuario {
+	private int id_usuario;
 	private String usuario;
+	private String nombre;
 	private String contrasenia;
-	private String tipo;
 	private boolean estado;
+	private int fk_tipo_empleado;
 
-	public Usuario(String usuario, String contrasenia, String tipo, boolean estado) {
+	public Usuario(int id_usuario, String usuario, String nombre, String contrasenia, boolean estado,
+			int fk_tipo_empleado) {
+		super();
+		this.id_usuario = id_usuario;
 		this.usuario = usuario;
+		this.nombre = nombre;
 		this.contrasenia = contrasenia;
-		this.tipo = tipo;
 		this.estado = estado;
+		this.fk_tipo_empleado = fk_tipo_empleado;
 	}
 
 	// Getter y Setters
+	public int getId_usuario() {
+		return id_usuario;
+	}
+
+	public void setId_usuario(int id_usuario) {
+		this.id_usuario = id_usuario;
+	}
 
 	public String getUsuario() {
 		return usuario;
@@ -25,6 +38,14 @@ public class Usuario {
 
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public String getContrasenia() {
@@ -35,14 +56,6 @@ public class Usuario {
 		this.contrasenia = contrasenia;
 	}
 
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
 	public boolean isEstado() {
 		return estado;
 	}
@@ -51,22 +64,30 @@ public class Usuario {
 		this.estado = estado;
 	}
 
+	public int getFk_tipo_empleado() {
+		return fk_tipo_empleado;
+	}
+
+	public void setFk_tipo_empleado(int fk_tipo_empleado) {
+		this.fk_tipo_empleado = fk_tipo_empleado;
+	}
+
 	@Override
 	public String toString() {
-		return "Usuario [usuario=" + usuario + ", contrasenia=" + contrasenia + ", tipo=" + tipo + ", estado=" + estado
-				+ "]";
+		return "Usuario [id_usuario=" + id_usuario + ", usuario=" + usuario + ", nombre=" + nombre + ", contrasenia="
+				+ contrasenia + ", estado=" + estado + ", fk_tipo_empleado=" + fk_tipo_empleado + "]";
 	}
-	
+
 	public static Usuario Login() {
-		//aca se piden los datos de login y se envian a la funcion del DTO
-		
+		// aca se piden los datos de login y se envian a la funcion del DTO
+
 		Usuario pepe = UsuarioDTO.Login("pepe1", "123");
 		if (pepe == null) {
 			JOptionPane.showMessageDialog(null, "error");
 		} else {
 			JOptionPane.showMessageDialog(null, pepe.toString());
 		}
-		
+
 		return pepe;
 	}
 
