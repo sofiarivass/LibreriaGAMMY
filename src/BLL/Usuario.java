@@ -3,6 +3,7 @@ package BLL;
 import javax.swing.JOptionPane;
 
 import DLL.UsuarioDTO;
+import Repository.Encriptador;
 
 public class Usuario {
 	private int id_usuario;
@@ -78,17 +79,25 @@ public class Usuario {
 				+ contrasenia + ", estado=" + estado + ", fk_tipo_empleado=" + fk_tipo_empleado + "]";
 	}
 
-	public static Usuario Login() {
-		// aca se piden los datos de login y se envian a la funcion del DTO
+	/**
+	 * Se piden los datos de login y se envian a la funcion del DTO
+	 * 
+	 * @return Usuario
+	 */
+	public static Usuario login() {
 
-		Usuario pepe = UsuarioDTO.Login("pepe1", "123");
-		if (pepe == null) {
-			JOptionPane.showMessageDialog(null, "error");
+		String usuario = Repository.Validaciones.validarVacio("Ingrese nombre de usuario:", "Login", null);
+		String contrasenia = Repository.Validaciones.validarVacio("Ingrese contraseña:", "Login", null);
+
+		Usuario user = UsuarioDTO.login(usuario, Encriptador.encriptar(contrasenia));
+
+		if (user == null) {
+			JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
 		} else {
-			JOptionPane.showMessageDialog(null, pepe.toString());
+			JOptionPane.showMessageDialog(null, "Bienvenido " + user.getNombre() + "!");			
 		}
 
-		return pepe;
+		return user;
 	}
 
 }

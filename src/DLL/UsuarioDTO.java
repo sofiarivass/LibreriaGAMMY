@@ -10,7 +10,7 @@ public class UsuarioDTO {
 
 	private static Connection con = Conexion.getInstance().getConnection();
 
-	public static Usuario Login(String usuario, String contrasenia) {
+	public static Usuario login(String usuario, String contrasenia) {
 		Usuario user = null;
 		try {
 			PreparedStatement stmt = con
