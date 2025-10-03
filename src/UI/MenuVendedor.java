@@ -1,12 +1,9 @@
 package UI;
-
 import javax.swing.JOptionPane;
-
 import BLL.Usuario;
 import Enums.*;
 
 public class MenuVendedor {
-	
 	public static void Menu(Usuario user) {
 		
 		int opcionVenta, opcionVenta1, opcionVenta2;
@@ -58,15 +55,5 @@ public class MenuVendedor {
 			}
 		} while (opcionVenta != 2);
 		
-		
-		
-		
-		
-		
-		
-		
 	}
-	
-	
-
 }

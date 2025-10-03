@@ -1,14 +1,11 @@
 package UI;
-
 import javax.swing.JOptionPane;
-
 import BLL.Usuario;
 import Enums.GestionarClientes;
 import Enums.GestionarExportaciones;
 import Enums.GestionarInventario;
 
 public class MenuVendedorInternacional {
-
 	public static void Menu(Usuario user) {
 		
 		int opcionVI, opcionVI1, opcionVI2, opcionVI3;
@@ -83,9 +80,5 @@ public class MenuVendedorInternacional {
 				break;
 			}
 		} while (opcionVI != 4);
-		
-	
 	}
-
-	
 }

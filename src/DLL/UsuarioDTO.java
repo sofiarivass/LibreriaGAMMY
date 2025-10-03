@@ -1,13 +1,10 @@
 package DLL;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import BLL.Usuario;
 
 public class UsuarioDTO {
-
 	private static Connection con = Conexion.getInstance().getConnection();
 
 	public static Usuario login(String usuario, String contrasenia) {
@@ -34,5 +31,4 @@ public class UsuarioDTO {
 		}
 		return user;
 	}
-
 }

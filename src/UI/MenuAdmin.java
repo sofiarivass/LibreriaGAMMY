@@ -1,12 +1,9 @@
 package UI;
-
 import javax.swing.JOptionPane;
-
 import BLL.Usuario;
 import Enums.*;
 
 public class MenuAdmin {
-
 	public static void Menu(Usuario user) {
 		
 		int opcionAdmin, opcionAdmin1,opcionAdmin2,opcionAdmin3;
@@ -78,13 +75,5 @@ public class MenuAdmin {
 				break;
 			}
 		} while (opcionAdmin != 3);
-		
-		
-		
-		
 	}
-	
-	
-	
-	
 }

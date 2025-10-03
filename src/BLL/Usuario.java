@@ -1,7 +1,5 @@
 package BLL;
-
 import javax.swing.JOptionPane;
-
 import DLL.UsuarioDTO;
 import Repository.Encriptador;
 
