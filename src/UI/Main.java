@@ -1,7 +1,5 @@
 package UI;
-
 import javax.swing.JOptionPane;
-
 import BLL.Usuario;
 import Enums.*;
 
