@@ -20,12 +20,21 @@ public class MenuAdmin {
 					switch (opcionAdmin1) {
 					case 0: // mostrar empleados
 						JOptionPane.showMessageDialog(null, "mostrando empleados");
+						
+						GestionEmpleados.MostrarEmpleados();
+						
 						break;
 					case 1: // crear empleado
 						JOptionPane.showMessageDialog(null, "crear empleado");
+						
+						GestionEmpleados.CrearEmpleados();
+						
 						break;
 					case 2: // dar de baja empleado
 						JOptionPane.showMessageDialog(null, "dar de baja empleado");
+						
+						GestionEmpleados.BajarEmpleado();
+						
 						break;
 					}
 				} while (opcionAdmin1 != 3);
