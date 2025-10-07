@@ -151,4 +151,130 @@ public interface Validaciones {
 		}
 		return input;
 	}
+	
+	/**
+	 * Método para validar enteros. Evita que el usuario deje el campo vacío y se
+	 * asegura que no se ingresen letras, números negativos o números de muchas
+	 * cifras que no se puedan parsear más adelante
+	 * 
+	 * @param mensaje
+	 * @param titulo
+	 * @param img
+	 * @return String
+	 */
+	public static String validarInt(String mensaje, String titulo, String img) {
+		String input = "";
+		boolean numero = false;
+
+		while (numero == false) {
+			do {
+				if (img == null) {
+					input = JOptionPane.showInputDialog(mensaje);
+				} else {
+					input = (String) JOptionPane.showInputDialog(null, mensaje, titulo, JOptionPane.DEFAULT_OPTION,
+							new ImageIcon(Validaciones.class.getResource("/img/" + img)), null, null);
+				}
+			} while (input == null);
+
+			if (input.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Debe ingresar un número");
+				numero = false;
+			} else {
+				int contL = 0;
+
+				for (int i = 0; i < input.length(); i++) {
+					if (Character.isAlphabetic(input.charAt(i))) {
+						contL++;
+					}
+				}
+
+				if (contL > 0) {
+					JOptionPane.showMessageDialog(null, "No se permiten letras");
+					numero = false;
+				} else if (input.length() >= 10) {
+					JOptionPane.showMessageDialog(null, "No puede ingresar numeros tan grandes.");
+					numero = false;
+				} else if (Integer.parseInt(input) > 0) {
+					numero = true;
+				} else {
+					JOptionPane.showMessageDialog(null, "Debe ingresar un número mayor a 0");
+					numero = false;
+				}
+			}
+		}
+		return input;
+	}
+
+	
+	/**
+	 * Método para validar double. Evita que el usuario deje el campo vacío y se
+	 * asegura que no se ingresen letras ni números negativos
+	 * 
+	 * @param mensaje
+	 * @param titulo
+	 * @param img
+	 * @return double
+	 */
+	public static double validarDouble(String mensaje, String titulo, String img) {
+		String input = "";
+		boolean numero = false;
+
+		while (numero == false) {
+
+			if (img == null) {
+				input = JOptionPane.showInputDialog(mensaje);
+			} else {
+				input = (String) JOptionPane.showInputDialog(null, mensaje, titulo, JOptionPane.DEFAULT_OPTION,
+						new ImageIcon(Validaciones.class.getResource("/img/" + img)), null, null);
+			}
+			if (input == null) {
+				break;
+			}
+
+			if (input.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Debe ingresar un número");
+				numero = false;
+			} else {
+				int contL = 0;
+
+				for (int i = 0; i < input.length(); i++) {
+					if (Character.isAlphabetic(input.charAt(i))) {
+						contL++;
+					}
+				}
+
+				if (contL > 0) {
+					JOptionPane.showMessageDialog(null, "No se permiten letras");
+					numero = false;
+				} else if (Double.parseDouble(input) > 0) {
+					numero = true;
+				} else {
+					JOptionPane.showMessageDialog(null, "Debe ingresar un número mayor a 0");
+					numero = false;
+				}
+			}
+		}
+		if (input == null) {
+			return -1;
+		} else {
+			return Double.parseDouble(input);
+		}
+
+	}
+	
+	public static String menuSiNo(String mensaje, String titulo, String img) {
+		String respuesta;
+		String[] opciones = { "Sí", "No" };
+		int eleccion = JOptionPane.showOptionDialog(null, mensaje, titulo, 0, JOptionPane.DEFAULT_OPTION,
+				new ImageIcon(Validaciones.class.getResource("/img/" + img)), opciones, opciones[0]);
+
+		if (eleccion == 0) {
+			respuesta = "Sí";
+			return respuesta;
+		} else {
+			respuesta = "No";
+			return respuesta;
+		}
+
+	}
 }

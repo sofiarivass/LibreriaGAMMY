@@ -1,7 +1,11 @@
 package BLL;
 
+import javax.swing.JOptionPane;
+
+import Enums.*;
+
 public class Libro {
-	private int isbn;
+	private int idLibro;
 	private String titulo;
 	private String autor;
 	private String editorial;
@@ -9,19 +13,18 @@ public class Libro {
 	private String genero;
 	private String idioma;
 	private String publicoObjetivo;
-	private String numPaginas;
+	private int numPaginas;
 	private boolean firmado;
-	private String edicion;
 	private boolean edicionEspecial;
 	private String materialTapa;
 	private boolean saga;
 	private double precio;
 	private int stock;
 	
-	public Libro(int isbn, String titulo, String autor, String editorial, String anioPublicacion, String genero,
-			String idioma, String publicoObjetivo, String numPaginas, boolean firmado, String edicion,
+	public Libro(int idLibro, String titulo, String autor, String editorial, String anioPublicacion, String genero,
+			String idioma, String publicoObjetivo, int numPaginas, boolean firmado,
 			boolean edicionEspecial, String materialTapa, boolean saga, double precio, int stock) {
-		this.isbn = isbn;
+		this.idLibro = idLibro;
 		this.titulo = titulo;
 		this.autor = autor;
 		this.editorial = editorial;
@@ -31,7 +34,26 @@ public class Libro {
 		this.publicoObjetivo = publicoObjetivo;
 		this.numPaginas = numPaginas;
 		this.firmado = firmado;
-		this.edicion = edicion;
+		this.edicionEspecial = edicionEspecial;
+		this.materialTapa = materialTapa;
+		this.saga = saga;
+		this.precio = precio;
+		this.stock = stock;
+	}
+	
+	public Libro(String titulo, String autor, String editorial, String anioPublicacion, String genero,
+			String idioma, String publicoObjetivo, int numPaginas, boolean firmado,
+			boolean edicionEspecial, String materialTapa, boolean saga, double precio, int stock) {
+		this.idLibro = idLibro;
+		this.titulo = titulo;
+		this.autor = autor;
+		this.editorial = editorial;
+		this.anioPublicacion = anioPublicacion;
+		this.genero = genero;
+		this.idioma = idioma;
+		this.publicoObjetivo = publicoObjetivo;
+		this.numPaginas = numPaginas;
+		this.firmado = firmado;
 		this.edicionEspecial = edicionEspecial;
 		this.materialTapa = materialTapa;
 		this.saga = saga;
@@ -40,11 +62,11 @@ public class Libro {
 	}
 
 	// Getters y Setters
-	public int getIsbn() {
-		return isbn;
+	public int getidLibro() {
+		return idLibro;
 	}
-	public void setIsbn(int isbn) {
-		this.isbn = isbn;
+	public void setidLibro(int idLibro) {
+		this.idLibro = idLibro;
 	}
 
 	public String getTitulo() {
@@ -96,10 +118,10 @@ public class Libro {
 		this.publicoObjetivo = publicoObjetivo;
 	}
 
-	public String getNumPaginas() {
+	public int getNumPaginas() {
 		return numPaginas;
 	}
-	public void setNumPaginas(String numPaginas) {
+	public void setNumPaginas(int numPaginas) {
 		this.numPaginas = numPaginas;
 	}
 
@@ -108,13 +130,6 @@ public class Libro {
 	}
 	public void setFirmado(boolean firmado) {
 		this.firmado = firmado;
-	}
-
-	public String getEdicion() {
-		return edicion;
-	}
-	public void setEdicion(String edicion) {
-		this.edicion = edicion;
 	}
 
 	public boolean isEdicionEspecial() {
@@ -155,11 +170,52 @@ public class Libro {
 	// Métodos
 	@Override
 	public String toString() {
-		return "Libro [isbn=" + isbn + ", titulo=" + titulo + ", autor=" + autor + ", editorial=" + editorial
+		return "Libro [idLibro=" + idLibro + ", titulo=" + titulo + ", autor=" + autor + ", editorial=" + editorial
 				+ ", anioPublicacion=" + anioPublicacion + ", genero=" + genero + ", idioma=" + idioma
 				+ ", publicoObjetivo=" + publicoObjetivo + ", numPaginas=" + numPaginas + ", firmado=" + firmado
-				+ ", edicion=" + edicion + ", edicionEspecial=" + edicionEspecial + ", materialTapa=" + materialTapa
+				+ ", edicionEspecial=" + edicionEspecial + ", materialTapa=" + materialTapa
 				+ ", saga=" + saga + ", precio=" + precio + ", stock=" + stock + "]";
+	}
+	
+	public static Libro nuevoLibro() {
+		String titulo = Repository.Validaciones.validarVacio("Ingrese titulo del libro:", "Cargar libro", null);
+		String autor = Repository.Validaciones.validarString("Ingrese nombre del autor:", "Cargar libro", null);
+		String editorial = Repository.Validaciones.validarVacio("Ingrese nombre de la editorial:", "Cargar libro", null);
+		String anioPublicacion = Repository.Validaciones.validarInt("Ingrese año de publicación del libro:", "Cargar libro", null);
+		String genero = (String)JOptionPane.showInputDialog(null, 
+				"Seleccione el género literario del libro:", 
+				"Cargar libro", 
+				0, null,
+				Generos.values(),
+				Generos.values()[0]);
+		
+		String idioma = (String)JOptionPane.showInputDialog(null, 
+				"Seleccione el idioma del libro:", 
+				"Cargar libro", 
+				0, null,
+				Idiomas.values(),
+				Idiomas.values()[0]);
+		String publicoObjetivo = (String)JOptionPane.showInputDialog(null, 
+				"Seleccione el público objetivo del libro:", 
+				"Cargar libro", 
+				0, null,
+				Publico.values(),
+				Publico.values()[0]);
+		int numPaginas = Integer.parseInt(Repository.Validaciones.validarInt("Ingrese número de páginas del libro:", "Cargar libro", null));
+		boolean firmado = Repository.Validaciones.menuSiNo("¿El libro está firmado por su autor/a?", "Cargar libro", null).equals("Sí")? true : false;
+		boolean edicionEspecial = Repository.Validaciones.menuSiNo("¿El libro es edición especial?", "Cargar libro", null).equals("Sí")? true : false;
+		String materialTapa = (String)JOptionPane.showInputDialog(null, 
+				"Seleccione el tipo de tapa del libro:", 
+				"Cargar libro", 
+				0, null,
+				Tapa.values(),
+				Tapa.values()[0]);
+		boolean saga = Repository.Validaciones.menuSiNo("¿El libro pertenece a una saga?", "Cargar libro", null).equals("Sí")? true : false;
+		double precio = Repository.Validaciones.validarDouble("Ingrese precio del libro:", "Cargar libro", null);
+		int stock = Integer.parseInt(Repository.Validaciones.validarInt("Ingrese stock del libro:", "Cargar libro", null));
+		
+		Libro nuevo = new Libro(titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, numPaginas, firmado, edicionEspecial, materialTapa, saga, precio, stock);
+		return nuevo;
 	}
 	
 }

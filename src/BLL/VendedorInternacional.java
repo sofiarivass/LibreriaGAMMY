@@ -19,5 +19,6 @@ public class VendedorInternacional extends Usuario {
 	public static void setListaRegistros(LinkedList<Venta> listaRegistros) {
 		VendedorInternacional.listaRegistros = listaRegistros;
 	}
+	
 
 }
