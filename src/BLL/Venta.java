@@ -1,77 +1,52 @@
 package BLL;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 
 public class Venta {
-	private LinkedList<Libro> carrito = new LinkedList<Libro>();
-	private int numero;
-	private Cliente cliente;
-	private int cantidad;
-	private double precio;
+	private int idVenta;
+	private double totalVenta;
 	private LocalDateTime fechaVenta;
-	private int tipoVenta;
 	private String metodoPago;
 	private String moneda;
-	private String descuento;
 	private String estado;
-
-	public Venta(LinkedList<Libro> carrito, int numero, Cliente cliente, int cantidad, double precio,
-			LocalDateTime fechaVenta, int tipoVenta, String metodoPago, String moneda, String descuento,
-			String estado) {
-		this.carrito = carrito;
-		this.numero = numero;
-		this.cliente = cliente;
-		this.cantidad = cantidad;
-		this.precio = precio;
+	private String origen;
+	private String destino;
+	private String estadoEnvio;
+	private Descuento fkDescuento;
+	private Carrito fkCarrito;
+	private Usuario fkUsuario;
+	
+	public Venta(int idVenta, double totalVenta, LocalDateTime fechaVenta, String metodoPago, String moneda,
+			String estado, String origen, String destino, String estadoEnvio, Descuento fkDescuento, Carrito fkCarrito,
+			Usuario fkUsuario) {
+		this.idVenta = idVenta;
+		this.totalVenta = totalVenta;
 		this.fechaVenta = fechaVenta;
-		this.tipoVenta = tipoVenta;
 		this.metodoPago = metodoPago;
 		this.moneda = moneda;
-		this.descuento = descuento;
 		this.estado = estado;
+		this.origen = origen;
+		this.destino = destino;
+		this.estadoEnvio = estadoEnvio;
+		this.fkDescuento = fkDescuento;
+		this.fkCarrito = fkCarrito;
+		this.fkUsuario = fkUsuario;
 	}
 
-	// Getters y Setters
-
-	public LinkedList<Libro> getCarrito() {
-		return carrito;
+	public int getIdVenta() {
+		return idVenta;
 	}
 
-	public void setCarrito(LinkedList<Libro> carrito) {
-		this.carrito = carrito;
+	public void setIdVenta(int idVenta) {
+		this.idVenta = idVenta;
 	}
 
-	public int getNumero() {
-		return numero;
+	public double getTotalVenta() {
+		return totalVenta;
 	}
 
-	public void setNumero(int numero) {
-		this.numero = numero;
-	}
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
-	public int getCantidad() {
-		return cantidad;
-	}
-
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
-	}
-
-	public double getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(double precio) {
-		this.precio = precio;
+	public void setTotalVenta(double totalVenta) {
+		this.totalVenta = totalVenta;
 	}
 
 	public LocalDateTime getFechaVenta() {
@@ -80,14 +55,6 @@ public class Venta {
 
 	public void setFechaVenta(LocalDateTime fechaVenta) {
 		this.fechaVenta = fechaVenta;
-	}
-
-	public int getTipoVenta() {
-		return tipoVenta;
-	}
-
-	public void setTipoVenta(int tipoVenta) {
-		this.tipoVenta = tipoVenta;
 	}
 
 	public String getMetodoPago() {
@@ -106,14 +73,6 @@ public class Venta {
 		this.moneda = moneda;
 	}
 
-	public String getDescuento() {
-		return descuento;
-	}
-
-	public void setDescuento(String descuento) {
-		this.descuento = descuento;
-	}
-
 	public String getEstado() {
 		return estado;
 	}
@@ -122,12 +81,60 @@ public class Venta {
 		this.estado = estado;
 	}
 
-	// Métodos
-	@Override
-	public String toString() {
-		return "Venta [carrito=" + carrito + ", numero=" + numero + ", cliente=" + cliente + ", cantidad=" + cantidad
-				+ ", precio=" + precio + ", fechaVenta=" + fechaVenta + ", tipoVenta=" + tipoVenta + ", metodoPago="
-				+ metodoPago + ", moneda=" + moneda + ", descuento=" + descuento + ", estado=" + estado + "]";
+	public String getOrigen() {
+		return origen;
 	}
+
+	public void setOrigen(String origen) {
+		this.origen = origen;
+	}
+
+	public String getDestino() {
+		return destino;
+	}
+
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
+
+	public String getEstadoEnvio() {
+		return estadoEnvio;
+	}
+
+	public void setEstadoEnvio(String estadoEnvio) {
+		this.estadoEnvio = estadoEnvio;
+	}
+
+	public Descuento getFkDescuento() {
+		return fkDescuento;
+	}
+
+	public void setFkDescuento(Descuento fkDescuento) {
+		this.fkDescuento = fkDescuento;
+	}
+
+	public Carrito getFkCarrito() {
+		return fkCarrito;
+	}
+
+	public void setFkCarrito(Carrito fkCarrito) {
+		this.fkCarrito = fkCarrito;
+	}
+
+	public Usuario getFkUsuario() {
+		return fkUsuario;
+	}
+
+	public void setFkUsuario(Usuario fkUsuario) {
+		this.fkUsuario = fkUsuario;
+	}
+	
+	// Getters y Setters
+
+	
+	
+
+	// Métodos
+	
 
 }

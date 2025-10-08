@@ -4,20 +4,21 @@ import DLL.ClienteDTO;
 import Repository.Validaciones;
 
 public class Cliente {
-	private String id;
+	private int idCliente;
 	private int dni;
 	private String nombre;
 	private String telefono;
 	private String mail;
 	private LinkedList<Libro> listaProductos = new LinkedList<>();
 	
-	public Cliente(String id, int dni, String nombre, String telefono, String mail) {
-		this.id = id;
+	public Cliente(int idCliente, int dni, String nombre, String telefono, String mail,
+			LinkedList<Libro> listaProductos) {
+		this.idCliente = idCliente;
 		this.dni = dni;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.mail = mail;
-//		this.listaProductos = listaProductos;
+		this.listaProductos = listaProductos;
 	}
 	
 	public Cliente(int dni, String nombre, String telefono, String mail) {
@@ -25,24 +26,21 @@ public class Cliente {
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.mail = mail;
+		this.listaProductos = new LinkedList<Libro>();
 	}
-	
-	
 
 	// Getters y Setters
+	public int getIdCliente() {
+		return idCliente;
+	}
+	public void setIdCliente(int idCliente) {
+		this.idCliente = idCliente;
+	}
+
 	public int getDni() {
 		return dni;
 	}
-
 	public void setDni(int dni) {
-		this.dni = dni;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(int dni) {
 		this.dni = dni;
 	}
 
@@ -73,15 +71,14 @@ public class Cliente {
 	public void setListaProductos(LinkedList<Libro> listaProductos) {
 		this.listaProductos = listaProductos;
 	}
-
+	
 	// Métodos
 	@Override
 	public String toString() {
-		return "Cliente [id=" + id + ", nombre=" + nombre + ", telefono=" + telefono + ", mail=" + mail
-				+ ", listaProductos=" + listaProductos + "]";
+		return "Cliente [idCliente=" + idCliente + ", dni=" + dni + ", nombre=" + nombre + ", telefono=" + telefono
+				+ ", mail=" + mail + ", listaProductos=" + listaProductos + "]";
 	}
-	
-	
+
 	// comprobando si existe el cliente
 	public static Cliente buscarCliente() {
 		int dni = Integer.parseInt(Validaciones.validarInt("ingrese el número de DNI del Cliente", null, null));

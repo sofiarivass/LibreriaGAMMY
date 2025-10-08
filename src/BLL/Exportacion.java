@@ -57,32 +57,23 @@ public class Exportacion extends Venta {
 		opcion = Validaciones.menuSiNo("¿Es un cliente?", null, null);
 		
 		if (opcion.equalsIgnoreCase("Si")) {
-			cliente = Cliente.buscarCliente();			
-			if (cliente != null) {
-				// continua con la venta
-			} else {
-				// pide datos para crear un cliente nuevo.
-				boolean flag = false;
-				JOptionPane.showMessageDialog(null, "Cliente No encontrado!!\nRegistre al Cliente para continuar con la Venta");
-				do {
-					cliente = Cliente.registrarCliente();
-					if (cliente == null ) {
-						opcionDos = Validaciones.menuSiNo("No se pudo registrar al Cliente!!\n¿Desea repetir la operación?", null, null);
-						flag = opcionDos.equalsIgnoreCase("Si")? true:false;
-					} else {
-						JOptionPane.showMessageDialog(null, "Se registro al Cliente correctamente!!");					
-					}
-				} while (flag);
-				
-				carrito = Libro.elegirLibros();
-				
-				
-				
-				
-				
-			}
-		} else {
+			cliente = Cliente.buscarCliente();
+			carrito = Libro.elegirLibros();
 			
+		} else {
+			boolean flag = false;
+			JOptionPane.showMessageDialog(null, "Cliente No encontrado!!\nRegistre al Cliente para continuar con la Venta");
+			do {
+				cliente = Cliente.registrarCliente();
+				if (cliente == null ) {
+					opcionDos = Validaciones.menuSiNo("No se pudo registrar al Cliente!!\n¿Desea repetir la operación?", null, null);
+					flag = opcionDos.equalsIgnoreCase("Si")? true:false;
+				} else {
+					JOptionPane.showMessageDialog(null, "Se registro al Cliente correctamente!!");					
+				}
+			} while (flag);
+			
+			carrito = Libro.elegirLibros();
 		}
 	}
 	

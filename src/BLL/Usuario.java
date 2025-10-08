@@ -5,76 +5,64 @@ import Repository.Encriptador;
 
 public class Usuario {
 	private int id_usuario;
-	private String usuario;
 	private String nombre;
+	private String usuario;
 	private String contrasenia;
 	private boolean estado;
-	private int fk_tipo_empleado;
+	private TipoEmpleado fkTipoEmpleado;
 
-	public Usuario(int id_usuario, String usuario, String nombre, String contrasenia, boolean estado,
-			int fk_tipo_empleado) {
+	public Usuario(int id_usuario, String nombre, String usuario, String contrasenia, boolean estado,
+			TipoEmpleado fkTipoEmpleado) {
 		super();
 		this.id_usuario = id_usuario;
-		this.usuario = usuario;
 		this.nombre = nombre;
+		this.usuario = usuario;
 		this.contrasenia = contrasenia;
 		this.estado = estado;
-		this.fk_tipo_empleado = fk_tipo_empleado;
+		this.fkTipoEmpleado = fkTipoEmpleado;
 	}
 
 	// Getter y Setters
 	public int getId_usuario() {
 		return id_usuario;
 	}
-
 	public void setId_usuario(int id_usuario) {
 		this.id_usuario = id_usuario;
-	}
-
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
 	}
 
 	public String getNombre() {
 		return nombre;
 	}
-
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 
 	public String getContrasenia() {
 		return contrasenia;
 	}
-
 	public void setContrasenia(String contrasenia) {
 		this.contrasenia = contrasenia;
 	}
 
-	public boolean isEstado() {
+	public boolean getEstado() {
 		return estado;
 	}
-
 	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
 
-	public int getFk_tipo_empleado() {
-		return fk_tipo_empleado;
+	public TipoEmpleado getFkTipoEmpleado() {
+		return fkTipoEmpleado;
 	}
-
-	public void setFk_tipo_empleado(int fk_tipo_empleado) {
-		this.fk_tipo_empleado = fk_tipo_empleado;
-	}
-
-	@Override
-	public String toString() {
-		return "Usuario [id_usuario=" + id_usuario + ", usuario=" + usuario + ", nombre=" + nombre + ", contrasenia="
-				+ contrasenia + ", estado=" + estado + ", fk_tipo_empleado=" + fk_tipo_empleado + "]";
+	public void setFkTipoEmpleado(TipoEmpleado fkTipoEmpleado) {
+		this.fkTipoEmpleado = fkTipoEmpleado;
 	}
 
 	/**
