@@ -11,16 +11,17 @@ public class Exportacion extends Venta {
 	private String destino;
 	private String estadoEnvio;
 	
-	public Exportacion(LinkedList<Libro> carrito, int numero, Cliente cliente, int cantidad, double precio,
-			LocalDateTime fechaVenta, int tipoVenta, String metodoPago, String moneda, String descuento,
-			String estado, String origen, String destino, String estadoEnvio) {
-		super(carrito, numero, cliente, cantidad, precio, fechaVenta, tipoVenta, metodoPago, moneda, descuento, estado);
-		this.origen = origen;
-		this.destino = destino;
-		this.estadoEnvio = estadoEnvio;
+	public Exportacion(int idVenta, double totalVenta, LocalDateTime fechaVenta, String metodoPago, String moneda,
+			String estado, String origen, String destino, String estadoEnvio, Descuento fkDescuento, Carrito fkCarrito,
+			Usuario fkUsuario, String origen2, String destino2, String estadoEnvio2) {
+		super(idVenta, totalVenta, fechaVenta, metodoPago, moneda, estado, origen, destino, estadoEnvio, fkDescuento,
+				fkCarrito, fkUsuario);
+		origen = origen2;
+		destino = destino2;
+		estadoEnvio = estadoEnvio2;
 	}
 
-	// Getters y Setters
+	// Métodos
 	public String getOrigen() {
 		return origen;
 	}
@@ -42,12 +43,16 @@ public class Exportacion extends Venta {
 		this.estadoEnvio = estadoEnvio;
 	}
 
-	// Métodos
 	@Override
 	public String toString() {
-		return "Exportacion [origen=" + origen + ", destino=" + destino + ", estadoEnvio=" + estadoEnvio + "]";
+		return "Exportacion [origen=" + origen + ", destino=" + destino + ", estadoEnvio=" + estadoEnvio
+				+ ", getIdVenta()=" + getIdVenta() + ", getTotalVenta()=" + getTotalVenta() + ", getFechaVenta()="
+				+ getFechaVenta() + ", getMetodoPago()=" + getMetodoPago() + ", getMoneda()=" + getMoneda()
+				+ ", getEstado()=" + getEstado() + ", getFkDescuento()=" + getFkDescuento() + ", getFkCarrito()="
+				+ getFkCarrito() + ", getFkUsuario()=" + getFkUsuario() + ", getClass()=" + getClass() + ", hashCode()="
+				+ hashCode() + ", toString()=" + super.toString() + "]";
 	}
-	
+
 	// Datos para realizar la Venta Internacional
 	public static void nuevaVentaExport(Usuario user) {
 		LinkedList<Libro> carrito = null;

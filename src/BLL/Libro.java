@@ -168,7 +168,6 @@ public class Libro {
 	
 	
 	// Métodos
-	
 	public static LinkedList<Libro> elegirLibros() {
 		LinkedList<Libro> listaLibros = null;
 		LinkedList<Libro> carrito = new LinkedList<Libro>();
