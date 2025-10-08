@@ -1,7 +1,10 @@
 package BLL;
 
+import java.util.LinkedList;
+
 import javax.swing.JOptionPane;
 
+import DLL.LibroDTO;
 import Enums.*;
 
 public class Libro {
@@ -174,48 +177,63 @@ public class Libro {
 				+ ", anioPublicacion=" + anioPublicacion + ", genero=" + genero + ", idioma=" + idioma
 				+ ", publicoObjetivo=" + publicoObjetivo + ", numPaginas=" + numPaginas + ", firmado=" + firmado
 				+ ", edicionEspecial=" + edicionEspecial + ", materialTapa=" + materialTapa
-				+ ", saga=" + saga + ", precio=" + precio + ", stock=" + stock + "]";
+				+ ", saga=" + saga + ", precio=" + precio + ", stock=" + stock + "]" + "\n";
 	}
 	
-	public static Libro nuevoLibro() {
+	public static Libro cargarDatosLibro() {
 		String titulo = Repository.Validaciones.validarVacio("Ingrese titulo del libro:", "Cargar libro", null);
 		String autor = Repository.Validaciones.validarString("Ingrese nombre del autor:", "Cargar libro", null);
 		String editorial = Repository.Validaciones.validarVacio("Ingrese nombre de la editorial:", "Cargar libro", null);
 		String anioPublicacion = Repository.Validaciones.validarInt("Ingrese año de publicación del libro:", "Cargar libro", null);
-		String genero = (String)JOptionPane.showInputDialog(null, 
+		String genero = ((Generos)JOptionPane.showInputDialog(null, 
 				"Seleccione el género literario del libro:", 
 				"Cargar libro", 
 				0, null,
 				Generos.values(),
-				Generos.values()[0]);
-		
-		String idioma = (String)JOptionPane.showInputDialog(null, 
+				Generos.values()[0])).toString();
+		String idioma = ((Idiomas)JOptionPane.showInputDialog(null, 
 				"Seleccione el idioma del libro:", 
 				"Cargar libro", 
 				0, null,
 				Idiomas.values(),
-				Idiomas.values()[0]);
-		String publicoObjetivo = (String)JOptionPane.showInputDialog(null, 
+				Idiomas.values()[0])).toString();
+		String publicoObjetivo = ((Publico)JOptionPane.showInputDialog(null, 
 				"Seleccione el público objetivo del libro:", 
 				"Cargar libro", 
 				0, null,
 				Publico.values(),
-				Publico.values()[0]);
+				Publico.values()[0])).toString();
 		int numPaginas = Integer.parseInt(Repository.Validaciones.validarInt("Ingrese número de páginas del libro:", "Cargar libro", null));
 		boolean firmado = Repository.Validaciones.menuSiNo("¿El libro está firmado por su autor/a?", "Cargar libro", null).equals("Sí")? true : false;
 		boolean edicionEspecial = Repository.Validaciones.menuSiNo("¿El libro es edición especial?", "Cargar libro", null).equals("Sí")? true : false;
-		String materialTapa = (String)JOptionPane.showInputDialog(null, 
+		String materialTapa = ((Tapa)JOptionPane.showInputDialog(null, 
 				"Seleccione el tipo de tapa del libro:", 
 				"Cargar libro", 
 				0, null,
 				Tapa.values(),
-				Tapa.values()[0]);
+				Tapa.values()[0])).toString();
 		boolean saga = Repository.Validaciones.menuSiNo("¿El libro pertenece a una saga?", "Cargar libro", null).equals("Sí")? true : false;
 		double precio = Repository.Validaciones.validarDouble("Ingrese precio del libro:", "Cargar libro", null);
 		int stock = Integer.parseInt(Repository.Validaciones.validarInt("Ingrese stock del libro:", "Cargar libro", null));
 		
-		Libro nuevo = new Libro(titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, numPaginas, firmado, edicionEspecial, materialTapa, saga, precio, stock);
-		return nuevo;
+		return new Libro(titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo,
+                numPaginas, firmado, edicionEspecial, materialTapa, saga, precio, stock);
+	}
+	
+	public static boolean nuevoLibro() {
+		Libro nuevo = cargarDatosLibro();
+		return LibroDTO.agregarLibro(nuevo);
+	}
+	
+	public static LinkedList<Libro> mostrarLibros() {
+		return LibroDTO.mostrarLibros();
+	}
+	
+	public static boolean editarLibro() {
+		Libro encontrado = LibroDTO.libroPorID();
+		Libro modificado = cargarDatosLibro();
+		modificado.setidLibro(encontrado.getidLibro());
+		return LibroDTO.editarLibro(modificado);
 	}
 	
 }

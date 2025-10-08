@@ -265,8 +265,16 @@ public interface Validaciones {
 	public static String menuSiNo(String mensaje, String titulo, String img) {
 		String respuesta;
 		String[] opciones = { "Sí", "No" };
-		int eleccion = JOptionPane.showOptionDialog(null, mensaje, titulo, 0, JOptionPane.DEFAULT_OPTION,
-				new ImageIcon(Validaciones.class.getResource("/img/" + img)), opciones, opciones[0]);
+		int eleccion;
+		if (img == null) {
+			eleccion = JOptionPane.showOptionDialog(null, mensaje, titulo, 0, JOptionPane.DEFAULT_OPTION,
+					null, opciones, opciones[0]);
+		} else {
+			eleccion = JOptionPane.showOptionDialog(null, mensaje, titulo, 0, JOptionPane.DEFAULT_OPTION,
+					new ImageIcon(Validaciones.class.getResource("/img/" + img)), opciones, opciones[0]);
+		}
+		
+		
 
 		if (eleccion == 0) {
 			respuesta = "Sí";

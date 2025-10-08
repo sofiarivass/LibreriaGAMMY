@@ -1,6 +1,9 @@
 package UI;
 import javax.swing.JOptionPane;
+
+import BLL.Libro;
 import BLL.Usuario;
+import DLL.LibroDTO;
 import Enums.GestionarClientes;
 import Enums.GestionarExportaciones;
 import Enums.GestionarInventario;
@@ -60,16 +63,16 @@ public class MenuVendedorInternacional {
 							GestionarInventario.values(), GestionarInventario.values());
 					switch (opcionVI3) {
 					case 0: // cargar productos
-						JOptionPane.showMessageDialog(null, "cargar productos");
+						Libro.nuevoLibro();
 						break;
 					case 1: // modificar productos
-						JOptionPane.showMessageDialog(null, "modificar productos");
+						Libro.editarLibro();
 						break;
 					case 2: // eliminar productos
-						JOptionPane.showMessageDialog(null, "eliminar productos");
+						LibroDTO.eliminarLibro();
 						break;
 					case 3: // mostrar productos
-						JOptionPane.showMessageDialog(null, "mostrar productos");
+						JOptionPane.showMessageDialog(null, Libro.mostrarLibros());
 						break;
 					}
 				} while (opcionVI3 != 4);
