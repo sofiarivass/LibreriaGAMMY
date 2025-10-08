@@ -8,7 +8,7 @@ public class Exportacion extends Venta {
 	private String estadoEnvio;
 	
 	public Exportacion(LinkedList<Libro> carrito, int numero, Cliente cliente, int cantidad, double precio,
-			LocalDateTime fechaVenta, String tipoVenta, String metodoPago, String moneda, String descuento,
+			LocalDateTime fechaVenta, int tipoVenta, String metodoPago, String moneda, String descuento,
 			String estado, String origen, String destino, String estadoEnvio) {
 		super(carrito, numero, cliente, cantidad, precio, fechaVenta, tipoVenta, metodoPago, moneda, descuento, estado);
 		this.origen = origen;
@@ -42,6 +42,19 @@ public class Exportacion extends Venta {
 	@Override
 	public String toString() {
 		return "Exportacion [origen=" + origen + ", destino=" + destino + ", estadoEnvio=" + estadoEnvio + "]";
+	}
+	
+	// Datos para realizar la Venta Internacional
+	public static void nuevaVentaExport(Usuario user) {
+		Cliente cliente = Cliente.buscarCliente();
+		if (cliente != null) {
+			// continua con la venta
+		} else {
+			// pide datos para crear un cliente nuevo.
+			cliente = Cliente.registrarCliente();
+			
+			
+		}
 	}
 	
 }

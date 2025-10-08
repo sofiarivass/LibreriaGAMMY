@@ -37,6 +37,7 @@ public class MenuVendedorInternacional {
 					switch (opcionVI2) {
 					case 0: // nueva exportación
 						JOptionPane.showMessageDialog(null, "nueva exportación");
+						// aqui empiza el codigo
 						break;
 					case 1: // modificar exportación
 						JOptionPane.showMessageDialog(null, "modificar exportación");

@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import com.mysql.jdbc.Connection;
 
 public class Conexion {
-	private static String URL = "jdbc:mysql://localhost:3306/libreria";
+	private static String URL = "jdbc:mysql://localhost:3307/libreria";
 	private static String USER = "root";
 	private static String PASSWORD = "";
 

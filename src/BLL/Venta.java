@@ -10,14 +10,14 @@ public class Venta {
 	private int cantidad;
 	private double precio;
 	private LocalDateTime fechaVenta;
-	private String tipoVenta;
+	private int tipoVenta;
 	private String metodoPago;
 	private String moneda;
 	private String descuento;
 	private String estado;
 
 	public Venta(LinkedList<Libro> carrito, int numero, Cliente cliente, int cantidad, double precio,
-			LocalDateTime fechaVenta, String tipoVenta, String metodoPago, String moneda, String descuento,
+			LocalDateTime fechaVenta, int tipoVenta, String metodoPago, String moneda, String descuento,
 			String estado) {
 		this.carrito = carrito;
 		this.numero = numero;
@@ -82,11 +82,11 @@ public class Venta {
 		this.fechaVenta = fechaVenta;
 	}
 
-	public String getTipoVenta() {
+	public int getTipoVenta() {
 		return tipoVenta;
 	}
 
-	public void setTipoVenta(String tipoVenta) {
+	public void setTipoVenta(int tipoVenta) {
 		this.tipoVenta = tipoVenta;
 	}
 

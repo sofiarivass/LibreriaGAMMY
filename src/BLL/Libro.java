@@ -9,7 +9,7 @@ public class Libro {
 	private String genero;
 	private String idioma;
 	private String publicoObjetivo;
-	private String numPaginas;
+	private int numPaginas;
 	private boolean firmado;
 	private String edicion;
 	private boolean edicionEspecial;
@@ -19,8 +19,9 @@ public class Libro {
 	private int stock;
 	
 	public Libro(int isbn, String titulo, String autor, String editorial, String anioPublicacion, String genero,
-			String idioma, String publicoObjetivo, String numPaginas, boolean firmado, String edicion,
+			String idioma, String publicoObjetivo, int numPaginas, boolean firmado, String edicion,
 			boolean edicionEspecial, String materialTapa, boolean saga, double precio, int stock) {
+		super();
 		this.isbn = isbn;
 		this.titulo = titulo;
 		this.autor = autor;
@@ -43,6 +44,7 @@ public class Libro {
 	public int getIsbn() {
 		return isbn;
 	}
+
 	public void setIsbn(int isbn) {
 		this.isbn = isbn;
 	}
@@ -50,6 +52,7 @@ public class Libro {
 	public String getTitulo() {
 		return titulo;
 	}
+
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
@@ -57,6 +60,7 @@ public class Libro {
 	public String getAutor() {
 		return autor;
 	}
+
 	public void setAutor(String autor) {
 		this.autor = autor;
 	}
@@ -64,6 +68,7 @@ public class Libro {
 	public String getEditorial() {
 		return editorial;
 	}
+
 	public void setEditorial(String editorial) {
 		this.editorial = editorial;
 	}
@@ -71,6 +76,7 @@ public class Libro {
 	public String getAnioPublicacion() {
 		return anioPublicacion;
 	}
+
 	public void setAnioPublicacion(String anioPublicacion) {
 		this.anioPublicacion = anioPublicacion;
 	}
@@ -78,6 +84,7 @@ public class Libro {
 	public String getGenero() {
 		return genero;
 	}
+
 	public void setGenero(String genero) {
 		this.genero = genero;
 	}
@@ -85,6 +92,7 @@ public class Libro {
 	public String getIdioma() {
 		return idioma;
 	}
+
 	public void setIdioma(String idioma) {
 		this.idioma = idioma;
 	}
@@ -92,20 +100,23 @@ public class Libro {
 	public String getPublicoObjetivo() {
 		return publicoObjetivo;
 	}
+
 	public void setPublicoObjetivo(String publicoObjetivo) {
 		this.publicoObjetivo = publicoObjetivo;
 	}
 
-	public String getNumPaginas() {
+	public int getNumPaginas() {
 		return numPaginas;
 	}
-	public void setNumPaginas(String numPaginas) {
+
+	public void setNumPaginas(int numPaginas) {
 		this.numPaginas = numPaginas;
 	}
 
-	public boolean isFirmado() {
+	public boolean getFirmado() {
 		return firmado;
 	}
+
 	public void setFirmado(boolean firmado) {
 		this.firmado = firmado;
 	}
@@ -113,13 +124,15 @@ public class Libro {
 	public String getEdicion() {
 		return edicion;
 	}
+
 	public void setEdicion(String edicion) {
 		this.edicion = edicion;
 	}
 
-	public boolean isEdicionEspecial() {
+	public boolean getEdicionEspecial() {
 		return edicionEspecial;
 	}
+
 	public void setEdicionEspecial(boolean edicionEspecial) {
 		this.edicionEspecial = edicionEspecial;
 	}
@@ -127,13 +140,15 @@ public class Libro {
 	public String getMaterialTapa() {
 		return materialTapa;
 	}
+
 	public void setMaterialTapa(String materialTapa) {
 		this.materialTapa = materialTapa;
 	}
 
-	public boolean isSaga() {
+	public boolean getSaga() {
 		return saga;
 	}
+
 	public void setSaga(boolean saga) {
 		this.saga = saga;
 	}
@@ -141,6 +156,7 @@ public class Libro {
 	public double getPrecio() {
 		return precio;
 	}
+
 	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
@@ -148,18 +164,10 @@ public class Libro {
 	public int getStock() {
 		return stock;
 	}
+
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-
-	// Métodos
-	@Override
-	public String toString() {
-		return "Libro [isbn=" + isbn + ", titulo=" + titulo + ", autor=" + autor + ", editorial=" + editorial
-				+ ", anioPublicacion=" + anioPublicacion + ", genero=" + genero + ", idioma=" + idioma
-				+ ", publicoObjetivo=" + publicoObjetivo + ", numPaginas=" + numPaginas + ", firmado=" + firmado
-				+ ", edicion=" + edicion + ", edicionEspecial=" + edicionEspecial + ", materialTapa=" + materialTapa
-				+ ", saga=" + saga + ", precio=" + precio + ", stock=" + stock + "]";
-	}
+	
 	
 }
