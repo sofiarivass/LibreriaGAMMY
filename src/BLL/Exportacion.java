@@ -2,6 +2,10 @@ package BLL;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
+import Repository.Validaciones;
+
 public class Exportacion extends Venta {
 	private String origen;
 	private String destino;
@@ -46,13 +50,38 @@ public class Exportacion extends Venta {
 	
 	// Datos para realizar la Venta Internacional
 	public static void nuevaVentaExport(Usuario user) {
-		Cliente cliente = Cliente.buscarCliente();
-		if (cliente != null) {
-			// continua con la venta
+		LinkedList<Libro> carrito = null;
+		Cliente cliente = null;
+		String opcion, opcionDos;
+		
+		opcion = Validaciones.menuSiNo("¿Es un cliente?", null, null);
+		
+		if (opcion.equalsIgnoreCase("Si")) {
+			cliente = Cliente.buscarCliente();			
+			if (cliente != null) {
+				// continua con la venta
+			} else {
+				// pide datos para crear un cliente nuevo.
+				boolean flag = false;
+				JOptionPane.showMessageDialog(null, "Cliente No encontrado!!\nRegistre al Cliente para continuar con la Venta");
+				do {
+					cliente = Cliente.registrarCliente();
+					if (cliente == null ) {
+						opcionDos = Validaciones.menuSiNo("No se pudo registrar al Cliente!!\n¿Desea repetir la operación?", null, null);
+						flag = opcionDos.equalsIgnoreCase("Si")? true:false;
+					} else {
+						JOptionPane.showMessageDialog(null, "Se registro al Cliente correctamente!!");					
+					}
+				} while (flag);
+				
+				carrito = Libro.elegirLibros();
+				
+				
+				
+				
+				
+			}
 		} else {
-			// pide datos para crear un cliente nuevo.
-			cliente = Cliente.registrarCliente();
-			
 			
 		}
 	}

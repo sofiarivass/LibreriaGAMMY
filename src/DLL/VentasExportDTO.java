@@ -3,13 +3,13 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
+import BLL.Exportacion;
 import BLL.Usuario;
-import BLL.VendedorInternacional;
 
 public class VentasExportDTO {
 	private static Connection con = Conexion.getInstance().getConnection();
 	
-	public static void nuevaVentaExport(Usuario user) {
+	public static void nuevaVentaExport(Usuario user, Exportacion venta) {
 		
 		double totalVenta;
 		LocalDate fecha = LocalDate.now();
@@ -19,7 +19,7 @@ public class VentasExportDTO {
 			PreparedStatement statement = con.prepareStatement(
 	                "INSERT INTO `venta`(`total_venta`, `fecha_venta`, `metodo_pago`, `moneda`, `estado`, `origen`, `destino`, `estado_envio`, `fk_descuento`, `fk_tipo_venta`, `fk_carrito`, `fk_usuario`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 	            );
-			statement.setDouble(1, totalVenta);
+			statement.setDouble(1, venta.getPrecio());
             statement.setDate(2, Date.valueOf(fecha));
             statement.setString(3, metodoPago);
             statement.setString(4, moneda);

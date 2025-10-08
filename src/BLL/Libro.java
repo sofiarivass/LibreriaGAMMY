@@ -1,5 +1,12 @@
 package BLL;
 
+import java.util.LinkedList;
+
+import javax.swing.JOptionPane;
+
+import DLL.LibroDTO;
+import Repository.Validaciones;
+
 public class Libro {
 	private int isbn;
 	private String titulo;
@@ -11,7 +18,6 @@ public class Libro {
 	private String publicoObjetivo;
 	private int numPaginas;
 	private boolean firmado;
-	private String edicion;
 	private boolean edicionEspecial;
 	private String materialTapa;
 	private boolean saga;
@@ -19,7 +25,7 @@ public class Libro {
 	private int stock;
 	
 	public Libro(int isbn, String titulo, String autor, String editorial, String anioPublicacion, String genero,
-			String idioma, String publicoObjetivo, int numPaginas, boolean firmado, String edicion,
+			String idioma, String publicoObjetivo, int numPaginas, boolean firmado,
 			boolean edicionEspecial, String materialTapa, boolean saga, double precio, int stock) {
 		super();
 		this.isbn = isbn;
@@ -32,7 +38,6 @@ public class Libro {
 		this.publicoObjetivo = publicoObjetivo;
 		this.numPaginas = numPaginas;
 		this.firmado = firmado;
-		this.edicion = edicion;
 		this.edicionEspecial = edicionEspecial;
 		this.materialTapa = materialTapa;
 		this.saga = saga;
@@ -121,14 +126,6 @@ public class Libro {
 		this.firmado = firmado;
 	}
 
-	public String getEdicion() {
-		return edicion;
-	}
-
-	public void setEdicion(String edicion) {
-		this.edicion = edicion;
-	}
-
 	public boolean getEdicionEspecial() {
 		return edicionEspecial;
 	}
@@ -169,5 +166,52 @@ public class Libro {
 		this.stock = stock;
 	}
 	
+	
+	// Métodos
+	
+	public static LinkedList<Libro> elegirLibros() {
+		LinkedList<Libro> listaLibros = null;
+		LinkedList<Libro> carrito = new LinkedList<Libro>();
+		
+		String seleccion, opcion; 
+		int cantidad;
+		boolean flag;
+		Libro elegido = null;
+		
+		listaLibros = LibroDTO.elegirLibros();
+		String []elegirLibros = new String[listaLibros.size()];
+		
+		for (int i = 0; i < elegirLibros.length; i++) {
+			elegirLibros[i] = listaLibros.get(i).getTitulo();
+		}
+		
+		do {
+			flag = false;
+			seleccion = (String)JOptionPane.showInputDialog(null, "Seleccione los libros", null, 0, null, elegirLibros, elegirLibros[0]);
+			for (Libro libro : listaLibros) {
+				if (libro.getTitulo().equals(seleccion)) {
+					elegido = libro;
+					break;
+				}
+			}
+			
+			do {
+				flag = false;
+				cantidad = Integer.parseInt(JOptionPane.showInputDialog("¿cuantos libros desea?"));
+				if (cantidad > elegido.getStock()) {
+					JOptionPane.showMessageDialog(null, "No tenemos stock suficiente!!\nStock disponible: " + elegido.getStock());
+					flag = true;
+				}				
+			} while (flag);
+			
+			elegido.setStock(cantidad);
+			carrito.add(elegido);
+			opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
+			flag = opcion.equalsIgnoreCase("Si")?true:false;
+			
+		} while (flag);
+		
+		return carrito;
+	}
 	
 }

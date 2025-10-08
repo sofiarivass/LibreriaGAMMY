@@ -58,7 +58,6 @@ public class ClienteDTO {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-
         }
 		return true;
 	}
