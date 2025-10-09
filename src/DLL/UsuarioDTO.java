@@ -23,8 +23,10 @@ public class UsuarioDTO {
 				String nombre = rs.getString("nombre");
 				boolean estado = rs.getBoolean("estado");
 				int fkEmpleado = rs.getInt("fk_tipo_empleado");
+				
+				
 				// tenemos que mandar a llamar a la tabla tipo empleado para que con el fk que llega poder crear un objeto tipo empleado
-				TipoEmpleado fk_tipo_empleado =  new TipoEmpleado(fkEmpleado);
+				TipoEmpleado fk_tipo_empleado =  TipoEmpleado.tipoEmpleado(fkEmpleado);
 
 				user = new Usuario(id_usuario,nombre,usuario,contrasenia,estado,fk_tipo_empleado);
 			}

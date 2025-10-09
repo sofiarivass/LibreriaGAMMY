@@ -174,9 +174,11 @@ public class Libro {
 		boolean flag;
 		Libro elegido = null;
 		
+		// traigo todos los libros de la BD en una lista.
 		listaLibros = LibroDTO.elegirLibros();
 		String []elegirLibros = new String[listaLibros.size()];
 		
+		// proceso de seleccion de libros por el cliente o vendedor.
 		for (int i = 0; i < elegirLibros.length; i++) {
 			elegirLibros[i] = listaLibros.get(i).getTitulo();
 		}

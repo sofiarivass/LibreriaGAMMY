@@ -1,5 +1,6 @@
 package BLL;
 import java.time.LocalDate;
+import DLL.CarritoDTO;
 
 public class Carrito {
 	private int idCarrito;
@@ -36,6 +37,18 @@ public class Carrito {
 	}
 	public void setFkCliente(Cliente fkCliente) {
 		this.fkCliente = fkCliente;
+	}
+	
+	// Métodos
+	
+	public static void cargarCarrito(LocalDate fecha, Cliente cliente) {
+		Carrito carrito = new Carrito(fecha, cliente);
+		CarritoDTO.cargarCarrito(carrito);
+	}
+	
+	public static Carrito obtenerCarrito(Cliente cliente) {
+		Carrito carrito = CarritoDTO.obtenerCarrito(cliente);
+		return carrito;
 	}
 	
 }

@@ -1,4 +1,7 @@
 package BLL;
+import java.util.LinkedList;
+
+import DLL.CarritoDetalleDTO;
 
 public class CarritoDetalle {
 	private int cantidad;
@@ -30,5 +33,16 @@ public class CarritoDetalle {
 		this.fkCarrito = fkCarrito;
 	}
 	
+	// Métodos
+	
+	public static void cargarDetalle(LinkedList<Libro>carrito, Carrito fkCarrito) {
+		CarritoDetalle carritoDetalle = null;
+		for (Libro libro : carrito) {
+			carritoDetalle = new CarritoDetalle(libro.getStock(),libro,fkCarrito);
+			CarritoDetalleDTO.cargarDetalle(carritoDetalle);
+			HistorialCompras.cargarHistorial(carritoDetalle);
+		}
+		
+	}
 	
 }

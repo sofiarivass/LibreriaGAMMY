@@ -1,5 +1,6 @@
 package BLL;
 import java.time.LocalDate;
+import DLL.HistorialComprasDTO;
 
 public class HistorialCompras {
 	private Libro fkLibro;
@@ -29,6 +30,12 @@ public class HistorialCompras {
 	}
 	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
+	}
+	
+	// Métodos
+	
+	public static void cargarHistorial(CarritoDetalle carrito) {
+		HistorialComprasDTO.cargarHistorial(carrito);
 	}
 	
 }

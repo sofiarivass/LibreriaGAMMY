@@ -1,4 +1,5 @@
 package BLL;
+import DLL.TipoEmpleadoDTO;
 
 public class TipoEmpleado {
 	private int idTipoEmpleado;
@@ -7,9 +8,6 @@ public class TipoEmpleado {
 	public TipoEmpleado(int idTipoEmpleado, String tipoEmpleado) {
 		this.idTipoEmpleado = idTipoEmpleado;
 		this.tipoEmpleado = tipoEmpleado;
-	}
-	public TipoEmpleado(int idTipoEmpleado) {
-		this.idTipoEmpleado = idTipoEmpleado;
 	}
 	
 	public int getIdTipoEmpleado() {
@@ -24,6 +22,13 @@ public class TipoEmpleado {
 	}
 	public void setTipoEmpleado(String tipoEmpleado) {
 		this.tipoEmpleado = tipoEmpleado;
+	}
+	
+	// Métodos
+	
+	// me trae la tabla tipo empleado de la BD y me crea el objeto TipoEmpleado
+	public static TipoEmpleado tipoEmpleado(int fkEmpleado) {
+		return TipoEmpleadoDTO.tipoEmpleado(fkEmpleado);
 	}
 	
 	

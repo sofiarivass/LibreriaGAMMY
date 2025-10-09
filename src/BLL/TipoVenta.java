@@ -26,5 +26,4 @@ public class TipoVenta {
 		this.tipo = tipo;
 	}
 	
-	
 }

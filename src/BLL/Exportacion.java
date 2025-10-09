@@ -53,7 +53,6 @@ public class Exportacion extends Venta {
 		this.estadoEnvio = estadoEnvio;
 	}
 
-
 	// Datos para realizar la Venta Internacional
 	public static void nuevaVentaExport(Usuario user) {
 		LinkedList<Libro> listaCarrito = null;
@@ -91,15 +90,28 @@ public class Exportacion extends Venta {
 				Carrito fkCarrito = null;
 				Usuario fkUsuario = null;
 				
-				listaCarrito = Libro.elegirLibros();		
+				// libros elegidos por el cliente
+				listaCarrito = Libro.elegirLibros();
 				
+				// guardamos la info en tabla carrito de la BD
+				Carrito.cargarCarrito(fechaVenta, cliente);
+				
+				// conteo de precio total y cantidad de libros
 				for (int i = 0; i < listaCarrito.size(); i++) {
-					
 					totalVenta = totalVenta + (listaCarrito.get(i).getStock() * listaCarrito.get(i).getPrecio());
+					
 				}
 				
-				fkTipoVenta = new TipoVenta("Mayorista");
-				fkCarrito = new Carrito(fechaVenta, cliente);
+				if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
+					fkTipoVenta = new TipoVenta(2,"Mayorista");					
+				}
+				
+				// obtenemos el objeto carrito con id_carrito de BD
+				fkCarrito = Carrito.obtenerCarrito(cliente);
+				
+				// llenamos la tabla carrito_detalle de la BD
+				CarritoDetalle.cargarDetalle(listaCarrito,fkCarrito);
+				
 				fkUsuario = user;
 				
 				metodoPago = (String) JOptionPane.showInputDialog(null, "¿Método de pago?", null, 0, null, metodos, metodos[0]);

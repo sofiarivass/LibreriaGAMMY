@@ -21,6 +21,15 @@ public class Usuario {
 		this.fkTipoEmpleado = fkTipoEmpleado;
 	}
 	
+	public Usuario(String nombre, String usuario, String contrasenia, boolean estado,
+			TipoEmpleado fkTipoEmpleado) {
+		this.nombre = nombre;
+		this.usuario = usuario;
+		this.contrasenia = contrasenia;
+		this.estado = estado;
+		this.fkTipoEmpleado = fkTipoEmpleado;
+	}
+	
 	// Getter y Setters
 	public int getId_usuario() {
 		return id_usuario;

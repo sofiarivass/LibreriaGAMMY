@@ -11,16 +11,13 @@ public class ClienteDTO {
 
 	public static Cliente buscarCliente(int dni) {
 		Cliente encontrado = null;
-		
 		try {
             PreparedStatement stmt = con.prepareStatement(
                 "SELECT * FROM cliente WHERE dni = ?"
             );
             stmt.setInt(1, dni);
   
-            //executequery se utiliza cuando no hay cambios en la bdd
             ResultSet rs = stmt.executeQuery();
-
             if (rs.next()) {
             	int id = rs.getInt("id_cliente");
             	int dni_cliente = rs.getInt("dni");
