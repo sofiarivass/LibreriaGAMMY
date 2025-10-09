@@ -108,7 +108,7 @@ public class Cliente {
 		Cliente nuevo = new Cliente(dni,nombre,telefono,mail);
 		
 		if (ClienteDTO.registrarCliente(nuevo)) {
-			return nuevo;
+			return ClienteDTO.buscarCliente(nuevo.getDni());
 		} else {
 			return null;
 		}		

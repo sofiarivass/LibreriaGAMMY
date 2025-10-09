@@ -17,7 +17,7 @@ public class CarritoDetalleDTO {
 
             int filas = statement.executeUpdate();
             if (filas > 0) {
-                System.out.println("carrito agregado correctamente.");
+                System.out.println("carrito_detalle agregado correctamente.");
             }
 		} catch (Exception e) {
 			e.printStackTrace();

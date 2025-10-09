@@ -2,7 +2,6 @@ package BLL;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
-
 import DLL.VentasExportDTO;
 import Repository.Validaciones;
 
@@ -72,17 +71,18 @@ public class Exportacion extends Venta {
 				cliente = Cliente.registrarCliente();
 				if (cliente == null ) {
 					opcionDos = Validaciones.menuSiNo("No se pudo registrar al Cliente!!\n¿Desea repetir la operación?", null, null);
-					flag = opcionDos.equalsIgnoreCase("Si")? true:false;
+					flag = opcionDos.equalsIgnoreCase("Sí")? true:false;
 				} else {
 					JOptionPane.showMessageDialog(null, "Se registro al Cliente correctamente!!");					
 				}
 			} while (flag);
 			
-			if (!opcionDos.equalsIgnoreCase("No")) {
+			if (!flag) {
 				// variables para el objeto Exportacion(venta)
 				String []metodos = {"Transferencia", "tarjeta(debito)", "tarjeta(crédito)"};
 				String []monedas = {"USD", "ARS"};
 				String []estados = {"completado", "pendiente"};
+				String []estadoEnvios = {"en preparación", "en camino", "Entregado"};
 				double totalVenta = 0;
 				LocalDate fechaVenta = LocalDate.now();
 				String metodoPago, moneda, estado, origen, destino, estadoEnvio;
@@ -119,7 +119,7 @@ public class Exportacion extends Venta {
 				estado = (String) JOptionPane.showInputDialog(null, "¿estado de la compra?", null, 0, null, estados, estados[0]);
 				origen = Validaciones.validarString("ingrese el lugar de origen", null, null);
 				destino = Validaciones.validarString("ingrese el lugar de destino", null, null);
-				estadoEnvio = (String) JOptionPane.showInputDialog(null, "¿Método de pago?", null, 0, null, estados, estados[0]);
+				estadoEnvio = (String) JOptionPane.showInputDialog(null, "¿Estado de Envio?", null, 0, null, estadoEnvios, estadoEnvios[0]);
 				
 				Exportacion venta = new Exportacion(totalVenta,fechaVenta,metodoPago,moneda,estado,fkTipoVenta,fkCarrito,fkUsuario,origen,destino,estadoEnvio);
 				

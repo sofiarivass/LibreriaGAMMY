@@ -18,7 +18,7 @@ public class HistorialComprasDTO {
 
             int filas = statement.executeUpdate();
             if (filas > 0) {
-                System.out.println("carrito agregado correctamente.");
+                System.out.println("historial de compras agregado correctamente.");
             }
 		} catch (Exception e) {
 			e.printStackTrace();

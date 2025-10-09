@@ -174,6 +174,7 @@ public class Libro {
 		boolean flag;
 		Libro elegido = null;
 		
+		JOptionPane.showMessageDialog(null, "Elija los libros que desee");
 		// traigo todos los libros de la BD en una lista.
 		listaLibros = LibroDTO.elegirLibros();
 		String []elegirLibros = new String[listaLibros.size()];
@@ -195,7 +196,7 @@ public class Libro {
 			
 			do {
 				flag = false;
-				cantidad = Integer.parseInt(JOptionPane.showInputDialog("¿cuantos libros desea?"));
+				cantidad = Integer.parseInt(JOptionPane.showInputDialog("Stock disponible: "+ elegido.getStock() +"\n¿cuantos libros desea?"));
 				if (cantidad > elegido.getStock()) {
 					JOptionPane.showMessageDialog(null, "No tenemos stock suficiente!!\nStock disponible: " + elegido.getStock());
 					flag = true;
@@ -205,7 +206,7 @@ public class Libro {
 			elegido.setStock(cantidad);
 			carrito.add(elegido);
 			opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
-			flag = opcion.equalsIgnoreCase("Si")?true:false;
+			flag = opcion.equalsIgnoreCase("Sí")?true:false;
 			
 		} while (flag);
 		

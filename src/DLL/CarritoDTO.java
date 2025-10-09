@@ -39,7 +39,7 @@ public class CarritoDTO {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
             	int id_carrito = rs.getInt("id_carrito");
-                LocalDate fecha = rs.getDate("nombre").toLocalDate();
+                LocalDate fecha = rs.getDate("fecha").toLocalDate();
 
                 carrito = new Carrito(id_carrito,fecha,cliente);
                 }

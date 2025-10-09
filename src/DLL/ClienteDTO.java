@@ -23,7 +23,7 @@ public class ClienteDTO {
             	int dni_cliente = rs.getInt("dni");
                 String nombre = rs.getString("nombre");
                 String telefono = rs.getString("telefono");
-                String email = rs.getString("email");
+                String email = rs.getString("mail");
 
                 encontrado = new Cliente(id,dni_cliente,nombre,telefono,email);
                 }
