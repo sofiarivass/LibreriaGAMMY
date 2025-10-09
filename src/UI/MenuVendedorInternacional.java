@@ -72,7 +72,7 @@ public class MenuVendedorInternacional {
 						LibroDTO.eliminarLibro();
 						break;
 					case 3: // mostrar productos
-						JOptionPane.showMessageDialog(null, Libro.mostrarLibros());
+						Libro.mostrarLibro();
 						break;
 					}
 				} while (opcionVI3 != 4);
