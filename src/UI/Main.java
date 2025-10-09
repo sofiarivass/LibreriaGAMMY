@@ -22,7 +22,7 @@ public class Main {
 					break;
 				}
 
-				int tipo_empleado = user.getFk_tipo_empleado();
+				int tipo_empleado = user.getId_usuario();
 
 				switch (tipo_empleado) {
 				// MENU ADMIN :)

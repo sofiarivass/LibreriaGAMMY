@@ -11,14 +11,14 @@ public class Cliente {
 	private String mail;
 	private LinkedList<Libro> listaProductos = new LinkedList<>();
 	
-	public Cliente(int idCliente, int dni, String nombre, String telefono, String mail,
-			LinkedList<Libro> listaProductos) {
+	public Cliente(int idCliente, int dni, String nombre, String telefono, String mail) {
+		super();
 		this.idCliente = idCliente;
 		this.dni = dni;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.mail = mail;
-		this.listaProductos = listaProductos;
+		this.listaProductos = new LinkedList<Libro>();
 	}
 	
 	public Cliente(int dni, String nombre, String telefono, String mail) {
@@ -29,10 +29,21 @@ public class Cliente {
 		this.listaProductos = new LinkedList<Libro>();
 	}
 
+	
 	// Getters y Setters
+	
+	
+	// Métodos
+	@Override
+	public String toString() {
+		return "Cliente [idCliente=" + idCliente + ", dni=" + dni + ", nombre=" + nombre + ", telefono=" + telefono
+				+ ", mail=" + mail + ", listaProductos=" + listaProductos + "]";
+	}
+
 	public int getIdCliente() {
 		return idCliente;
 	}
+
 	public void setIdCliente(int idCliente) {
 		this.idCliente = idCliente;
 	}
@@ -40,6 +51,7 @@ public class Cliente {
 	public int getDni() {
 		return dni;
 	}
+
 	public void setDni(int dni) {
 		this.dni = dni;
 	}
@@ -47,6 +59,7 @@ public class Cliente {
 	public String getNombre() {
 		return nombre;
 	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
@@ -54,6 +67,7 @@ public class Cliente {
 	public String getTelefono() {
 		return telefono;
 	}
+
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
@@ -61,6 +75,7 @@ public class Cliente {
 	public String getMail() {
 		return mail;
 	}
+
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
@@ -68,15 +83,9 @@ public class Cliente {
 	public LinkedList<Libro> getListaProductos() {
 		return listaProductos;
 	}
+
 	public void setListaProductos(LinkedList<Libro> listaProductos) {
 		this.listaProductos = listaProductos;
-	}
-	
-	// Métodos
-	@Override
-	public String toString() {
-		return "Cliente [idCliente=" + idCliente + ", dni=" + dni + ", nombre=" + nombre + ", telefono=" + telefono
-				+ ", mail=" + mail + ", listaProductos=" + listaProductos + "]";
 	}
 
 	// comprobando si existe el cliente

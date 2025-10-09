@@ -9,6 +9,10 @@ public class TipoVenta {
 		this.tipo = tipo;
 	}
 	
+	public TipoVenta(String tipo) {
+		this.tipo = tipo;
+	}
+	
 	public int getIdTipoVenta() {
 		return idTipoVenta;
 	}

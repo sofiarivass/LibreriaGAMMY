@@ -13,7 +13,6 @@ public class Usuario {
 
 	public Usuario(int id_usuario, String nombre, String usuario, String contrasenia, boolean estado,
 			TipoEmpleado fkTipoEmpleado) {
-		super();
 		this.id_usuario = id_usuario;
 		this.nombre = nombre;
 		this.usuario = usuario;
@@ -21,11 +20,12 @@ public class Usuario {
 		this.estado = estado;
 		this.fkTipoEmpleado = fkTipoEmpleado;
 	}
-
+	
 	// Getter y Setters
 	public int getId_usuario() {
 		return id_usuario;
 	}
+
 	public void setId_usuario(int id_usuario) {
 		this.id_usuario = id_usuario;
 	}
@@ -33,6 +33,7 @@ public class Usuario {
 	public String getNombre() {
 		return nombre;
 	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
@@ -40,6 +41,7 @@ public class Usuario {
 	public String getUsuario() {
 		return usuario;
 	}
+
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
@@ -47,6 +49,7 @@ public class Usuario {
 	public String getContrasenia() {
 		return contrasenia;
 	}
+
 	public void setContrasenia(String contrasenia) {
 		this.contrasenia = contrasenia;
 	}
@@ -54,6 +57,7 @@ public class Usuario {
 	public boolean getEstado() {
 		return estado;
 	}
+
 	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
@@ -61,6 +65,7 @@ public class Usuario {
 	public TipoEmpleado getFkTipoEmpleado() {
 		return fkTipoEmpleado;
 	}
+
 	public void setFkTipoEmpleado(TipoEmpleado fkTipoEmpleado) {
 		this.fkTipoEmpleado = fkTipoEmpleado;
 	}

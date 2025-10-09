@@ -2,6 +2,7 @@ package DLL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import BLL.TipoEmpleado;
 import BLL.Usuario;
 
 public class UsuarioDTO {
@@ -21,9 +22,11 @@ public class UsuarioDTO {
 				int id_usuario = rs.getInt("id_usuario");
 				String nombre = rs.getString("nombre");
 				boolean estado = rs.getBoolean("estado");
-				int fk_tipo_empleado = rs.getInt("fk_tipo_empleado");
+				int fkEmpleado = rs.getInt("fk_tipo_empleado");
+				// tenemos que mandar a llamar a la tabla tipo empleado para que con el fk que llega poder crear un objeto tipo empleado
+				TipoEmpleado fk_tipo_empleado =  new TipoEmpleado(fkEmpleado);
 
-				user = new Usuario(id_usuario, usuario, nombre, contrasenia, estado, fk_tipo_empleado);
+				user = new Usuario(id_usuario,nombre,usuario,contrasenia,estado,fk_tipo_empleado);
 			}
 
 		} catch (Exception e) {

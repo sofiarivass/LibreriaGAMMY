@@ -22,13 +22,13 @@ public class ClienteDTO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-            	String id = rs.getString("id_cliente");
+            	int id = rs.getInt("id_cliente");
             	int dni_cliente = rs.getInt("dni");
                 String nombre = rs.getString("nombre");
                 String telefono = rs.getString("telefono");
                 String email = rs.getString("email");
 
-                encontrado = new Cliente(id, dni_cliente,nombre,telefono,email);
+                encontrado = new Cliente(id,dni_cliente,nombre,telefono,email);
                 }
        
         } catch (Exception e) {

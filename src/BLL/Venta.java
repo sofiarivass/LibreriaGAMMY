@@ -1,135 +1,155 @@
 package BLL;
-
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Venta {
 	private int idVenta;
 	private double totalVenta;
-	private LocalDateTime fechaVenta;
+	private LocalDate fechaVenta;
 	private String metodoPago;
 	private String moneda;
 	private String estado;
-	private String origen;
-	private String destino;
-	private String estadoEnvio;
+	private TipoVenta fkTipoVenta;
 	private Descuento fkDescuento;
 	private Carrito fkCarrito;
 	private Usuario fkUsuario;
 	
-	public Venta(int idVenta, double totalVenta, LocalDateTime fechaVenta, String metodoPago, String moneda,
-			String estado, String origen, String destino, String estadoEnvio, Descuento fkDescuento, Carrito fkCarrito,
-			Usuario fkUsuario) {
+	
+	public Venta(int idVenta, double totalVenta, LocalDate fechaVenta, String metodoPago, String moneda, String estado,
+			TipoVenta fkTipoVenta, Descuento fkDescuento, Carrito fkCarrito, Usuario fkUsuario) {
 		this.idVenta = idVenta;
 		this.totalVenta = totalVenta;
 		this.fechaVenta = fechaVenta;
 		this.metodoPago = metodoPago;
 		this.moneda = moneda;
 		this.estado = estado;
-		this.origen = origen;
-		this.destino = destino;
-		this.estadoEnvio = estadoEnvio;
+		this.fkTipoVenta = fkTipoVenta;
 		this.fkDescuento = fkDescuento;
 		this.fkCarrito = fkCarrito;
 		this.fkUsuario = fkUsuario;
 	}
 
+
+	public Venta(double totalVenta, LocalDate fechaVenta, String metodoPago, String moneda, String estado, TipoVenta fkTipoVenta,
+			Carrito fkCarrito, Usuario fkUsuario) {
+		this.totalVenta = totalVenta;
+		this.fechaVenta = fechaVenta;
+		this.metodoPago = metodoPago;
+		this.moneda = moneda;
+		this.estado = estado;
+		this.fkTipoVenta = fkTipoVenta;
+//		this.fkDescuento = fkDescuento; solo por ahora porque no es parte del MVP
+		this.fkCarrito = fkCarrito;
+		this.fkUsuario = fkUsuario;
+	}
+
+
+	// Getters y Setters
 	public int getIdVenta() {
 		return idVenta;
 	}
+
 
 	public void setIdVenta(int idVenta) {
 		this.idVenta = idVenta;
 	}
 
+
 	public double getTotalVenta() {
 		return totalVenta;
 	}
+
 
 	public void setTotalVenta(double totalVenta) {
 		this.totalVenta = totalVenta;
 	}
 
-	public LocalDateTime getFechaVenta() {
+
+	public LocalDate getFechaVenta() {
 		return fechaVenta;
 	}
 
-	public void setFechaVenta(LocalDateTime fechaVenta) {
+
+	public void setFechaVenta(LocalDate fechaVenta) {
 		this.fechaVenta = fechaVenta;
 	}
+
 
 	public String getMetodoPago() {
 		return metodoPago;
 	}
 
+
 	public void setMetodoPago(String metodoPago) {
 		this.metodoPago = metodoPago;
 	}
+
 
 	public String getMoneda() {
 		return moneda;
 	}
 
+
 	public void setMoneda(String moneda) {
 		this.moneda = moneda;
 	}
+
 
 	public String getEstado() {
 		return estado;
 	}
 
+
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
 
-	public String getOrigen() {
-		return origen;
+
+	public TipoVenta getFkTipoVenta() {
+		return fkTipoVenta;
 	}
 
-	public void setOrigen(String origen) {
-		this.origen = origen;
+
+	public void setFkTipoVenta(TipoVenta fkTipoVenta) {
+		this.fkTipoVenta = fkTipoVenta;
 	}
 
-	public String getDestino() {
-		return destino;
-	}
-
-	public void setDestino(String destino) {
-		this.destino = destino;
-	}
-
-	public String getEstadoEnvio() {
-		return estadoEnvio;
-	}
-
-	public void setEstadoEnvio(String estadoEnvio) {
-		this.estadoEnvio = estadoEnvio;
-	}
 
 	public Descuento getFkDescuento() {
 		return fkDescuento;
 	}
 
+
 	public void setFkDescuento(Descuento fkDescuento) {
 		this.fkDescuento = fkDescuento;
 	}
+
 
 	public Carrito getFkCarrito() {
 		return fkCarrito;
 	}
 
+
 	public void setFkCarrito(Carrito fkCarrito) {
 		this.fkCarrito = fkCarrito;
 	}
+
 
 	public Usuario getFkUsuario() {
 		return fkUsuario;
 	}
 
+
 	public void setFkUsuario(Usuario fkUsuario) {
 		this.fkUsuario = fkUsuario;
 	}
+
+
+
+
+
 	
-	// Getters y Setters
+
+	
 
 	
 	

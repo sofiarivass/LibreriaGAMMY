@@ -8,6 +8,9 @@ public class TipoEmpleado {
 		this.idTipoEmpleado = idTipoEmpleado;
 		this.tipoEmpleado = tipoEmpleado;
 	}
+	public TipoEmpleado(int idTipoEmpleado) {
+		this.idTipoEmpleado = idTipoEmpleado;
+	}
 	
 	public int getIdTipoEmpleado() {
 		return idTipoEmpleado;

@@ -11,6 +11,11 @@ public class Carrito {
 		this.fecha = fecha;
 		this.fkCliente = fkCliente;
 	}
+	
+	public Carrito(LocalDate fecha, Cliente fkCliente) {
+		this.fecha = fecha;
+		this.fkCliente = fkCliente;
+	}
 
 	public int getIdCarrito() {
 		return idCarrito;
