@@ -56,18 +56,83 @@ public class Exportacion extends Venta {
 	public static void nuevaVentaExport(Usuario user) {
 		LinkedList<Libro> listaCarrito = null;
 		Cliente cliente = null;
-		String opcion, opcionDos = "";
+		String opcion, opcionDos = "", continuarVenta = "";
 		
-		opcion = Validaciones.menuSiNo("¿Es un cliente?", null, null);
+		opcion = Validaciones.menuSiNo("¿Es un cliente?", "Selección", null);
 		
-		if (opcion.equalsIgnoreCase("Si")) {
+		if (opcion.equalsIgnoreCase("Sí")) {
+			String []metodos = {"Transferencia", "tarjeta(debito)", "tarjeta(crédito)"};
+			String []monedas = {"USD", "ARS"};
+			String []estados = {"completado", "pendiente"};
+			String []estadoEnvios = {"en preparación", "en camino", "Entregado"};
+			double totalVenta = 0;
+			boolean flag;
+			LocalDate fechaVenta = LocalDate.now();
+			String metodoPago, moneda, estado, origen, destino, estadoEnvio, detalles;
+			TipoVenta fkTipoVenta = null;
+			Carrito fkCarrito = null;
+			Usuario fkUsuario = null;
+			
+			// buscamos al cliente en la BD
 			cliente = Cliente.buscarCliente();
+			
+			// libros elegidos por el cliente
 			listaCarrito = Libro.elegirLibros();
 			
+			do {
+				flag = false;
+				detalles = "";
+				
+				// conteo de precio total y cantidad de libros
+				for (int i = 0; i < listaCarrito.size(); i++) {
+					totalVenta = totalVenta + (listaCarrito.get(i).getStock() * listaCarrito.get(i).getPrecio());
+					detalles = detalles + "Libro: " + listaCarrito.get(i).getTitulo() + " -cantidad: " + listaCarrito.get(i).getStock() 
+							+ " -Precio x Unidad: $" + listaCarrito.get(i).getPrecio() + "\n";
+				}
+				
+				// si el vendedor que se registra es el de internacional siempre sera venta Mayorista
+				if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
+					fkTipoVenta = new TipoVenta(2,"Mayorista");					
+				}
+				
+				// datos para la venta
+				metodoPago = (String) JOptionPane.showInputDialog(null, "¿Método de pago?", null, 0, null, metodos, metodos[0]);
+				moneda = (String) JOptionPane.showInputDialog(null, "¿tipo de Moneda?", null, 0, null, monedas, monedas[0]);
+				estado = (String) JOptionPane.showInputDialog(null, "¿estado de la compra?", null, 0, null, estados, estados[0]);
+				origen = Validaciones.validarString("ingrese el lugar de origen", null, null);
+				destino = Validaciones.validarString("ingrese el lugar de destino", null, null);
+				estadoEnvio = (String) JOptionPane.showInputDialog(null, "¿Estado de Envio?", null, 0, null, estadoEnvios, estadoEnvios[0]);
+				
+				detalles = detalles + "Precio Total: $" + totalVenta + "\nPago: " + metodoPago + "\nMoneda: " + moneda 
+						+ "\nEstado: " + estado + "\nOrigen: " + origen + "\nDestino: " + destino + "\nEstado de Envio: " + estadoEnvio;
+					
+				continuarVenta = Validaciones.menuContinuar(detalles + "¿Desea continuar con la Venta?", "Detalles de la Venta!!", null);
+				
+				if (continuarVenta.equalsIgnoreCase("Modificar")) {
+					flag = true;
+				}
+			} while (flag);
+			
+			// cargamos la info en tabla carrito de la BD
+			Carrito.cargarCarrito(fechaVenta, cliente);
+			
+			// obtenemos el objeto carrito con id_carrito de BD
+			fkCarrito = Carrito.obtenerCarrito(cliente);
+			
+			// cargamos la tabla carrito_detalle de la BD
+			CarritoDetalle.cargarDetalle(listaCarrito,fkCarrito);
+			
+			// enviamos el fk del vendedor que realizo la venta
+			fkUsuario = user;
+			
+			Exportacion venta = new Exportacion(totalVenta,fechaVenta,metodoPago,moneda,estado,fkTipoVenta,fkCarrito,fkUsuario,origen,destino,estadoEnvio);
+			VentasExportDTO.nuevaVentaExport(venta);
+			
 		} else {
-			boolean flag = false;
+			boolean flag;
 			JOptionPane.showMessageDialog(null, "Registrar nuevo Cliente");
 			do {
+				flag = false;
 				cliente = Cliente.registrarCliente();
 				if (cliente == null ) {
 					opcionDos = Validaciones.menuSiNo("No se pudo registrar al Cliente!!\n¿Desea repetir la operación?", null, null);
@@ -78,14 +143,14 @@ public class Exportacion extends Venta {
 			} while (flag);
 			
 			if (!flag) {
-				// variables para el objeto Exportacion(venta)
 				String []metodos = {"Transferencia", "tarjeta(debito)", "tarjeta(crédito)"};
 				String []monedas = {"USD", "ARS"};
 				String []estados = {"completado", "pendiente"};
 				String []estadoEnvios = {"en preparación", "en camino", "Entregado"};
 				double totalVenta = 0;
+				boolean flagDos;
 				LocalDate fechaVenta = LocalDate.now();
-				String metodoPago, moneda, estado, origen, destino, estadoEnvio;
+				String metodoPago, moneda, estado, origen, destino, estadoEnvio, detalles;
 				TipoVenta fkTipoVenta = null;
 				Carrito fkCarrito = null;
 				Usuario fkUsuario = null;
@@ -93,36 +158,53 @@ public class Exportacion extends Venta {
 				// libros elegidos por el cliente
 				listaCarrito = Libro.elegirLibros();
 				
-				// guardamos la info en tabla carrito de la BD
-				Carrito.cargarCarrito(fechaVenta, cliente);
-				
-				// conteo de precio total y cantidad de libros
-				for (int i = 0; i < listaCarrito.size(); i++) {
-					totalVenta = totalVenta + (listaCarrito.get(i).getStock() * listaCarrito.get(i).getPrecio());
+				do {
+					flagDos = false;
+					detalles = "";
 					
-				}
+					// conteo de precio total y cantidad de libros
+					for (int i = 0; i < listaCarrito.size(); i++) {
+						totalVenta = totalVenta + (listaCarrito.get(i).getStock() * listaCarrito.get(i).getPrecio());
+						detalles = detalles + "Libro: " + listaCarrito.get(i).getTitulo() + " -cantidad: " + listaCarrito.get(i).getStock() 
+								+ " -Precio x Unidad: $" + listaCarrito.get(i).getPrecio() + "\n";
+					}
+					
+					// si el vendedor que se registra es el de internacional siempre sera venta Mayorista
+					if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
+						fkTipoVenta = new TipoVenta(2,"Mayorista");					
+					}
+					
+					// datos para la venta
+					metodoPago = (String) JOptionPane.showInputDialog(null, "¿Método de pago?", null, 0, null, metodos, metodos[0]);
+					moneda = (String) JOptionPane.showInputDialog(null, "¿tipo de Moneda?", null, 0, null, monedas, monedas[0]);
+					estado = (String) JOptionPane.showInputDialog(null, "¿estado de la compra?", null, 0, null, estados, estados[0]);
+					origen = Validaciones.validarString("ingrese el lugar de origen", null, null);
+					destino = Validaciones.validarString("ingrese el lugar de destino", null, null);
+					estadoEnvio = (String) JOptionPane.showInputDialog(null, "¿Estado de Envio?", null, 0, null, estadoEnvios, estadoEnvios[0]);
+					
+					detalles = detalles + "Precio Total: $" + totalVenta + "\nPago: " + metodoPago + "\nMoneda: " + moneda 
+							+ "\nEstado: " + estado + "\nOrigen: " + origen + "\nDestino: " + destino + "\nEstado de Envio: " + estadoEnvio;
+						
+					continuarVenta = Validaciones.menuContinuar(detalles + "¿Desea continuar con la Venta?", "Detalles de la Venta!!", null);
+					
+					if (continuarVenta.equalsIgnoreCase("Modificar")) {
+						flagDos = true;
+					}
+				} while (flagDos);
 				
-				if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
-					fkTipoVenta = new TipoVenta(2,"Mayorista");					
-				}
+				// cargamos la info en tabla carrito de la BD
+				Carrito.cargarCarrito(fechaVenta, cliente);
 				
 				// obtenemos el objeto carrito con id_carrito de BD
 				fkCarrito = Carrito.obtenerCarrito(cliente);
 				
-				// llenamos la tabla carrito_detalle de la BD
+				// cargamos la tabla carrito_detalle de la BD
 				CarritoDetalle.cargarDetalle(listaCarrito,fkCarrito);
 				
+				// enviamos el fk del vendedor que realizo la venta
 				fkUsuario = user;
 				
-				metodoPago = (String) JOptionPane.showInputDialog(null, "¿Método de pago?", null, 0, null, metodos, metodos[0]);
-				moneda = (String) JOptionPane.showInputDialog(null, "¿tipo de Moneda?", null, 0, null, monedas, monedas[0]);
-				estado = (String) JOptionPane.showInputDialog(null, "¿estado de la compra?", null, 0, null, estados, estados[0]);
-				origen = Validaciones.validarString("ingrese el lugar de origen", null, null);
-				destino = Validaciones.validarString("ingrese el lugar de destino", null, null);
-				estadoEnvio = (String) JOptionPane.showInputDialog(null, "¿Estado de Envio?", null, 0, null, estadoEnvios, estadoEnvios[0]);
-				
 				Exportacion venta = new Exportacion(totalVenta,fechaVenta,metodoPago,moneda,estado,fkTipoVenta,fkCarrito,fkUsuario,origen,destino,estadoEnvio);
-				
 				VentasExportDTO.nuevaVentaExport(venta);
 				
 			} else {

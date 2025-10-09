@@ -267,7 +267,7 @@ public interface Validaciones {
 		int eleccion;
 		
 		if (img == null) {
-			eleccion = JOptionPane.showOptionDialog(null, mensaje, titulo, 0, 0, null, opciones, opciones[0]);
+			eleccion = JOptionPane.showOptionDialog(null, mensaje, titulo, 0, 1, null, opciones, opciones[0]);
 			
 			if (eleccion == 0) {
 				respuesta = "Sí";
@@ -285,6 +285,36 @@ public interface Validaciones {
 				return respuesta;
 			} else {
 				respuesta = "No";
+				return respuesta;
+			}			
+		}
+		
+	}
+	
+	public static String menuContinuar(String mensaje, String titulo, String img) {
+		String respuesta;
+		String[] opciones = { "continuar", "Modificar" };
+		int eleccion;
+		
+		if (img == null) {
+			eleccion = JOptionPane.showOptionDialog(null, mensaje, titulo, 0, 1, null, opciones, opciones[0]);
+			
+			if (eleccion == 0) {
+				respuesta = "continuar";
+				return respuesta;
+			} else {
+				respuesta = "Modificar";
+				return respuesta;
+			}			
+		} else {
+			eleccion = JOptionPane.showOptionDialog(null, mensaje, titulo, 0, JOptionPane.DEFAULT_OPTION,
+					new ImageIcon(Validaciones.class.getResource("/img/" + img)), opciones, opciones[0]);
+			
+			if (eleccion == 0) {
+				respuesta = "continuar";
+				return respuesta;
+			} else {
+				respuesta = "Modificar";
 				return respuesta;
 			}			
 		}

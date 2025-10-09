@@ -163,7 +163,6 @@ public class Libro {
 		this.stock = stock;
 	}
 	
-	
 	// Métodos
 	public static LinkedList<Libro> elegirLibros() {
 		LinkedList<Libro> listaLibros = null;
