@@ -12,7 +12,7 @@ public class HistorialComprasDTO {
 			PreparedStatement statement = con.prepareStatement(
 	                "INSERT INTO historial_compras (fk_libro, fk_cliente, fecha) VALUES (?, ?, ?)"
 	            );
-            statement.setInt(1, carrito.getFkLibro().getIsbn());
+            statement.setInt(1, carrito.getFkLibro().getId_cliente());
             statement.setInt(2, carrito.getFkCarrito().getFkCliente().getIdCliente());
             statement.setDate(3, Date.valueOf(carrito.getFkCarrito().getFecha()));
 

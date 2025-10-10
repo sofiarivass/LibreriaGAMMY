@@ -2,15 +2,16 @@ package DLL;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
 import BLL.Exportacion;
 
 public class VentasExportDTO {
 	private static Connection con = Conexion.getInstance().getConnection();
 	
-	public static void nuevaVentaExport(Exportacion venta) {
+	public static void nuevaVentaExport(Exportacion venta, String detalles) {
 		try {
 			PreparedStatement statement = con.prepareStatement(
-	                "INSERT INTO `venta`(`total_venta`, `fecha_venta`, `metodo_pago`, `moneda`, `estado`, `origen`, `destino`, `estado_envio`, `fk_descuento`, `fk_tipo_venta`, `fk_carrito`, `fk_usuario`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+	                "INSERT INTO venta (total_venta, fecha_venta, metodo_pago, moneda, estado, origen, destino, estado_envio, fk_descuento, fk_tipo_venta, fk_carrito, fk_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 	            );
 			statement.setDouble(1, venta.getTotalVenta());
             statement.setDate(2, Date.valueOf(venta.getFechaVenta()));
@@ -27,7 +28,7 @@ public class VentasExportDTO {
 
             int filas = statement.executeUpdate();
             if (filas > 0) {
-                System.out.println("Venta realizada correctamente.");
+            	JOptionPane.showMessageDialog(null, "Venta Realizada con Exito!!\n\n" + detalles);
             }
 		} catch (Exception e) {
 			e.printStackTrace();

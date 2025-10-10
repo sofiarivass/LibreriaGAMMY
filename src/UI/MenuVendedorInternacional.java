@@ -38,7 +38,6 @@ public class MenuVendedorInternacional {
 							GestionarExportaciones.values(), GestionarExportaciones.values());
 					switch (opcionVI2) {
 					case 0: // nueva exportación
-						JOptionPane.showMessageDialog(null, "nueva exportación");
 						Exportacion.nuevaVentaExport(user);
 						break;
 					case 1: // modificar exportación

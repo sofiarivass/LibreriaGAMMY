@@ -2,15 +2,17 @@ package DLL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import BLL.Cliente;
 
 public class ClienteDTO {
 	private static Connection con = Conexion.getInstance().getConnection();
 
+	// funcion para buscar al cliente en la BD.
 	public static Cliente buscarCliente(int dni) {
 		Cliente encontrado = null;
+		
 		try {
             PreparedStatement stmt = con.prepareStatement(
                 "SELECT * FROM cliente WHERE dni = ?"
@@ -27,37 +29,68 @@ public class ClienteDTO {
 
                 encontrado = new Cliente(id,dni_cliente,nombre,telefono,email);
                 }
-       
+        } catch (Exception e) {
+        	
+        }
+		return encontrado;
+	}
+	
+	// funcion para traer todos los clientes de la base de datos.
+	public static LinkedList<Cliente> consultarClientes() {
+		LinkedList<Cliente> listaClientes = new LinkedList<Cliente>();
+		
+		try {
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente");
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                int id_cliente = rs.getInt("id_cliente");
+                String nombre = rs.getString("nombre");
+                String telefono = rs.getString("telefono");
+                String mail = rs.getString("mail");
+                int dni = rs.getInt("dni");
+                
+                listaClientes.add(new Cliente(id_cliente,dni,nombre,telefono,mail));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 		
-		return encontrado;
+		return listaClientes;
 	}
 	
+	
+	// funcion para registrar un cliente nuevo.
 	public static boolean registrarCliente(Cliente cliente) {
+		boolean flag = true;
+		LinkedList<Cliente> listaClientes = consultarClientes();
+		
+		for (Cliente cliente2 : listaClientes) {
+			if (cliente2.getDni() == cliente.getDni() || cliente2.getMail().equals(cliente.getMail())) {
+				flag = false;
+				break;
+			}
+		}
+		
 		try {
-            PreparedStatement statement = con.prepareStatement(
-                "INSERT INTO cliente (nombre, telefono, mail, dni) VALUES (?, ?, ?, ?)"
-            );
-            statement.setString(1, cliente.getNombre());
-            statement.setString(2, cliente.getTelefono());
-            statement.setString(3, cliente.getMail());
-            statement.setInt(4, cliente.getDni());
-
-            int filas = statement.executeUpdate();
-            if (filas > 0) {
-                System.out.println("Cliente creado correctamente.");
-            }
-        } catch (MySQLIntegrityConstraintViolationException e) {
-           	JOptionPane.showMessageDialog(null, "Cliente con mail ya creado");
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+			if (flag) {
+				PreparedStatement statement = con.prepareStatement(
+						"INSERT INTO cliente (nombre, telefono, mail, dni) VALUES (?, ?, ?, ?)"
+						);
+				statement.setString(1, cliente.getNombre());
+				statement.setString(2, cliente.getTelefono());
+				statement.setString(3, cliente.getMail());
+				statement.setInt(4, cliente.getDni());
+				
+				int filas = statement.executeUpdate();
+				if (filas > 0) {
+					JOptionPane.showMessageDialog(null, "Cliente registrado correctamente!!");
+				}
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", Ya existe!!");
+			return false;
+		}			
 		return true;
 	}
-	
-	
 }

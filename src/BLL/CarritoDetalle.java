@@ -14,6 +14,11 @@ public class CarritoDetalle {
 		this.fkCarrito = fkCarrito;
 	}
 	
+	public CarritoDetalle(int cantidad, Libro fkLibro) {
+		this.cantidad = cantidad;
+		this.fkLibro = fkLibro;
+	}
+	
 	public int getCantidad() {
 		return cantidad;
 	}
@@ -35,13 +40,15 @@ public class CarritoDetalle {
 	
 	// Métodos
 	
-	public static void cargarDetalle(LinkedList<Libro>carrito, Carrito fkCarrito) {
+	public static void cargarDetalle(LinkedList<CarritoDetalle>carrito, Carrito fkCarrito) {
 		CarritoDetalle carritoDetalle = null;
-		for (Libro libro : carrito) {
-			carritoDetalle = new CarritoDetalle(libro.getStock(),libro,fkCarrito);
+		
+		for (int i = 0; i < carrito.size(); i++) {
+			carritoDetalle = new CarritoDetalle(carrito.get(i).getCantidad(),carrito.get(i).getFkLibro(),fkCarrito);
 			CarritoDetalleDTO.cargarDetalle(carritoDetalle);
-			HistorialCompras.cargarHistorial(carritoDetalle);
+			HistorialCompras.cargarHistorial(carritoDetalle);			
 		}
+		
 		
 	}
 	

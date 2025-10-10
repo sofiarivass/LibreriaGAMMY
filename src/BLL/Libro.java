@@ -5,7 +5,7 @@ import DLL.LibroDTO;
 import Repository.Validaciones;
 
 public class Libro {
-	private int isbn;
+	private int id_cliente;
 	private String titulo;
 	private String autor;
 	private String editorial;
@@ -21,11 +21,29 @@ public class Libro {
 	private double precio;
 	private int stock;
 	
-	public Libro(int isbn, String titulo, String autor, String editorial, String anioPublicacion, String genero,
+	public Libro(int id_cliente, String titulo, String autor, String editorial, String anioPublicacion, String genero,
 			String idioma, String publicoObjetivo, int numPaginas, boolean firmado,
 			boolean edicionEspecial, String materialTapa, boolean saga, double precio, int stock) {
-		super();
-		this.isbn = isbn;
+		this.id_cliente = id_cliente;
+		this.titulo = titulo;
+		this.autor = autor;
+		this.editorial = editorial;
+		this.anioPublicacion = anioPublicacion;
+		this.genero = genero;
+		this.idioma = idioma;
+		this.publicoObjetivo = publicoObjetivo;
+		this.numPaginas = numPaginas;
+		this.firmado = firmado;
+		this.edicionEspecial = edicionEspecial;
+		this.materialTapa = materialTapa;
+		this.saga = saga;
+		this.precio = precio;
+		this.stock = stock;
+	}
+	
+	public Libro(String titulo, String autor, String editorial, String anioPublicacion, String genero,
+			String idioma, String publicoObjetivo, int numPaginas, boolean firmado,
+			boolean edicionEspecial, String materialTapa, boolean saga, double precio, int stock) {
 		this.titulo = titulo;
 		this.autor = autor;
 		this.editorial = editorial;
@@ -43,12 +61,12 @@ public class Libro {
 	}
 
 	// Getters y Setters
-	public int getIsbn() {
-		return isbn;
+	public int getId_cliente() {
+		return id_cliente;
 	}
 
-	public void setIsbn(int isbn) {
-		this.isbn = isbn;
+	public void setId_cliente(int id_cliente) {
+		this.id_cliente = id_cliente;
 	}
 
 	public String getTitulo() {
@@ -164,28 +182,31 @@ public class Libro {
 	}
 	
 	// Métodos
-	public static LinkedList<Libro> elegirLibros() {
+	public static LinkedList<CarritoDetalle> elegirLibros(Cliente cliente) {
 		LinkedList<Libro> listaLibros = null;
-		LinkedList<Libro> carrito = new LinkedList<Libro>();
+		LinkedList<CarritoDetalle> carrito = new LinkedList<CarritoDetalle>();
 		
 		String seleccion, opcion; 
 		int cantidad;
 		boolean flag;
 		Libro elegido = null;
+		CarritoDetalle listaCarrito = null;
 		
-		JOptionPane.showMessageDialog(null, "Elija los libros que desee");
+		JOptionPane.showMessageDialog(null, "Hola!! " + cliente.getNombre() + "\nElija los libros que desee");
+		
 		// traigo todos los libros de la BD en una lista.
 		listaLibros = LibroDTO.elegirLibros();
 		String []elegirLibros = new String[listaLibros.size()];
 		
-		// proceso de seleccion de libros por el cliente o vendedor.
+		// proceso de selección de libros por el cliente o vendedor.
 		for (int i = 0; i < elegirLibros.length; i++) {
 			elegirLibros[i] = listaLibros.get(i).getTitulo();
 		}
 		
 		do {
 			flag = false;
-			seleccion = (String)JOptionPane.showInputDialog(null, "Seleccione los libros", null, 0, null, elegirLibros, elegirLibros[0]);
+			seleccion = (String)JOptionPane.showInputDialog(null, "Seleccione los libros", "Selección de Libros", 0, null, elegirLibros, elegirLibros[0]);
+			
 			for (Libro libro : listaLibros) {
 				if (libro.getTitulo().equals(seleccion)) {
 					elegido = libro;
@@ -195,17 +216,44 @@ public class Libro {
 			
 			do {
 				flag = false;
-				cantidad = Integer.parseInt(JOptionPane.showInputDialog("Stock disponible: "+ elegido.getStock() +"\n¿cuantos libros desea?"));
+				cantidad = Integer.parseInt(JOptionPane.showInputDialog("Libro: " + elegido.getTitulo() + " | Stock disponible: " 
+						+ elegido.getStock() +"\n¿cuantos libros desea?"));
 				if (cantidad > elegido.getStock()) {
 					JOptionPane.showMessageDialog(null, "No tenemos stock suficiente!!\nStock disponible: " + elegido.getStock());
 					flag = true;
 				}				
 			} while (flag);
 			
-			elegido.setStock(cantidad);
-			carrito.add(elegido);
-			opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
-			flag = opcion.equalsIgnoreCase("Sí")?true:false;
+			if (carrito.isEmpty()) {
+				elegido.setStock(elegido.getStock()-cantidad);
+				listaCarrito = new CarritoDetalle(cantidad,elegido);
+				carrito.add(listaCarrito);
+				
+				opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
+				flag = opcion.equalsIgnoreCase("Sí")?true:false;
+				
+			} else {
+				for (CarritoDetalle libroRepetido : carrito) {
+					if (libroRepetido.getFkLibro().getTitulo().equals(elegido.getTitulo())) {
+						libroRepetido.setCantidad(libroRepetido.getCantidad()+cantidad);
+						elegido.setStock(elegido.getStock()-cantidad);
+						flag = true;
+						break;
+					}
+				}
+				
+				if (flag) {
+					opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
+					flag = opcion.equalsIgnoreCase("Sí")?true:false;					
+				} else {
+					elegido.setStock(elegido.getStock()-cantidad);
+					listaCarrito = new CarritoDetalle(cantidad,elegido);
+					carrito.add(listaCarrito);
+					
+					opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
+					flag = opcion.equalsIgnoreCase("Sí")?true:false;
+				}
+			}
 			
 		} while (flag);
 		

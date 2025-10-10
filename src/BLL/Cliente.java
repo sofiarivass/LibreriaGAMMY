@@ -1,5 +1,8 @@
 package BLL;
 import java.util.LinkedList;
+
+import javax.swing.JOptionPane;
+
 import DLL.ClienteDTO;
 import Repository.Validaciones;
 
@@ -100,10 +103,12 @@ public class Cliente {
 		int dni;
 		String nombre, telefono, mail;
 		
-		dni = Integer.parseInt(Validaciones.validarInt("ingrese su número de DNI", null, null));
-		nombre = Validaciones.validarString("ingrese su nombre", null, null);
-		telefono = Validaciones.validarDigitos("ingrese su número de telefono", null, null, 10, 0);
-		mail = Validaciones.validarString("ingrese su mail", null, null);
+		JOptionPane.showMessageDialog(null, "Registrar nuevo Cliente");
+		
+		dni = Integer.parseInt(Validaciones.validarInt("ingrese su número de DNI", "Registrando un Cliente", null));
+		nombre = Validaciones.validarString("ingrese su nombre", "Registrando un Cliente", null);
+		telefono = Validaciones.validarDigitos("ingrese su número de telefono", "Registrando un Cliente", null, 10, 0);
+		mail = Validaciones.validarString("ingrese su mail", "Registrando un Cliente", null);
 		
 		Cliente nuevo = new Cliente(dni,nombre,telefono,mail);
 		
