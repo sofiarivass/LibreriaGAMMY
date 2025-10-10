@@ -1,5 +1,6 @@
 package Repository;
 
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -259,6 +260,34 @@ public interface Validaciones {
 			return Double.parseDouble(input);
 		}
 
+	}
+
+	/**
+	 * Método para verificar que el año de publicación sea válido. Se utilizan
+	 * métodos de validación previos para evitar campos vacíos y el ingreso de
+	 * letras o números negativos y se comprueba que el año ingresado sea previo al
+	 * año actual.
+	 * 
+	 * @param mensaje
+	 * @param titulo
+	 * @return String
+	 */
+	public static String validarAnio(String mensaje, String titulo) {
+		String inputAnio;
+		int anio;
+		LocalDate hoy = LocalDate.now();
+
+		do {
+			do {
+				inputAnio = validarInt(mensaje + " (AÑO):", null, null);
+			} while (inputAnio == null);
+
+			anio = Integer.parseInt(inputAnio);
+			if (hoy.getYear() < anio || inputAnio.length() > 4) {
+				JOptionPane.showMessageDialog(null, "Ingrese un año válido.");
+			}
+		} while (hoy.getYear() < anio || inputAnio.length() > 4);
+		return inputAnio;
 	}
 
 	public static String menuSiNo(String mensaje, String titulo, String img) {

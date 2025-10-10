@@ -47,7 +47,6 @@ public class Libro {
 	public Libro(String titulo, String autor, String editorial, String anioPublicacion, String genero, String idioma,
 			String publicoObjetivo, int numPaginas, boolean firmado, boolean edicionEspecial, String tapa, boolean saga,
 			double precio, int stock) {
-		this.idLibro = idLibro;
 		this.titulo = titulo;
 		this.autor = autor;
 		this.editorial = editorial;
@@ -215,8 +214,7 @@ public class Libro {
 		titulo = Repository.Validaciones.validarVacio("Ingrese titulo del libro:", "Cargar libro", null);
 		autor = Repository.Validaciones.validarString("Ingrese nombre del autor:", "Cargar libro", null);
 		editorial = Repository.Validaciones.validarVacio("Ingrese nombre de la editorial:", "Cargar libro", null);
-		anioPublicacion = Repository.Validaciones.validarInt("Ingrese año de publicación del libro:", "Cargar libro",
-				null);
+		anioPublicacion = Repository.Validaciones.validarAnio("Ingrese año de publicación del libro:", "Cargar libro");
 		do {
 			generoElegido = (Generos) JOptionPane.showInputDialog(null, "Seleccione el género literario del libro:",
 					"Cargar libro", 0, null, Generos.values(), Generos.values()[0]);
