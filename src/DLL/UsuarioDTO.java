@@ -2,6 +2,8 @@ package DLL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.LinkedList;
+
 import BLL.Usuario;
 
 public class UsuarioDTO {
@@ -34,6 +36,25 @@ public class UsuarioDTO {
 	
 	public static LinkedList<Usuario> mostrarUsuarios(){
 		LinkedList<Usuario> usuario = new LinkedList<Usuario>();
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM usuario");
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				int id_usuario = rs.getInt("id_usuario");
+				String usuario_empleado = rs.getString("usuario");
+				String nom_empleado = rs.getString("nombre");
+				boolean estado = rs.getBoolean("estado");
+				int tipo_empleado = rs.getInt("fk_tipo_empleado");
+				
+				usuario.add(new Usuario(id_usuario, usuario, nom_empleado, estado, tipo_empleado));
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return usuario;
 		
 	}
 	
