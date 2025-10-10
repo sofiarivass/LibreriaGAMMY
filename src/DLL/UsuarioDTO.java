@@ -31,4 +31,10 @@ public class UsuarioDTO {
 		}
 		return user;
 	}
+	
+	public static LinkedList<Usuario> mostrarUsuarios(){
+		LinkedList<Usuario> usuario = new LinkedList<Usuario>();
+		
+	}
+	
 }

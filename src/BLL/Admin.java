@@ -31,15 +31,8 @@ public class Admin extends Usuario {
 		return "Admin [listaEmpleados=" + listaEmpleados + "]";
 	}
 	
-	public static LinkedList<UsuarioDTO> mostrarEmpleados(){
-		LinkedList<UsuarioDTO> usuarios = new LinkedList<UsuarioDTO>();
-		try {
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return usuarios;
-		
+	public static void mostrarEmpleados() {
+		LinkedList<Usuario> usuario = UsuarioDTO.mostrarUsuarios();
 	}
 	
 	/*public static void mostrarEmpleados() {
