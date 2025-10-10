@@ -1,6 +1,11 @@
 package BLL;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentHashMap;
+
+import DLL.UsuarioDTO;
 
 public class Admin extends Usuario {
 	private LinkedList<Usuario> listaEmpleados = new LinkedList<Usuario>();
@@ -25,5 +30,20 @@ public class Admin extends Usuario {
 	public String toString() {
 		return "Admin [listaEmpleados=" + listaEmpleados + "]";
 	}
+	
+	public static LinkedList<UsuarioDTO> mostrarEmpleados(){
+		LinkedList<UsuarioDTO> usuarios = new LinkedList<UsuarioDTO>();
+		try {
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return usuarios;
+		
+	}
+	
+	/*public static void mostrarEmpleados() {
+		
+	}*/
 
 }
