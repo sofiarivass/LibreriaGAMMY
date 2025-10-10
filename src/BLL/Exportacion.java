@@ -69,7 +69,7 @@ public class Exportacion extends Venta {
 	public static void clienteRegistrado(Usuario user) {
 		LinkedList<CarritoDetalle> carrito = null;
 		boolean flag;
-		String []estados = {"completado", "pendiente"};
+		String []estados = {"completado", "anulado"};
 		String []estadoEnvios = {"en preparación", "en camino", "Entregado"};
 		double totalVenta = 0;
 		LocalDate fechaVenta = LocalDate.now();
@@ -109,10 +109,15 @@ public class Exportacion extends Venta {
 						TipoMoneda.values(), TipoMoneda.values()[0])).name();
 				origen = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Origen", null, 0, null, 
 						Sucursales.values(), Sucursales.values()[0])).name();
-				destino = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Destino", null, 0, null, 
-						Sucursales.values(), Sucursales.values())).name();
-				estado = estados[(int)Math.random()*2];
-				estadoEnvio = estadoEnvios[(int)Math.random()*3];
+				do {
+					flag = false;
+					destino = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Destino", null, 0, null, 
+							Sucursales.values(), Sucursales.values())).name();
+					flag = destino.equals(origen)? true:false;
+					JOptionPane.showMessageDialog(null, "El destino no puede ser igual al Origen");
+				} while (flag);
+				estado = estados[0];
+				estadoEnvio = estadoEnvios[0];
 				
 				detalles = detalles + "Precio Total: $" + totalVenta + "\nPago: " + metodoPago + "\nMoneda: " + moneda 
 						+ "\nEstado: " + estado + "\nOrigen: " + origen + "\nDestino: " + destino + "\nEstado de Envio: " + estadoEnvio;
@@ -191,10 +196,15 @@ public class Exportacion extends Venta {
 						TipoMoneda.values(), TipoMoneda.values())).name();
 				origen = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Origen", null, 0, null, 
 						Sucursales.values(), Sucursales.values())).name();
-				destino = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Destino", null, 0, null, 
-						Sucursales.values(), Sucursales.values())).name();
-				estado = estados[(int)Math.random()*2];
-				estadoEnvio = estadoEnvios[(int)Math.random()*3];
+				do {
+					flag = false;
+					destino = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Destino", null, 0, null, 
+							Sucursales.values(), Sucursales.values())).name();
+					flag = destino.equals(origen)? true:false;
+					JOptionPane.showMessageDialog(null, "El destino no puede ser igual al Origen");
+				} while (flag);
+				estado = estados[0];
+				estadoEnvio = estadoEnvios[0];
 				
 				detalles = detalles + "Precio Total: $" + totalVenta + "\nPago: " + metodoPago + "\nMoneda: " + moneda 
 						+ "\nEstado: " + estado + "\nOrigen: " + origen + "\nDestino: " + destino + "\nEstado de Envio: " + estadoEnvio;
