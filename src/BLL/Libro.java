@@ -5,7 +5,7 @@ import DLL.LibroDTO;
 import Repository.Validaciones;
 
 public class Libro {
-	private int id_cliente;
+	private int id_libro;
 	private String titulo;
 	private String autor;
 	private String editorial;
@@ -21,10 +21,10 @@ public class Libro {
 	private double precio;
 	private int stock;
 	
-	public Libro(int id_cliente, String titulo, String autor, String editorial, String anioPublicacion, String genero,
+	public Libro(int id_libro, String titulo, String autor, String editorial, String anioPublicacion, String genero,
 			String idioma, String publicoObjetivo, int numPaginas, boolean firmado,
 			boolean edicionEspecial, String materialTapa, boolean saga, double precio, int stock) {
-		this.id_cliente = id_cliente;
+		this.id_libro = id_libro;
 		this.titulo = titulo;
 		this.autor = autor;
 		this.editorial = editorial;
@@ -61,12 +61,12 @@ public class Libro {
 	}
 
 	// Getters y Setters
-	public int getId_cliente() {
-		return id_cliente;
+	public int getId_libro() {
+		return id_libro;
 	}
 
-	public void setId_cliente(int id_cliente) {
-		this.id_cliente = id_cliente;
+	public void setId_libro(int id_libro) {
+		this.id_libro = id_libro;
 	}
 
 	public String getTitulo() {
@@ -258,6 +258,16 @@ public class Libro {
 		} while (flag);
 		
 		return carrito;
+	}
+	
+	// funcion para actualizar la BD despúes de una venta.
+	public static void actualizarStock(LinkedList<CarritoDetalle>carrito) {
+		CarritoDetalle carritoDetalle = null;
+		
+		for (int i = 0; i < carrito.size(); i++) {
+			carritoDetalle = new CarritoDetalle(carrito.get(i).getCantidad(),carrito.get(i).getFkLibro());
+			LibroDTO.actualizarStock(carritoDetalle);
+		}
 	}
 	
 }

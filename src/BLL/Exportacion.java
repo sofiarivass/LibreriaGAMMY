@@ -113,8 +113,10 @@ public class Exportacion extends Venta {
 					flag = false;
 					destino = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Destino", null, 0, null, 
 							Sucursales.values(), Sucursales.values())).name();
-					flag = destino.equals(origen)? true:false;
-					JOptionPane.showMessageDialog(null, "El destino no puede ser igual al Origen");
+					if (destino.equals(origen)) {
+						JOptionPane.showMessageDialog(null, "El destino no puede ser igual al Origen");
+						flag = true;
+					}
 				} while (flag);
 				estado = estados[0];
 				estadoEnvio = estadoEnvios[0];
@@ -142,7 +144,11 @@ public class Exportacion extends Venta {
 			fkUsuario = user;
 			
 			Exportacion venta = new Exportacion(totalVenta,fechaVenta,metodoPago,moneda,estado,fkTipoVenta,fkCarrito,fkUsuario,origen,destino,estadoEnvio);
+			// descontamos el stock de la BD.
+			Libro.actualizarStock(carrito);
+			// realizamos la cárga de la Venta
 			VentasExportDTO.nuevaVentaExport(venta, detalles);
+			
 		} else {
 			JOptionPane.showMessageDialog(null, "Cliente No Encontrado!!");
 			nuevaVentaExport(user);
@@ -200,8 +206,10 @@ public class Exportacion extends Venta {
 					flag = false;
 					destino = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Destino", null, 0, null, 
 							Sucursales.values(), Sucursales.values())).name();
-					flag = destino.equals(origen)? true:false;
-					JOptionPane.showMessageDialog(null, "El destino no puede ser igual al Origen");
+					if (destino.equals(origen)) {
+						JOptionPane.showMessageDialog(null, "El destino no puede ser igual al Origen");
+						flag = true;						
+					}
 				} while (flag);
 				estado = estados[0];
 				estadoEnvio = estadoEnvios[0];
@@ -229,6 +237,9 @@ public class Exportacion extends Venta {
 			fkUsuario = user;
 			
 			Exportacion venta = new Exportacion(totalVenta,fechaVenta,metodoPago,moneda,estado,fkTipoVenta,fkCarrito,fkUsuario,origen,destino,estadoEnvio);
+			// descontamos el stock en la BD
+			Libro.actualizarStock(carrito);
+			// realizamos la cárga de la Venta en la BD
 			VentasExportDTO.nuevaVentaExport(venta, detalles);
 			
 		} else {

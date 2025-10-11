@@ -108,7 +108,9 @@ public class Cliente {
 		dni = Integer.parseInt(Validaciones.validarInt("ingrese su número de DNI", "Registrando un Cliente", null));
 		nombre = Validaciones.validarString("ingrese su nombre", "Registrando un Cliente", null);
 		telefono = Validaciones.validarDigitos("ingrese su número de telefono", "Registrando un Cliente", null, 10, 0);
-		mail = Validaciones.validarString("ingrese su mail", "Registrando un Cliente", null);
+		do {
+			mail = Validaciones.validarString("ingrese su mail", "Registrando un Cliente", null);
+		} while (Validaciones.validarMail(mail));
 		
 		Cliente nuevo = new Cliente(dni,nombre,telefono,mail);
 		

@@ -12,7 +12,7 @@ public class CarritoDetalleDTO {
 	                "INSERT INTO carrito_detalle (cantidad, fk_libro, fk_carrito) VALUES (?, ?, ?)"
 	            );
             statement.setInt(1, carrito.getCantidad());
-            statement.setInt(2, carrito.getFkLibro().getId_cliente());
+            statement.setInt(2, carrito.getFkLibro().getId_libro());
             statement.setInt(3, carrito.getFkCarrito().getIdCarrito());
 
             int filas = statement.executeUpdate();

@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
+import BLL.CarritoDetalle;
 import BLL.Libro;
 
 public class LibroDTO {
@@ -16,7 +17,7 @@ public class LibroDTO {
           ResultSet rs = stmt.executeQuery();
 
           while (rs.next()) {
-              int isbn = rs.getInt("id_libro");
+              int id_libro = rs.getInt("id_libro");
               String titulo = rs.getString("titulo");
               String autor = rs.getString("autor");
               String editorial = rs.getString("editorial");
@@ -32,7 +33,7 @@ public class LibroDTO {
               double precio = rs.getDouble("precio");
               int stock = rs.getInt("stock");
               
-              listaLibros.add(new Libro(isbn,titulo,autor,editorial,anio,genero,idioma,publico_objetivo,numPaginas,firmado,edicionEspecial,materialTapa,saga,precio,stock));
+              listaLibros.add(new Libro(id_libro,titulo,autor,editorial,anio,genero,idioma,publico_objetivo,numPaginas,firmado,edicionEspecial,materialTapa,saga,precio,stock));
           }
           
 		} catch (Exception e) {
@@ -41,8 +42,22 @@ public class LibroDTO {
 		return listaLibros;
 	}
 	
-	
-	
-	
+	// funcion para actualizar el Stock de la BD.
+	public static void actualizarStock(CarritoDetalle carritoDetalle) {
+		try {
+            PreparedStatement statement = con.prepareStatement(
+                "UPDATE Libro SET stock=? WHERE id_libro=?"
+            );
+            statement.setInt(1, carritoDetalle.getFkLibro().getStock());
+            statement.setInt(2, carritoDetalle.getFkLibro().getId_libro());
+
+            int filas = statement.executeUpdate();
+            if (filas > 0) {
+                System.out.println("Usuario editado correctamente.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
 	
 }
