@@ -4,16 +4,23 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import com.mysql.jdbc.Statement;
 import BLL.Carrito;
 import BLL.Cliente;
 
 public class CarritoDTO {
 	private static Connection con = Conexion.getInstance().getConnection();
 	
-	public static void cargarCarrito(Carrito carrito) {
+	/**
+	 * funcion para cargar los datos en la tabla carrito de la BD.
+	 * @param carrito
+	 * @return
+	 */
+	public static Carrito cargarCarrito(Carrito carrito) {
 		try {
 			PreparedStatement statement = con.prepareStatement(
-	                "INSERT INTO carrito (fecha, fk_cliente) VALUES (?, ?)"
+	                "INSERT INTO carrito (fecha, fk_cliente) VALUES (?, ?)",
+	                Statement.RETURN_GENERATED_KEYS
 	            );
             statement.setDate(1, Date.valueOf(carrito.getFecha()));
             statement.setInt(2, carrito.getFkCliente().getIdCliente());
@@ -22,11 +29,24 @@ public class CarritoDTO {
             if (filas > 0) {
                 System.out.println("carrito agregado correctamente.");
             }
+            
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs.next()) {
+                int idGenerado = rs.getInt(1);
+                carrito.setIdCarrito(idGenerado);
+            }
+            
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return carrito;
 	}
 	
+	/**
+	 * funcion para obtener todos los datos de la tabla carrito de la BD.
+	 * @param cliente
+	 * @return
+	 */
 	public static Carrito obtenerCarrito(Cliente cliente) {
 		Carrito carrito = null;
 		

@@ -9,7 +9,11 @@ import BLL.Cliente;
 public class ClienteDTO {
 	private static Connection con = Conexion.getInstance().getConnection();
 
-	// funcion para buscar al cliente en la BD.
+	/**
+	 * funcion para buscar al cliente en la BD por el DNI.
+	 * @param dni
+	 * @return
+	 */
 	public static Cliente buscarCliente(int dni) {
 		Cliente encontrado = null;
 		
@@ -35,7 +39,7 @@ public class ClienteDTO {
 		return encontrado;
 	}
 	
-	// funcion para traer todos los clientes de la base de datos.
+	// funcion para traer todos los clientes de la BD.
 	public static LinkedList<Cliente> consultarClientes() {
 		LinkedList<Cliente> listaClientes = new LinkedList<Cliente>();
 		
@@ -55,12 +59,14 @@ public class ClienteDTO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-		
 		return listaClientes;
 	}
 	
-	
-	// funcion para registrar un cliente nuevo.
+	/**
+	 * funcion para registrar un nuevo Cliente en la BD.
+	 * @param cliente
+	 * @return
+	 */
 	public static boolean registrarCliente(Cliente cliente) {
 		boolean flag = true;
 		LinkedList<Cliente> listaClientes = consultarClientes();

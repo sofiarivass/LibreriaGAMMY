@@ -40,12 +40,24 @@ public class Carrito {
 	}
 	
 	// Métodos
-	
-	public static void cargarCarrito(LocalDate fecha, Cliente cliente) {
+	/**
+	 * funcion para cargar el carrito a la BD y devolver el id que se creo en la BD.
+	 * @param fecha
+	 * @param cliente
+	 * @return
+	 */
+	public static Carrito cargarCarrito(LocalDate fecha, Cliente cliente) {
 		Carrito carrito = new Carrito(fecha, cliente);
-		CarritoDTO.cargarCarrito(carrito);
+		return CarritoDTO.cargarCarrito(carrito);
 	}
 	
+	
+	// obtener todos los datos de la tabla carritos segun el cliente (ya no se usa por ahora)
+	/**
+	 * funcion para obtener todos los datos de la tabla carritos de la BD.
+	 * @param cliente
+	 * @return
+	 */
 	public static Carrito obtenerCarrito(Cliente cliente) {
 		Carrito carrito = CarritoDTO.obtenerCarrito(cliente);
 		return carrito;

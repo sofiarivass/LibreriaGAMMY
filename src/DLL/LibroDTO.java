@@ -9,6 +9,10 @@ import BLL.Libro;
 public class LibroDTO {
 	private static Connection con = Conexion.getInstance().getConnection();
 	
+	/**
+	 * funcion para traer todos los libros de la BD.
+	 * @return
+	 */
 	public static LinkedList<Libro> elegirLibros() {
 		boolean flag = false;
 		LinkedList<Libro> listaLibros = new LinkedList<Libro>();
@@ -44,18 +48,22 @@ public class LibroDTO {
 			}
           }
           
-          if (listaLibros.isEmpty() || flag != true) {
-			listaLibros = null;
-          }
-          
 		} catch (Exception e) {
-          e.printStackTrace();
 		}
 		
-		return listaLibros;
+		if (listaLibros.isEmpty()) {
+			return null;				
+		} else if(!(listaLibros.isEmpty()) && flag != false){
+			return listaLibros;			
+		} else {
+			return null;
+		}
 	}
 	
-	// funcion para actualizar el Stock de la BD.
+	/**
+	 * funcion para actualizar el Stock de la BD.
+	 * @param carritoDetalle
+	 */
 	public static void actualizarStock(CarritoDetalle carritoDetalle) {
 		try {
             PreparedStatement statement = con.prepareStatement(

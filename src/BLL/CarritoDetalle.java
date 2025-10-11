@@ -39,7 +39,11 @@ public class CarritoDetalle {
 	}
 	
 	// Métodos
-	
+	/**
+	 * funcion para cargar la tabla carrito_detalle en la BD.
+	 * @param carrito
+	 * @param fkCarrito
+	 */
 	public static void cargarDetalle(LinkedList<CarritoDetalle>carrito, Carrito fkCarrito) {
 		CarritoDetalle carritoDetalle = null;
 		
@@ -48,8 +52,6 @@ public class CarritoDetalle {
 			CarritoDetalleDTO.cargarDetalle(carritoDetalle);
 			HistorialCompras.cargarHistorial(carritoDetalle);			
 		}
-		
-		
 	}
 	
 }

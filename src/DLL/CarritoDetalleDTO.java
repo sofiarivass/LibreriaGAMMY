@@ -6,6 +6,10 @@ import BLL.CarritoDetalle;
 public class CarritoDetalleDTO {
 	private static Connection con = Conexion.getInstance().getConnection();
 	
+	/**
+	 * funcion para cargar los datos en la tabla carrito_detalle de la BD.
+	 * @param carrito
+	 */
 	public static void cargarDetalle(CarritoDetalle carrito) {
 		try {
 			PreparedStatement statement = con.prepareStatement(

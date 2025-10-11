@@ -8,6 +8,11 @@ import BLL.Exportacion;
 public class VentasExportDTO {
 	private static Connection con = Conexion.getInstance().getConnection();
 	
+	/**
+	 * funcion para cargar una venta en la BD.
+	 * @param venta
+	 * @param detalles
+	 */
 	public static void nuevaVentaExport(Exportacion venta, String detalles) {
 		try {
 			PreparedStatement statement = con.prepareStatement(

@@ -91,14 +91,20 @@ public class Cliente {
 		this.listaProductos = listaProductos;
 	}
 
-	// comprobando si existe el cliente
+	/**
+	 * funcion para pedir los datos al Cliente registrado.
+	 * @return
+	 */
 	public static Cliente buscarCliente() {
 		int dni = Integer.parseInt(Validaciones.validarInt("ingrese el número de DNI del Cliente", null, null));
 		Cliente encontrado = ClienteDTO.buscarCliente(dni);
 		return encontrado;
 	}
 	
-	// registrar un cliente nuevo
+	/**
+	 * funcion para pedir los datos a un nuevo Cliente.
+	 * @return
+	 */
 	public static Cliente registrarCliente() {
 		Cliente cliente = null;
 		int dni;

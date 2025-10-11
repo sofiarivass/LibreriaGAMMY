@@ -182,13 +182,18 @@ public class Libro {
 	}
 	
 	// Métodos
+	/**
+	 * funcion para elegir los libros que se van a comprar.
+	 * @param cliente
+	 * @return
+	 */
 	public static LinkedList<CarritoDetalle> elegirLibros(Cliente cliente) {
 		LinkedList<Libro> listaLibros = null;
 		LinkedList<CarritoDetalle> carrito = new LinkedList<CarritoDetalle>();
 		
 		String seleccion, opcion; 
 		int cantidad;
-		boolean flag, vacio = false;
+		boolean flag, flagDos, vacio;
 		Libro elegido = null;
 		CarritoDetalle listaCarrito = null;
 		
@@ -199,84 +204,88 @@ public class Libro {
 		if (listaLibros != null) {
 			String []elegirLibros = new String[listaLibros.size()];
 			
-			// proceso de selección de libros por el cliente o vendedor.
-			for (int i = 0; i < elegirLibros.length; i++) {
-				elegirLibros[i] = listaLibros.get(i).getTitulo();
-			}
-			
 			do {
 				flag = false;
-				seleccion = (String)JOptionPane.showInputDialog(null, "Seleccione los libros", "Selección de Libros", 0, null, elegirLibros, elegirLibros[0]);
-				
-				for (Libro libro : listaLibros) {
-					if (libro.getTitulo().equals(seleccion)) {
-						elegido = libro;
-						if (elegido.getStock() == 0) {
-							vacio = true;
-						}
-						break;
+				flagDos = false;
+				vacio = false;
+				// proceso de selección de libros por el cliente o vendedor.
+				for (int i = 0; i < elegirLibros.length; i++) {
+					elegirLibros[i] = listaLibros.get(i).getTitulo();
+					if (listaLibros.get(i).getStock()>0) {
+						flagDos = true;
 					}
 				}
 				
-				if (vacio) {
-					JOptionPane.showMessageDialog(null, "No tenemos Stock del libro: " + elegido.getTitulo());
-					opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
-					flag = opcion.equalsIgnoreCase("Sí")?true:false;
-				} else {
-					do {
-						flag = false;
-						cantidad = Integer.parseInt(Validaciones.validarInt("Libro: " + elegido.getTitulo() + " | Stock disponible: " 
-								+ elegido.getStock() +"\n¿cuantos libros desea?", "Realizando una Venta", null));
-						if (cantidad > elegido.getStock()) {
-							JOptionPane.showMessageDialog(null, "No tenemos stock suficiente!!\nStock disponible: " + elegido.getStock());
-							flag = true;
-						}				
-					} while (flag);
-					
-					if (carrito.isEmpty()) {
-						elegido.setStock(elegido.getStock()-cantidad);
-						listaCarrito = new CarritoDetalle(cantidad,elegido);
-						carrito.add(listaCarrito);
-						
-						opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
-						flag = opcion.equalsIgnoreCase("Sí")?true:false;
-						
-					} else {
-						for (CarritoDetalle libroRepetido : carrito) {
-							if (libroRepetido.getFkLibro().getTitulo().equals(elegido.getTitulo())) {
-								libroRepetido.setCantidad(libroRepetido.getCantidad()+cantidad);
-								elegido.setStock(elegido.getStock()-cantidad);
-								flag = true;
-								break;
+				if (flagDos) {
+					seleccion = (String)JOptionPane.showInputDialog(null, "Seleccione los libros", "Selección de Libros", 0, null, elegirLibros, elegirLibros[0]);
+					for (Libro libro : listaLibros) {
+						if (libro.getTitulo().equals(seleccion)) {
+							elegido = libro;
+							if (elegido.getStock() == 0) {
+								vacio = true;
 							}
+							break;
 						}
+					}
+					
+					if (vacio) {
+						JOptionPane.showMessageDialog(null, "No tenemos Stock del libro: " + elegido.getTitulo());
+						flag = true;
+					} else {
+						do {
+							flag = false;
+							cantidad = Integer.parseInt(Validaciones.validarInt("Libro: " + elegido.getTitulo() + " | Stock disponible: " 
+									+ elegido.getStock() +"\n¿cuantos libros desea?", "Realizando una Venta", null));
+							if (cantidad > elegido.getStock()) {
+								JOptionPane.showMessageDialog(null, "No tenemos stock suficiente!!\nStock disponible: " + elegido.getStock());
+								flag = true;
+							}				
+						} while (flag);
 						
-						if (flag) {
-							opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
-							flag = opcion.equalsIgnoreCase("Sí")?true:false;					
-						} else {
+						if (carrito.isEmpty()) {
 							elegido.setStock(elegido.getStock()-cantidad);
 							listaCarrito = new CarritoDetalle(cantidad,elegido);
 							carrito.add(listaCarrito);
 							
 							opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
 							flag = opcion.equalsIgnoreCase("Sí")?true:false;
+							
+						} else {
+							for (CarritoDetalle libroRepetido : carrito) {
+								if (libroRepetido.getFkLibro().getTitulo().equals(elegido.getTitulo())) {
+									libroRepetido.setCantidad(libroRepetido.getCantidad()+cantidad);
+									elegido.setStock(elegido.getStock()-cantidad);
+									flag = true;
+									break;
+								}
+							}
+							
+							if (flag) {
+								opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
+								flag = opcion.equalsIgnoreCase("Sí")?true:false;					
+							} else {
+								elegido.setStock(elegido.getStock()-cantidad);
+								listaCarrito = new CarritoDetalle(cantidad,elegido);
+								carrito.add(listaCarrito);
+								
+								opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
+								flag = opcion.equalsIgnoreCase("Sí")?true:false;
+							}
 						}
 					}
+					
+				} else {
+					JOptionPane.showInternalMessageDialog(null, "Ya no tenemos Stock en ningun Libro!!");
 				}
-				
-				if (carrito.isEmpty()) {
-					JOptionPane.showInternalMessageDialog(null, "No puedes dejar Vacio tu Carrito!!");
-					flag = true;
-				}
-				
 			} while (flag);
 		}
-		
 		return carrito;
 	}
 	
-	// funcion para actualizar la BD despúes de una venta.
+	/**
+	 * funcion para actualizar el Stock de la BD despues de una Venta.
+	 * @param carrito
+	 */
 	public static void actualizarStock(LinkedList<CarritoDetalle>carrito) {
 		CarritoDetalle carritoDetalle = null;
 		

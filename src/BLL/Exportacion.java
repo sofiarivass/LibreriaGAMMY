@@ -54,7 +54,10 @@ public class Exportacion extends Venta {
 	}
 
 	
-	// funcion para realizar la Venta Internacional
+	/**
+	 * funcion para pedir los datos para realizar la Venta Internacional.
+	 * @param user
+	 */
 	public static void nuevaVentaExport(Usuario user) {
 		String opcion = Validaciones.menuSiNo("¿Es un cliente?", "Selección", null);
 		
@@ -65,11 +68,14 @@ public class Exportacion extends Venta {
 		}
 	}
 	
-	// funcion para registrar un cliente nuevo.
+	/**
+	 * funcion para realizar una venta con Cliente Registrado.
+	 * @param user
+	 */
 	public static void clienteRegistrado(Usuario user) {
 		LinkedList<CarritoDetalle> carrito = null;
 		boolean flag;
-		String []estados = {"completado", "anulado"};
+		String []estados = {"completada", "modificada", "anulada"};
 		String []estadoEnvios = {"en preparación", "en camino", "Entregado"};
 		double totalVenta = 0;
 		LocalDate fechaVenta = LocalDate.now();
@@ -79,12 +85,11 @@ public class Exportacion extends Venta {
 		Carrito fkCarrito = null;
 		Usuario fkUsuario = null;
 		
-		// buscamos al cliente en la BD y validamos que realmente exista.
 		cliente = Cliente.buscarCliente();
+		
 		if (cliente != null) {
-			// libros elegidos por el cliente
 			carrito = Libro.elegirLibros(cliente);
-			System.out.println(carrito);
+			
 			if (carrito.isEmpty()) {
 				JOptionPane.showMessageDialog(null, "No se podemos continuar con la Venta, No tenemos Stock disponible!!");
 			} else {
@@ -92,7 +97,7 @@ public class Exportacion extends Venta {
 					flag = false;
 					detalles = "";
 					
-					// conteo de precio total y cantidad de libros
+					// contador de precio total y cantidad de libros
 					for (int i = 0; i < carrito.size(); i++) {
 						totalVenta = totalVenta + (carrito.get(i).getCantidad() * carrito.get(i).getFkLibro().getPrecio());
 						detalles = detalles + "Libro: " + carrito.get(i).getFkLibro().getTitulo() 
@@ -134,22 +139,13 @@ public class Exportacion extends Venta {
 					}
 				} while (flag);
 				
-				// cargamos la info en tabla carrito de la BD
-				Carrito.cargarCarrito(fechaVenta, cliente);
-				
-				// obtenemos el objeto carrito con id_carrito de BD
-				fkCarrito = Carrito.obtenerCarrito(cliente);
-				
-				// cargamos la tabla carrito_detalle de la BD
+				fkCarrito = Carrito.cargarCarrito(fechaVenta, cliente);
 				CarritoDetalle.cargarDetalle(carrito,fkCarrito);
-				
-				// enviamos el fk del vendedor que realizo la venta
 				fkUsuario = user;
 				
 				Exportacion venta = new Exportacion(totalVenta,fechaVenta,metodoPago,moneda,estado,fkTipoVenta,fkCarrito,fkUsuario,origen,destino,estadoEnvio);
-				// descontamos el stock de la BD.
+				
 				Libro.actualizarStock(carrito);
-				// realizamos la cárga de la Venta
 				VentasExportDTO.nuevaVentaExport(venta, detalles);
 			}
 			
@@ -159,7 +155,10 @@ public class Exportacion extends Venta {
 		}
 	}
 	
-	// funcion para venta con Cliente no registrado.
+	/**
+	 * funcion para realizar una venta con Cliente No Registrado.
+	 * @param user
+	 */
 	public static void clienteNoRegistrado(Usuario user) {
 		LinkedList<CarritoDetalle> carrito = null;
 		Cliente cliente = null;
@@ -231,11 +230,8 @@ public class Exportacion extends Venta {
 					}
 				} while (flag);
 				
-				// cargamos la info en tabla carrito de la BD
-				Carrito.cargarCarrito(fechaVenta, cliente);
-				
-				// obtenemos el objeto carrito con id_carrito de BD
-				fkCarrito = Carrito.obtenerCarrito(cliente);
+				// cargamos la info en tabla carrito de la BD y traemos el id generado automaticamente
+				fkCarrito = Carrito.cargarCarrito(fechaVenta, cliente);
 				
 				// cargamos la tabla carrito_detalle de la BD
 				CarritoDetalle.cargarDetalle(carrito,fkCarrito);
