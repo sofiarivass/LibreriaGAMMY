@@ -84,70 +84,74 @@ public class Exportacion extends Venta {
 		if (cliente != null) {
 			// libros elegidos por el cliente
 			carrito = Libro.elegirLibros(cliente);
-			
-			do {
-				flag = false;
-				detalles = "";
-				
-				// conteo de precio total y cantidad de libros
-				for (int i = 0; i < carrito.size(); i++) {
-					totalVenta = totalVenta + (carrito.get(i).getCantidad() * carrito.get(i).getFkLibro().getPrecio());
-					detalles = detalles + "Libro: " + carrito.get(i).getFkLibro().getTitulo() 
-							+ " -cantidad: " + carrito.get(i).getCantidad() 
-							+ " -Precio x Unidad: $" + carrito.get(i).getFkLibro().getPrecio() + "\n";
-				}
-				
-				// si el vendedor que se logea es el de internacional siempre sera venta Mayorista
-				if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
-					fkTipoVenta = new TipoVenta(2,"Mayorista");					
-				}
-				
-				// datos para la venta
-				metodoPago = ((MetodoPago) JOptionPane.showInputDialog(null, "¿Método de pago?", null, 0, null, 
-						MetodoPago.values(), MetodoPago.values()[0])).name();
-				moneda = ((TipoMoneda) JOptionPane.showInputDialog(null, "¿tipo de Moneda?", null, 0, null, 
-						TipoMoneda.values(), TipoMoneda.values()[0])).name();
-				origen = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Origen", null, 0, null, 
-						Sucursales.values(), Sucursales.values()[0])).name();
+			System.out.println(carrito);
+			if (carrito.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "No se podemos continuar con la Venta, No tenemos Stock disponible!!");
+			} else {
 				do {
 					flag = false;
-					destino = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Destino", null, 0, null, 
-							Sucursales.values(), Sucursales.values())).name();
-					if (destino.equals(origen)) {
-						JOptionPane.showMessageDialog(null, "El destino no puede ser igual al Origen");
+					detalles = "";
+					
+					// conteo de precio total y cantidad de libros
+					for (int i = 0; i < carrito.size(); i++) {
+						totalVenta = totalVenta + (carrito.get(i).getCantidad() * carrito.get(i).getFkLibro().getPrecio());
+						detalles = detalles + "Libro: " + carrito.get(i).getFkLibro().getTitulo() 
+								+ " -cantidad: " + carrito.get(i).getCantidad() 
+								+ " -Precio x Unidad: $" + carrito.get(i).getFkLibro().getPrecio() + "\n";
+					}
+					
+					// si el vendedor que se logea es el de internacional siempre sera venta Mayorista
+					if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
+						fkTipoVenta = new TipoVenta(2,"Mayorista");					
+					}
+					
+					// datos para la venta
+					metodoPago = ((MetodoPago) JOptionPane.showInputDialog(null, "¿Método de pago?", null, 0, null, 
+							MetodoPago.values(), MetodoPago.values()[0])).name();
+					moneda = ((TipoMoneda) JOptionPane.showInputDialog(null, "¿tipo de Moneda?", null, 0, null, 
+							TipoMoneda.values(), TipoMoneda.values()[0])).name();
+					origen = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Origen", null, 0, null, 
+							Sucursales.values(), Sucursales.values()[0])).name();
+					do {
+						flag = false;
+						destino = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Destino", null, 0, null, 
+								Sucursales.values(), Sucursales.values())).name();
+						if (destino.equals(origen)) {
+							JOptionPane.showMessageDialog(null, "El destino no puede ser igual al Origen");
+							flag = true;
+						}
+					} while (flag);
+					estado = estados[0];
+					estadoEnvio = estadoEnvios[0];
+					
+					detalles = detalles + "Precio Total: $" + totalVenta + "\nPago: " + metodoPago + "\nMoneda: " + moneda 
+							+ "\nEstado: " + estado + "\nOrigen: " + origen + "\nDestino: " + destino + "\nEstado de Envio: " + estadoEnvio;
+					
+					continuarVenta = Validaciones.menuContinuar(detalles + "¿Desea continuar con la Venta?", "Detalles de la Venta!!", null);
+					
+					if (continuarVenta.equalsIgnoreCase("Modificar")) {
 						flag = true;
 					}
 				} while (flag);
-				estado = estados[0];
-				estadoEnvio = estadoEnvios[0];
 				
-				detalles = detalles + "Precio Total: $" + totalVenta + "\nPago: " + metodoPago + "\nMoneda: " + moneda 
-						+ "\nEstado: " + estado + "\nOrigen: " + origen + "\nDestino: " + destino + "\nEstado de Envio: " + estadoEnvio;
+				// cargamos la info en tabla carrito de la BD
+				Carrito.cargarCarrito(fechaVenta, cliente);
 				
-				continuarVenta = Validaciones.menuContinuar(detalles + "¿Desea continuar con la Venta?", "Detalles de la Venta!!", null);
+				// obtenemos el objeto carrito con id_carrito de BD
+				fkCarrito = Carrito.obtenerCarrito(cliente);
 				
-				if (continuarVenta.equalsIgnoreCase("Modificar")) {
-					flag = true;
-				}
-			} while (flag);
-			
-			// cargamos la info en tabla carrito de la BD
-			Carrito.cargarCarrito(fechaVenta, cliente);
-			
-			// obtenemos el objeto carrito con id_carrito de BD
-			fkCarrito = Carrito.obtenerCarrito(cliente);
-			
-			// cargamos la tabla carrito_detalle de la BD
-			CarritoDetalle.cargarDetalle(carrito,fkCarrito);
-			
-			// enviamos el fk del vendedor que realizo la venta
-			fkUsuario = user;
-			
-			Exportacion venta = new Exportacion(totalVenta,fechaVenta,metodoPago,moneda,estado,fkTipoVenta,fkCarrito,fkUsuario,origen,destino,estadoEnvio);
-			// descontamos el stock de la BD.
-			Libro.actualizarStock(carrito);
-			// realizamos la cárga de la Venta
-			VentasExportDTO.nuevaVentaExport(venta, detalles);
+				// cargamos la tabla carrito_detalle de la BD
+				CarritoDetalle.cargarDetalle(carrito,fkCarrito);
+				
+				// enviamos el fk del vendedor que realizo la venta
+				fkUsuario = user;
+				
+				Exportacion venta = new Exportacion(totalVenta,fechaVenta,metodoPago,moneda,estado,fkTipoVenta,fkCarrito,fkUsuario,origen,destino,estadoEnvio);
+				// descontamos el stock de la BD.
+				Libro.actualizarStock(carrito);
+				// realizamos la cárga de la Venta
+				VentasExportDTO.nuevaVentaExport(venta, detalles);
+			}
 			
 		} else {
 			JOptionPane.showMessageDialog(null, "Cliente No Encontrado!!");
@@ -178,69 +182,73 @@ public class Exportacion extends Venta {
 			// libros elegidos por el cliente
 			carrito = Libro.elegirLibros(cliente);
 			
-			do {
-				flag = false;
-				detalles = "";
-				
-				// conteo de precio total y cantidad de libros
-				for (int i = 0; i < carrito.size(); i++) {
-					totalVenta = totalVenta + (carrito.get(i).getCantidad() * carrito.get(i).getFkLibro().getPrecio());
-					detalles = detalles + "Libro: " + carrito.get(i).getFkLibro().getTitulo() 
-							+ " -cantidad: " + carrito.get(i).getCantidad() 
-							+ " -Precio x Unidad: $" + carrito.get(i).getFkLibro().getPrecio() + "\n";
-				}
-				
-				// si el vendedor que se registra es el de internacional siempre sera venta Mayorista
-				if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
-					fkTipoVenta = new TipoVenta(2,"Mayorista");					
-				}
-				
-				// datos para la venta
-				metodoPago = ((MetodoPago) JOptionPane.showInputDialog(null, "¿Método de pago?", null, 0, null, 
-						MetodoPago.values(), MetodoPago.values())).name();
-				moneda = ((TipoMoneda) JOptionPane.showInputDialog(null, "¿tipo de Moneda?", null, 0, null, 
-						TipoMoneda.values(), TipoMoneda.values())).name();
-				origen = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Origen", null, 0, null, 
-						Sucursales.values(), Sucursales.values())).name();
+			if (carrito.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "No se podemos continuar con la Venta, No tenemos Stock disponible!!");
+			} else {
 				do {
 					flag = false;
-					destino = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Destino", null, 0, null, 
+					detalles = "";
+					
+					// conteo de precio total y cantidad de libros
+					for (int i = 0; i < carrito.size(); i++) {
+						totalVenta = totalVenta + (carrito.get(i).getCantidad() * carrito.get(i).getFkLibro().getPrecio());
+						detalles = detalles + "Libro: " + carrito.get(i).getFkLibro().getTitulo() 
+								+ " -cantidad: " + carrito.get(i).getCantidad() 
+								+ " -Precio x Unidad: $" + carrito.get(i).getFkLibro().getPrecio() + "\n";
+					}
+					
+					// si el vendedor que se registra es el de internacional siempre sera venta Mayorista
+					if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
+						fkTipoVenta = new TipoVenta(2,"Mayorista");					
+					}
+					
+					// datos para la venta
+					metodoPago = ((MetodoPago) JOptionPane.showInputDialog(null, "¿Método de pago?", null, 0, null, 
+							MetodoPago.values(), MetodoPago.values())).name();
+					moneda = ((TipoMoneda) JOptionPane.showInputDialog(null, "¿tipo de Moneda?", null, 0, null, 
+							TipoMoneda.values(), TipoMoneda.values())).name();
+					origen = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Origen", null, 0, null, 
 							Sucursales.values(), Sucursales.values())).name();
-					if (destino.equals(origen)) {
-						JOptionPane.showMessageDialog(null, "El destino no puede ser igual al Origen");
-						flag = true;						
+					do {
+						flag = false;
+						destino = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Destino", null, 0, null, 
+								Sucursales.values(), Sucursales.values())).name();
+						if (destino.equals(origen)) {
+							JOptionPane.showMessageDialog(null, "El destino no puede ser igual al Origen");
+							flag = true;						
+						}
+					} while (flag);
+					estado = estados[0];
+					estadoEnvio = estadoEnvios[0];
+					
+					detalles = detalles + "Precio Total: $" + totalVenta + "\nPago: " + metodoPago + "\nMoneda: " + moneda 
+							+ "\nEstado: " + estado + "\nOrigen: " + origen + "\nDestino: " + destino + "\nEstado de Envio: " + estadoEnvio;
+					
+					continuarVenta = Validaciones.menuContinuar(detalles + "¿Desea continuar con la Venta?", "Detalles de la Venta!!", null);
+					
+					if (continuarVenta.equalsIgnoreCase("Modificar")) {
+						flag = true;
 					}
 				} while (flag);
-				estado = estados[0];
-				estadoEnvio = estadoEnvios[0];
 				
-				detalles = detalles + "Precio Total: $" + totalVenta + "\nPago: " + metodoPago + "\nMoneda: " + moneda 
-						+ "\nEstado: " + estado + "\nOrigen: " + origen + "\nDestino: " + destino + "\nEstado de Envio: " + estadoEnvio;
+				// cargamos la info en tabla carrito de la BD
+				Carrito.cargarCarrito(fechaVenta, cliente);
 				
-				continuarVenta = Validaciones.menuContinuar(detalles + "¿Desea continuar con la Venta?", "Detalles de la Venta!!", null);
+				// obtenemos el objeto carrito con id_carrito de BD
+				fkCarrito = Carrito.obtenerCarrito(cliente);
 				
-				if (continuarVenta.equalsIgnoreCase("Modificar")) {
-					flag = true;
-				}
-			} while (flag);
-			
-			// cargamos la info en tabla carrito de la BD
-			Carrito.cargarCarrito(fechaVenta, cliente);
-			
-			// obtenemos el objeto carrito con id_carrito de BD
-			fkCarrito = Carrito.obtenerCarrito(cliente);
-			
-			// cargamos la tabla carrito_detalle de la BD
-			CarritoDetalle.cargarDetalle(carrito,fkCarrito);
-			
-			// enviamos el fk del vendedor que realizo la venta
-			fkUsuario = user;
-			
-			Exportacion venta = new Exportacion(totalVenta,fechaVenta,metodoPago,moneda,estado,fkTipoVenta,fkCarrito,fkUsuario,origen,destino,estadoEnvio);
-			// descontamos el stock en la BD
-			Libro.actualizarStock(carrito);
-			// realizamos la cárga de la Venta en la BD
-			VentasExportDTO.nuevaVentaExport(venta, detalles);
+				// cargamos la tabla carrito_detalle de la BD
+				CarritoDetalle.cargarDetalle(carrito,fkCarrito);
+				
+				// enviamos el fk del vendedor que realizo la venta
+				fkUsuario = user;
+				
+				Exportacion venta = new Exportacion(totalVenta,fechaVenta,metodoPago,moneda,estado,fkTipoVenta,fkCarrito,fkUsuario,origen,destino,estadoEnvio);
+				// descontamos el stock en la BD
+				Libro.actualizarStock(carrito);
+				// realizamos la cárga de la Venta en la BD
+				VentasExportDTO.nuevaVentaExport(venta, detalles);
+			}
 			
 		} else {
 			nuevaVentaExport(user);

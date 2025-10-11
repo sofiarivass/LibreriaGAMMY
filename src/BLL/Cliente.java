@@ -100,25 +100,32 @@ public class Cliente {
 	
 	// registrar un cliente nuevo
 	public static Cliente registrarCliente() {
+		Cliente cliente = null;
 		int dni;
 		String nombre, telefono, mail;
 		
 		JOptionPane.showMessageDialog(null, "Registrar nuevo Cliente");
 		
 		dni = Integer.parseInt(Validaciones.validarInt("ingrese su número de DNI", "Registrando un Cliente", null));
-		nombre = Validaciones.validarString("ingrese su nombre", "Registrando un Cliente", null);
-		telefono = Validaciones.validarDigitos("ingrese su número de telefono", "Registrando un Cliente", null, 10, 0);
-		do {
-		    mail = Validaciones.validarString("Ingrese su mail", "Registrando un Cliente", null);
-		} while (!Validaciones.validarMail(mail));
-		
-		Cliente nuevo = new Cliente(dni,nombre,telefono,mail);
-		
-		if (ClienteDTO.registrarCliente(nuevo)) {
-			return ClienteDTO.buscarCliente(nuevo.getDni());
+		cliente = ClienteDTO.buscarCliente(dni);
+		if (cliente != null) {
+			JOptionPane.showMessageDialog(null, "El cliente " + cliente.getNombre() + " Ya esta registrado!!");
+			return cliente;
 		} else {
-			return null;
-		}		
+			nombre = Validaciones.validarString("ingrese su nombre", "Registrando un Cliente", null);
+			telefono = Validaciones.validarDigitos("ingrese su número de telefono", "Registrando un Cliente", null, 10, 0);
+			do {
+				mail = Validaciones.validarString("Ingrese su mail", "Registrando un Cliente", null);
+			} while (!Validaciones.validarMail(mail));
+			
+			Cliente nuevo = new Cliente(dni,nombre,telefono,mail);
+			
+			if (ClienteDTO.registrarCliente(nuevo)) {
+				return ClienteDTO.buscarCliente(nuevo.getDni());
+			} else {
+				return null;
+			}
+		}
 	}
 	
 }

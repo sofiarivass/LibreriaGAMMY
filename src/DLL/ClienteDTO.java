@@ -72,8 +72,8 @@ public class ClienteDTO {
 			}
 		}
 		
-		try {
-			if (flag) {
+		if (flag) {
+			try {
 				PreparedStatement statement = con.prepareStatement(
 						"INSERT INTO cliente (nombre, telefono, mail, dni) VALUES (?, ?, ?, ?)"
 						);
@@ -86,11 +86,12 @@ public class ClienteDTO {
 				if (filas > 0) {
 					JOptionPane.showMessageDialog(null, "Cliente registrado correctamente!!");
 				}
-			}
-		} catch (Exception e) {
+			} catch (Exception e) {
+			}			
+			return true;
+		} else {
 			JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", Ya existe!!");
-			return false;
-		}			
-		return true;
+			return false;			
+		}
 	}
 }

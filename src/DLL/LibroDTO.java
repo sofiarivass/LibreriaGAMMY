@@ -10,6 +10,7 @@ public class LibroDTO {
 	private static Connection con = Conexion.getInstance().getConnection();
 	
 	public static LinkedList<Libro> elegirLibros() {
+		boolean flag = false;
 		LinkedList<Libro> listaLibros = new LinkedList<Libro>();
 		
 		try {
@@ -36,9 +37,21 @@ public class LibroDTO {
               listaLibros.add(new Libro(id_libro,titulo,autor,editorial,anio,genero,idioma,publico_objetivo,numPaginas,firmado,edicionEspecial,materialTapa,saga,precio,stock));
           }
           
+          for (int i = 0; i < listaLibros.size(); i++) {
+			if (listaLibros.get(i).getStock() > 0) {
+				flag = true;
+				break;
+			}
+          }
+          
+          if (listaLibros.isEmpty() || flag != true) {
+			listaLibros = null;
+          }
+          
 		} catch (Exception e) {
           e.printStackTrace();
 		}
+		
 		return listaLibros;
 	}
 	
