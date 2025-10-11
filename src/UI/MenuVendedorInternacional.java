@@ -40,7 +40,7 @@ public class MenuVendedorInternacional {
 						Exportacion.nuevaVentaExport(user);
 						break;
 					case 1: // modificar exportación
-						JOptionPane.showMessageDialog(null, "modificar exportación");
+						Exportacion.modificarVentaExport(user);
 						break;
 					case 2: // anular exportación
 						JOptionPane.showMessageDialog(null, "anular exportación");

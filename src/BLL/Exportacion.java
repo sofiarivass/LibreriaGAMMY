@@ -53,6 +53,7 @@ public class Exportacion extends Venta {
 		this.estadoEnvio = estadoEnvio;
 	}
 
+	// Métodos
 	
 	/**
 	 * funcion para pedir los datos para realizar la Venta Internacional.
@@ -249,6 +250,22 @@ public class Exportacion extends Venta {
 		} else {
 			nuevaVentaExport(user);
 		}
+	}
+	
+	/**
+	 * funcion para mostrar los datos a modificar de la Venta Internacional.
+	 * @param user
+	 */
+	public static void modificarVentaExport(Usuario user) {
+		
+	}
+	
+	/**
+	 * funcion para anular una Venta Internacional.
+	 * @param user
+	 */
+	public static void anularVentaExport(Usuario user) {
+		
 	}
 	
 }

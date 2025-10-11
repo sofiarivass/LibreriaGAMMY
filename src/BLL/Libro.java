@@ -182,6 +182,7 @@ public class Libro {
 	}
 	
 	// Métodos
+	
 	/**
 	 * funcion para elegir los libros que se van a comprar.
 	 * @param cliente

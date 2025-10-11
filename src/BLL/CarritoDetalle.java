@@ -39,6 +39,7 @@ public class CarritoDetalle {
 	}
 	
 	// Métodos
+	
 	/**
 	 * funcion para cargar la tabla carrito_detalle en la BD.
 	 * @param carrito

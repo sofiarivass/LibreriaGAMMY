@@ -90,6 +90,8 @@ public class Cliente {
 	public void setListaProductos(LinkedList<Libro> listaProductos) {
 		this.listaProductos = listaProductos;
 	}
+	
+	// Métodos
 
 	/**
 	 * funcion para pedir los datos al Cliente registrado.
