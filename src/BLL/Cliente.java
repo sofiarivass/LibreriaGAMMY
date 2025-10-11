@@ -109,8 +109,8 @@ public class Cliente {
 		nombre = Validaciones.validarString("ingrese su nombre", "Registrando un Cliente", null);
 		telefono = Validaciones.validarDigitos("ingrese su número de telefono", "Registrando un Cliente", null, 10, 0);
 		do {
-			mail = Validaciones.validarString("ingrese su mail", "Registrando un Cliente", null);
-		} while (Validaciones.validarMail(mail));
+		    mail = Validaciones.validarString("Ingrese su mail", "Registrando un Cliente", null);
+		} while (!Validaciones.validarMail(mail));
 		
 		Cliente nuevo = new Cliente(dni,nombre,telefono,mail);
 		
