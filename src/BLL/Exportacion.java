@@ -31,6 +31,14 @@ public class Exportacion extends Venta {
 		this.estadoEnvio = estadoEnvio;
 	}
 	
+	public Exportacion(int idVenta, LocalDate fechaVenta, String metodoPago, String moneda,
+			String estado, String origen, String destino, String estadoEnvio) {
+		super(idVenta, fechaVenta, metodoPago, moneda, estado);
+		this.origen = origen;
+		this.destino = destino;
+		this.estadoEnvio = estadoEnvio;
+	}
+
 	// Métodos
 	public String getOrigen() {
 		return origen;
@@ -92,7 +100,7 @@ public class Exportacion extends Venta {
 			carrito = Libro.elegirLibros(cliente);
 			
 			if (carrito.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "No se podemos continuar con la Venta, No tenemos Stock disponible!!");
+				JOptionPane.showMessageDialog(null, "No podemos continuar con la Venta, No tenemos Stock disponible!!");
 			} else {
 				do {
 					flag = false;
@@ -133,7 +141,7 @@ public class Exportacion extends Venta {
 					detalles = detalles + "Precio Total: $" + totalVenta + "\nPago: " + metodoPago + "\nMoneda: " + moneda 
 							+ "\nEstado: " + estado + "\nOrigen: " + origen + "\nDestino: " + destino + "\nEstado de Envio: " + estadoEnvio;
 					
-					continuarVenta = Validaciones.menuContinuar(detalles + "¿Desea continuar con la Venta?", "Detalles de la Venta!!", null);
+					continuarVenta = Validaciones.menuContinuar(detalles + "\n¿Desea continuar con la Venta?", "Detalles de la Venta!!", null);
 					
 					if (continuarVenta.equalsIgnoreCase("Modificar")) {
 						flag = true;
@@ -183,7 +191,7 @@ public class Exportacion extends Venta {
 			carrito = Libro.elegirLibros(cliente);
 			
 			if (carrito.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "No se podemos continuar con la Venta, No tenemos Stock disponible!!");
+				JOptionPane.showMessageDialog(null, "No podemos continuar con la Venta, No tenemos Stock disponible!!");
 			} else {
 				do {
 					flag = false;
@@ -224,7 +232,7 @@ public class Exportacion extends Venta {
 					detalles = detalles + "Precio Total: $" + totalVenta + "\nPago: " + metodoPago + "\nMoneda: " + moneda 
 							+ "\nEstado: " + estado + "\nOrigen: " + origen + "\nDestino: " + destino + "\nEstado de Envio: " + estadoEnvio;
 					
-					continuarVenta = Validaciones.menuContinuar(detalles + "¿Desea continuar con la Venta?", "Detalles de la Venta!!", null);
+					continuarVenta = Validaciones.menuContinuar(detalles + "\n¿Desea continuar con la Venta?", "Detalles de la Venta!!", null);
 					
 					if (continuarVenta.equalsIgnoreCase("Modificar")) {
 						flag = true;
@@ -257,7 +265,17 @@ public class Exportacion extends Venta {
 	 * @param user
 	 */
 	public static void modificarVentaExport(Usuario user) {
+		LinkedList<Exportacion> listaVentas = null;
 		
+		
+		Cliente cliente = Cliente.buscarCliente();
+		LinkedList<Carrito> listaCarrito = Carrito.obtenerCarrito(cliente);
+		
+		for (int i = 0; i < listaCarrito.size(); i++) {
+			listaVentas.add(VentasExportDTO.verVentas(listaCarrito.get(i).getIdCarrito()));
+		}
+		
+		// continuar mostrando la listaVentas para que seleccione que venta quiere editar
 	}
 	
 	/**

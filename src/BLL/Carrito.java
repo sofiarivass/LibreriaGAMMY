@@ -1,5 +1,7 @@
 package BLL;
 import java.time.LocalDate;
+import java.util.LinkedList;
+
 import DLL.CarritoDTO;
 
 public class Carrito {
@@ -59,9 +61,10 @@ public class Carrito {
 	 * @param cliente
 	 * @return
 	 */
-	public static Carrito obtenerCarrito(Cliente cliente) {
-		Carrito carrito = CarritoDTO.obtenerCarrito(cliente);
-		return carrito;
+	public static LinkedList<Carrito> obtenerCarrito(Cliente cliente) {
+		LinkedList<Carrito> listaCarrito = CarritoDTO.obtenerCarrito(cliente);
+		
+		return listaCarrito;
 	}
 	
 }

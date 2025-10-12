@@ -27,7 +27,14 @@ public class Venta {
 		this.fkCarrito = fkCarrito;
 		this.fkUsuario = fkUsuario;
 	}
-
+	
+	public Venta(int idVenta, LocalDate fechaVenta, String metodoPago, String moneda, String estado) {
+		this.idVenta = idVenta;
+		this.fechaVenta = fechaVenta;
+		this.metodoPago = metodoPago;
+		this.moneda = moneda;
+		this.estado = estado;
+	}
 
 	public Venta(double totalVenta, LocalDate fechaVenta, String metodoPago, String moneda, String estado, TipoVenta fkTipoVenta,
 			Carrito fkCarrito, Usuario fkUsuario) {

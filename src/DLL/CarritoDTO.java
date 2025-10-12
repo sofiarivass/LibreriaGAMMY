@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.LinkedList;
+
 import com.mysql.jdbc.Statement;
 import BLL.Carrito;
 import BLL.Cliente;
@@ -47,8 +49,8 @@ public class CarritoDTO {
 	 * @param cliente
 	 * @return
 	 */
-	public static Carrito obtenerCarrito(Cliente cliente) {
-		Carrito carrito = null;
+	public static LinkedList<Carrito> obtenerCarrito(Cliente cliente) {
+		LinkedList<Carrito> listaCarrito = new LinkedList<Carrito>();
 		
 		try {
             PreparedStatement stmt = con.prepareStatement(
@@ -57,17 +59,22 @@ public class CarritoDTO {
             stmt.setInt(1, cliente.getIdCliente());
   
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
             	int id_carrito = rs.getInt("id_carrito");
                 LocalDate fecha = rs.getDate("fecha").toLocalDate();
 
-                carrito = new Carrito(id_carrito,fecha,cliente);
-                }
+                listaCarrito.add(new Carrito(id_carrito,fecha,cliente));
+            }
        
         } catch (Exception e) {
             e.printStackTrace();
         }
 		
-		return carrito;
+		if (listaCarrito.isEmpty()) {
+			return null;
+		} else {
+			return listaCarrito;			
+		}
+		
 	}
 }

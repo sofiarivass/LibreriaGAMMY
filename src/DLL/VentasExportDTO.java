@@ -2,6 +2,8 @@ package DLL;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import BLL.Exportacion;
 
@@ -39,4 +41,36 @@ public class VentasExportDTO {
 			e.printStackTrace();
 		}
 	}
+	
+	// funciona para traer una lista de ventas
+	public static Exportacion verVentas(int fkCarrito) {
+		Exportacion venta = null; 
+		
+		try {
+            PreparedStatement stmt = con.prepareStatement(
+                "SELECT * FROM venta WHERE fk_carrito = ?"
+            );
+            stmt.setInt(1, fkCarrito);
+  
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+            	int id_venta = rs.getInt("id_venta");
+                LocalDate fecha_venta = rs.getDate("fecha_venta").toLocalDate();
+                String metodo_pago = rs.getString("metodo_pago");
+                String moneda = rs.getString("moneda");
+                String estado = rs.getString("estado");
+                String origen = rs.getString("origen");
+                String destino = rs.getString("destino");
+                String estado_envio = rs.getString("estado_envio");
+
+                venta = new Exportacion(id_venta,fecha_venta,metodo_pago,moneda,estado,origen,destino,estado_envio);
+            }
+       
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		
+		return venta;
+	}
+	
 }
