@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JOptionPane;
+
+import com.mysql.jdbc.Statement;
+
 import BLL.CarritoDetalle;
 import BLL.Libro;
 import Repository.Validaciones;
@@ -35,7 +38,8 @@ public class LibroDTO {
 		if (flag) {
 			try {
 				PreparedStatement statement = con.prepareStatement(
-						"INSERT INTO libro (titulo, autor, editorial, anio_publicacion, genero, idioma, publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+						"INSERT INTO libro (titulo, autor, editorial, anio_publicacion, genero, idioma, publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+						, Statement.RETURN_GENERATED_KEYS);
 				statement.setString(1, libro.getTitulo());
 				statement.setString(2, libro.getAutor());
 				statement.setString(3, libro.getEditorial());
@@ -52,6 +56,13 @@ public class LibroDTO {
 				statement.setInt(14, libro.getStock());
 
 				int filas = statement.executeUpdate();
+				ResultSet rs = statement.getGeneratedKeys();
+	            
+				if (rs.next()) {
+					int idGenerado = rs.getInt(1);
+					libro.setId_libro(idGenerado);
+				}
+				
 				if (filas > 0) {
 					JOptionPane.showMessageDialog(null, "Libro agregado correctamente\n" + libro.toString());
 					return true;
