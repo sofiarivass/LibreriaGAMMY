@@ -283,6 +283,11 @@ public class Libro {
 		return carrito;
 	}
 	
+	// funcion para traer un libro especifico de la BD.
+	public static Libro verLibro(int fkLibro) {
+		return LibroDTO.verLibro(fkLibro);
+	}
+	
 	/**
 	 * funcion para actualizar el Stock de la BD despues de una Venta.
 	 * @param carrito

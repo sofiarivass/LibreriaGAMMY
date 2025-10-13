@@ -151,17 +151,15 @@ public class Venta {
 	}
 
 
-
-
-
-	
-
-	
-
-	
-	
-
 	// Métodos
 	
-
+	@Override
+	public String toString() {
+		return "Venta [idVenta=" + idVenta + ", totalVenta=" + totalVenta + ", fechaVenta=" + fechaVenta
+				+ ", metodoPago=" + metodoPago + ", moneda=" + moneda + ", estado=" + estado + ", fkTipoVenta="
+				+ fkTipoVenta + ", fkDescuento=" + fkDescuento + ", fkCarrito=" + fkCarrito + ", fkUsuario=" + fkUsuario
+				+ "]";
+	}
+	
+	
 }

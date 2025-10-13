@@ -55,4 +55,16 @@ public class CarritoDetalle {
 		}
 	}
 	
+	// funcion para traer los datos de la tabla carrito_detalle
+	public static CarritoDetalle verDetalle(Carrito fkCarrito) {
+		return CarritoDetalleDTO.verDetalle(fkCarrito);
+	}
+
+	@Override
+	public String toString() {
+		return "CarritoDetalle [cantidad=" + cantidad + ", fkLibro=" + fkLibro + ", fkCarrito=" + fkCarrito + "]";
+	}
+	
+	
+	
 }

@@ -42,7 +42,11 @@ public class VentasExportDTO {
 		}
 	}
 	
-	// funciona para traer una lista de ventas
+	/**
+	 * funcion para ver las ventas de un Cliente en especifico
+	 * @param fkCarrito
+	 * @return
+	 */
 	public static Exportacion verVentas(int fkCarrito) {
 		Exportacion venta = null; 
 		
@@ -73,4 +77,54 @@ public class VentasExportDTO {
 		return venta;
 	}
 	
+	/**
+	 * funcion para actualizar los datos de una Venta especifica en la BD.
+	 * @param venta
+	 * @param detalles
+	 */
+	public static void actualizarVentaExport(Exportacion venta, String detalles) {
+		try {
+			PreparedStatement statement = con.prepareStatement(
+	                "UPDATE venta SET metodo_pago =?, moneda =?, estado =?, origen =?, destino =? WHERE id_venta =?"
+	            );
+            statement.setString(1, venta.getMetodoPago());
+            statement.setString(2, venta.getMoneda());
+            statement.setString(3, venta.getEstado());
+            statement.setString(4, venta.getOrigen());
+            statement.setString(5, venta.getDestino());
+            statement.setInt(6, venta.getIdVenta());
+           
+
+            int filas = statement.executeUpdate();
+            if (filas > 0) {
+            	JOptionPane.showMessageDialog(null, "Venta actualizada con Exito!!\n" + (detalles!=null?"\n" +detalles:""));
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * funcion para anular una venta especifica en la BD.
+	 * @param venta
+	 * @param detalles
+	 */
+	public static void anularVentaExport(Exportacion venta, String detalles) {
+		try {
+			PreparedStatement statement = con.prepareStatement(
+					"UPDATE venta SET estado =? WHERE id_venta =?"
+					);
+	
+			statement.setString(1, venta.getEstado());
+			statement.setInt(2, venta.getIdVenta());
+			
+			
+			int filas = statement.executeUpdate();
+			if (filas > 0) {
+				JOptionPane.showMessageDialog(null, "Venta anulada con Exito!!\n" + (detalles!=null?"\n" +detalles:""));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
