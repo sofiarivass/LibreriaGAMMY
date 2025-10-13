@@ -1,14 +1,12 @@
 package BLL;
-
 import java.util.LinkedList;
-
 import javax.swing.JOptionPane;
-
 import DLL.LibroDTO;
+import Repository.Validaciones;
 import Enums.*;
 
 public class Libro {
-	private int idLibro;
+	private int id_libro;
 	private String titulo;
 	private String autor;
 	private String editorial;
@@ -23,11 +21,11 @@ public class Libro {
 	private boolean saga;
 	private double precio;
 	private int stock;
-
-	public Libro(int idLibro, String titulo, String autor, String editorial, String anioPublicacion, String genero,
-			String idioma, String publicoObjetivo, int numPaginas, boolean firmado, boolean edicionEspecial,
-			String tapa, boolean saga, double precio, int stock) {
-		this.idLibro = idLibro;
+	
+	public Libro(int id_libro, String titulo, String autor, String editorial, String anioPublicacion, String genero,
+			String idioma, String publicoObjetivo, int numPaginas, boolean firmado,
+			boolean edicionEspecial, String materialTapa, boolean saga, double precio, int stock) {
+		this.id_libro = id_libro;
 		this.titulo = titulo;
 		this.autor = autor;
 		this.editorial = editorial;
@@ -38,15 +36,15 @@ public class Libro {
 		this.numPaginas = numPaginas;
 		this.firmado = firmado;
 		this.edicionEspecial = edicionEspecial;
-		this.tapa = tapa;
+		this.tapa = materialTapa;
 		this.saga = saga;
 		this.precio = precio;
 		this.stock = stock;
 	}
-
-	public Libro(String titulo, String autor, String editorial, String anioPublicacion, String genero, String idioma,
-			String publicoObjetivo, int numPaginas, boolean firmado, boolean edicionEspecial, String tapa, boolean saga,
-			double precio, int stock) {
+	
+	public Libro(String titulo, String autor, String editorial, String anioPublicacion, String genero,
+			String idioma, String publicoObjetivo, int numPaginas, boolean firmado,
+			boolean edicionEspecial, String materialTapa, boolean saga, double precio, int stock) {
 		this.titulo = titulo;
 		this.autor = autor;
 		this.editorial = editorial;
@@ -57,19 +55,19 @@ public class Libro {
 		this.numPaginas = numPaginas;
 		this.firmado = firmado;
 		this.edicionEspecial = edicionEspecial;
-		this.tapa = tapa;
+		this.tapa = materialTapa;
 		this.saga = saga;
 		this.precio = precio;
 		this.stock = stock;
 	}
 
 	// Getters y Setters
-	public int getidLibro() {
-		return idLibro;
+	public int getId_libro() {
+		return id_libro;
 	}
 
-	public void setidLibro(int idLibro) {
-		this.idLibro = idLibro;
+	public void setId_libro(int id_libro) {
+		this.id_libro = id_libro;
 	}
 
 	public String getTitulo() {
@@ -136,7 +134,7 @@ public class Libro {
 		this.numPaginas = numPaginas;
 	}
 
-	public boolean isFirmado() {
+	public boolean getFirmado() {
 		return firmado;
 	}
 
@@ -144,7 +142,7 @@ public class Libro {
 		this.firmado = firmado;
 	}
 
-	public boolean isEdicionEspecial() {
+	public boolean getEdicionEspecial() {
 		return edicionEspecial;
 	}
 
@@ -160,7 +158,7 @@ public class Libro {
 		this.tapa = tapa;
 	}
 
-	public boolean isSaga() {
+	public boolean getSaga() {
 		return saga;
 	}
 
@@ -183,16 +181,134 @@ public class Libro {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-
+	
 	// Métodos
 	@Override
 	public String toString() {
-		return "\nID: " + idLibro + "\nTitulo: " + titulo + "\nAutor: " + autor + "\nEditorial: " + editorial
+		return "\nID: " + id_libro + "\nTitulo: " + titulo + "\nAutor: " + autor + "\nEditorial: " + editorial
 				+ "\nAño de publicación: " + anioPublicacion + "\nGénero: " + genero + "\nIdioma: " + idioma
 				+ "\nPúblico objetivo: " + publicoObjetivo + "\nNúmero de páginas: " + numPaginas + "\n¿Firmado?: "
 				+ (firmado == true ? "Sí" : "No") + "\n¿Edición especial?: " + (edicionEspecial == true ? "Sí" : "No")
 				+ "\nTipo de tapa: " + tapa + "\n¿Pertenece a una saga?: " + (saga == true ? "Sí" : "No")
 				+ "\nPrecio: $" + precio + "\nStock: " + stock + "\n";
+	}
+	
+	/**
+	 * funcion para elegir los libros que se van a comprar.
+	 * @param cliente
+	 * @return
+	 */
+	public static LinkedList<CarritoDetalle> elegirLibros(Cliente cliente) {
+		LinkedList<Libro> listaLibros = null;
+		LinkedList<CarritoDetalle> carrito = new LinkedList<CarritoDetalle>();
+		
+		String seleccion, opcion; 
+		int cantidad;
+		boolean flag, flagDos, vacio;
+		Libro elegido = null;
+		CarritoDetalle listaCarrito = null;
+		
+		JOptionPane.showMessageDialog(null, "Hola!! " + cliente.getNombre() + "\nElija los libros que desee");
+		
+		// traigo todos los libros de la BD en una lista.
+		listaLibros = LibroDTO.elegirLibros();
+		if (listaLibros != null) {
+			String []elegirLibros = new String[listaLibros.size()];
+			
+			do {
+				flag = false;
+				flagDos = false;
+				vacio = false;
+				// proceso de selección de libros por el cliente o vendedor.
+				for (int i = 0; i < elegirLibros.length; i++) {
+					elegirLibros[i] = listaLibros.get(i).getTitulo();
+					if (listaLibros.get(i).getStock()>0) {
+						flagDos = true;
+					}
+				}
+				
+				if (flagDos) {
+					seleccion = (String)JOptionPane.showInputDialog(null, "Seleccione los libros", "Selección de Libros", 0, null, elegirLibros, elegirLibros[0]);
+					for (Libro libro : listaLibros) {
+						if (libro.getTitulo().equals(seleccion)) {
+							elegido = libro;
+							if (elegido.getStock() == 0) {
+								vacio = true;
+							}
+							break;
+						}
+					}
+					
+					if (vacio) {
+						JOptionPane.showMessageDialog(null, "No tenemos Stock del libro: " + elegido.getTitulo());
+						flag = true;
+					} else {
+						do {
+							flag = false;
+							cantidad = Integer.parseInt(Validaciones.validarInt("Libro: " + elegido.getTitulo() + " | Stock disponible: " 
+									+ elegido.getStock() +"\n¿cuantos libros desea?", "Realizando una Venta", null));
+							if (cantidad > elegido.getStock()) {
+								JOptionPane.showMessageDialog(null, "No tenemos stock suficiente!!\nStock disponible: " + elegido.getStock());
+								flag = true;
+							}				
+						} while (flag);
+						
+						if (carrito.isEmpty()) {
+							elegido.setStock(elegido.getStock()-cantidad);
+							listaCarrito = new CarritoDetalle(cantidad,elegido);
+							carrito.add(listaCarrito);
+							
+							opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
+							flag = opcion.equalsIgnoreCase("Sí")?true:false;
+							
+						} else {
+							for (CarritoDetalle libroRepetido : carrito) {
+								if (libroRepetido.getFkLibro().getTitulo().equals(elegido.getTitulo())) {
+									libroRepetido.setCantidad(libroRepetido.getCantidad()+cantidad);
+									elegido.setStock(elegido.getStock()-cantidad);
+									flag = true;
+									break;
+								}
+							}
+							
+							if (flag) {
+								opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
+								flag = opcion.equalsIgnoreCase("Sí")?true:false;					
+							} else {
+								elegido.setStock(elegido.getStock()-cantidad);
+								listaCarrito = new CarritoDetalle(cantidad,elegido);
+								carrito.add(listaCarrito);
+								
+								opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
+								flag = opcion.equalsIgnoreCase("Sí")?true:false;
+							}
+						}
+					}
+					
+				} else {
+					JOptionPane.showInternalMessageDialog(null, "Ya no tenemos Stock en ningun Libro!!");
+				}
+			} while (flag);
+		}
+		return carrito;
+	}
+	
+	// funcion para traer un libro especifico de la BD.
+	public static Libro verLibro(int fkLibro) {
+		return LibroDTO.verLibro(fkLibro);
+	}
+	
+	/**
+	 * funcion para actualizar el Stock de la BD despues de una Venta.
+	 * @param carrito
+	 */
+	public static void actualizarStock(LinkedList<CarritoDetalle>carrito) {
+		CarritoDetalle carritoDetalle = null;
+		
+		for (int i = 0; i < carrito.size(); i++) {
+			carritoDetalle = new CarritoDetalle(carrito.get(i).getCantidad(),carrito.get(i).getFkLibro());
+			LibroDTO.actualizarStock(carritoDetalle);
+		}
 	}
 
 	/**
@@ -277,7 +393,7 @@ public class Libro {
 		} else {
 			Libro encontrado = LibroDTO.libroPorID();
 			Libro modificado = cargarDatosLibro();
-			modificado.setidLibro(encontrado.getidLibro());
+			modificado.setId_libro(encontrado.getId_libro());
 			return LibroDTO.editarLibro(modificado);
 		}
 	}

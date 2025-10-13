@@ -1,7 +1,7 @@
 package UI;
 import javax.swing.JOptionPane;
-
 import BLL.Libro;
+import BLL.Exportacion;
 import BLL.Usuario;
 import DLL.LibroDTO;
 import Enums.GestionarClientes;
@@ -39,13 +39,13 @@ public class MenuVendedorInternacional {
 							GestionarExportaciones.values(), GestionarExportaciones.values());
 					switch (opcionVI2) {
 					case 0: // nueva exportación
-						JOptionPane.showMessageDialog(null, "nueva exportación");
+						Exportacion.nuevaVentaExport(user);
 						break;
 					case 1: // modificar exportación
-						JOptionPane.showMessageDialog(null, "modificar exportación");
+						Exportacion.modificarVentaExport(user);
 						break;
 					case 2: // anular exportación
-						JOptionPane.showMessageDialog(null, "anular exportación");
+						Exportacion.anularVentaExport(user);
 						break;
 					case 3: // mostrar exportaciones
 						JOptionPane.showMessageDialog(null, "mostrar exportaciones");

@@ -1,133 +1,165 @@
 package BLL;
-
-import java.time.LocalDateTime;
-import java.util.LinkedList;
+import java.time.LocalDate;
 
 public class Venta {
-	private LinkedList<Libro> carrito = new LinkedList<Libro>();
-	private int numero;
-	private Cliente cliente;
-	private int cantidad;
-	private double precio;
-	private LocalDateTime fechaVenta;
-	private String tipoVenta;
+	private int idVenta;
+	private double totalVenta;
+	private LocalDate fechaVenta;
 	private String metodoPago;
 	private String moneda;
-	private String descuento;
 	private String estado;
-
-	public Venta(LinkedList<Libro> carrito, int numero, Cliente cliente, int cantidad, double precio,
-			LocalDateTime fechaVenta, String tipoVenta, String metodoPago, String moneda, String descuento,
-			String estado) {
-		this.carrito = carrito;
-		this.numero = numero;
-		this.cliente = cliente;
-		this.cantidad = cantidad;
-		this.precio = precio;
+	private TipoVenta fkTipoVenta;
+	private Descuento fkDescuento;
+	private Carrito fkCarrito;
+	private Usuario fkUsuario;
+	
+	
+	public Venta(int idVenta, double totalVenta, LocalDate fechaVenta, String metodoPago, String moneda, String estado,
+			TipoVenta fkTipoVenta, Descuento fkDescuento, Carrito fkCarrito, Usuario fkUsuario) {
+		this.idVenta = idVenta;
+		this.totalVenta = totalVenta;
 		this.fechaVenta = fechaVenta;
-		this.tipoVenta = tipoVenta;
 		this.metodoPago = metodoPago;
 		this.moneda = moneda;
-		this.descuento = descuento;
+		this.estado = estado;
+		this.fkTipoVenta = fkTipoVenta;
+		this.fkDescuento = fkDescuento;
+		this.fkCarrito = fkCarrito;
+		this.fkUsuario = fkUsuario;
+	}
+	
+	public Venta(int idVenta, LocalDate fechaVenta, String metodoPago, String moneda, String estado) {
+		this.idVenta = idVenta;
+		this.fechaVenta = fechaVenta;
+		this.metodoPago = metodoPago;
+		this.moneda = moneda;
 		this.estado = estado;
 	}
 
+	public Venta(double totalVenta, LocalDate fechaVenta, String metodoPago, String moneda, String estado, TipoVenta fkTipoVenta,
+			Carrito fkCarrito, Usuario fkUsuario) {
+		this.totalVenta = totalVenta;
+		this.fechaVenta = fechaVenta;
+		this.metodoPago = metodoPago;
+		this.moneda = moneda;
+		this.estado = estado;
+		this.fkTipoVenta = fkTipoVenta;
+//		this.fkDescuento = fkDescuento; solo por ahora porque no es parte del MVP
+		this.fkCarrito = fkCarrito;
+		this.fkUsuario = fkUsuario;
+	}
+
+
 	// Getters y Setters
-
-	public LinkedList<Libro> getCarrito() {
-		return carrito;
+	public int getIdVenta() {
+		return idVenta;
 	}
 
-	public void setCarrito(LinkedList<Libro> carrito) {
-		this.carrito = carrito;
+
+	public void setIdVenta(int idVenta) {
+		this.idVenta = idVenta;
 	}
 
-	public int getNumero() {
-		return numero;
+
+	public double getTotalVenta() {
+		return totalVenta;
 	}
 
-	public void setNumero(int numero) {
-		this.numero = numero;
+
+	public void setTotalVenta(double totalVenta) {
+		this.totalVenta = totalVenta;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
-	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
-	public int getCantidad() {
-		return cantidad;
-	}
-
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
-	}
-
-	public double getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
-
-	public LocalDateTime getFechaVenta() {
+	public LocalDate getFechaVenta() {
 		return fechaVenta;
 	}
 
-	public void setFechaVenta(LocalDateTime fechaVenta) {
+
+	public void setFechaVenta(LocalDate fechaVenta) {
 		this.fechaVenta = fechaVenta;
 	}
 
-	public String getTipoVenta() {
-		return tipoVenta;
-	}
-
-	public void setTipoVenta(String tipoVenta) {
-		this.tipoVenta = tipoVenta;
-	}
 
 	public String getMetodoPago() {
 		return metodoPago;
 	}
 
+
 	public void setMetodoPago(String metodoPago) {
 		this.metodoPago = metodoPago;
 	}
+
 
 	public String getMoneda() {
 		return moneda;
 	}
 
+
 	public void setMoneda(String moneda) {
 		this.moneda = moneda;
 	}
 
-	public String getDescuento() {
-		return descuento;
-	}
-
-	public void setDescuento(String descuento) {
-		this.descuento = descuento;
-	}
 
 	public String getEstado() {
 		return estado;
 	}
 
+
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
 
-	// Métodos
-	@Override
-	public String toString() {
-		return "Venta [carrito=" + carrito + ", numero=" + numero + ", cliente=" + cliente + ", cantidad=" + cantidad
-				+ ", precio=" + precio + ", fechaVenta=" + fechaVenta + ", tipoVenta=" + tipoVenta + ", metodoPago="
-				+ metodoPago + ", moneda=" + moneda + ", descuento=" + descuento + ", estado=" + estado + "]";
+
+	public TipoVenta getFkTipoVenta() {
+		return fkTipoVenta;
 	}
 
+
+	public void setFkTipoVenta(TipoVenta fkTipoVenta) {
+		this.fkTipoVenta = fkTipoVenta;
+	}
+
+
+	public Descuento getFkDescuento() {
+		return fkDescuento;
+	}
+
+
+	public void setFkDescuento(Descuento fkDescuento) {
+		this.fkDescuento = fkDescuento;
+	}
+
+
+	public Carrito getFkCarrito() {
+		return fkCarrito;
+	}
+
+
+	public void setFkCarrito(Carrito fkCarrito) {
+		this.fkCarrito = fkCarrito;
+	}
+
+
+	public Usuario getFkUsuario() {
+		return fkUsuario;
+	}
+
+
+	public void setFkUsuario(Usuario fkUsuario) {
+		this.fkUsuario = fkUsuario;
+	}
+
+
+	// Métodos
+	
+	@Override
+	public String toString() {
+		return "Venta [idVenta=" + idVenta + ", totalVenta=" + totalVenta + ", fechaVenta=" + fechaVenta
+				+ ", metodoPago=" + metodoPago + ", moneda=" + moneda + ", estado=" + estado + ", fkTipoVenta="
+				+ fkTipoVenta + ", fkDescuento=" + fkDescuento + ", fkCarrito=" + fkCarrito + ", fkUsuario=" + fkUsuario
+				+ "]";
+	}
+	
+	
 }

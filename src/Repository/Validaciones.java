@@ -294,21 +294,142 @@ public interface Validaciones {
 		String respuesta;
 		String[] opciones = { "Sí", "No" };
 		int eleccion;
+		
 		if (img == null) {
-			eleccion = JOptionPane.showOptionDialog(null, mensaje, titulo, 0, JOptionPane.DEFAULT_OPTION, null,
-					opciones, opciones[0]);
+			eleccion = JOptionPane.showOptionDialog(null, mensaje, titulo, 0, 1, null, opciones, opciones[0]);
+			
+			if (eleccion == 0) {
+				respuesta = "Sí";
+				return respuesta;
+			} else {
+				respuesta = "No";
+				return respuesta;
+			}			
 		} else {
 			eleccion = JOptionPane.showOptionDialog(null, mensaje, titulo, 0, JOptionPane.DEFAULT_OPTION,
 					new ImageIcon(Validaciones.class.getResource("/img/" + img)), opciones, opciones[0]);
+			
+			if (eleccion == 0) {
+				respuesta = "Sí";
+				return respuesta;
+			} else {
+				respuesta = "No";
+				return respuesta;
+			}			
 		}
-
-		if (eleccion == 0) {
-			respuesta = "Sí";
-			return respuesta;
-		} else {
-			respuesta = "No";
-			return respuesta;
-		}
-
+		
 	}
+	
+	public static String menuContinuar(String mensaje, String titulo, String img) {
+		String respuesta;
+		String[] opciones = { "continuar", "Modificar" };
+		int eleccion;
+		
+		if (img == null) {
+			eleccion = JOptionPane.showOptionDialog(null, mensaje, titulo, 0, 1, null, opciones, opciones[0]);
+			
+			if (eleccion == 0) {
+				respuesta = "continuar";
+				return respuesta;
+			} else {
+				respuesta = "Modificar";
+				return respuesta;
+			}			
+		} else {
+			eleccion = JOptionPane.showOptionDialog(null, mensaje, titulo, 0, JOptionPane.DEFAULT_OPTION,
+					new ImageIcon(Validaciones.class.getResource("/img/" + img)), opciones, opciones[0]);
+			
+			if (eleccion == 0) {
+				respuesta = "continuar";
+				return respuesta;
+			} else {
+				respuesta = "Modificar";
+				return respuesta;
+			}			
+		}
+		
+	}
+
+	/**
+	 * Método para validar que un String cuente con cierta cantidad de caracteres,
+	 * tanto numericos como alfabéticos
+	 * 
+	 * @param mensaje
+	 * @param titulo
+	 * @param img
+	 * @param cantDigitos
+	 * @param cantLetras
+	 * @return String
+	 */
+	public static String validarDigitos(String mensaje, String titulo, String img, int cantDigitos, int cantLetras) {
+		String input = "";
+		boolean flag = false;
+
+		while (flag == false) {
+			if (img == null) {
+				input = JOptionPane.showInputDialog(mensaje);
+			} else {
+				input = (String) JOptionPane.showInputDialog(null, mensaje, titulo, JOptionPane.DEFAULT_OPTION,
+						new ImageIcon(Validaciones.class.getResource("/img/" + img)), null, null);
+			}
+
+			if (input == null) {
+				return null;
+			}
+
+			if (input.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Por favor complete este campo");
+				flag = false;
+			} else {
+				int contL = 0;
+				int contD = 0;
+
+				for (int i = 0; i < input.length(); i++) {
+					if (Character.isAlphabetic(input.charAt(i))) {
+						contL++;
+					} else if (Character.isDigit(input.charAt(i))) {
+						contD++;
+					}
+				}
+
+				boolean letrasNecesarias;
+				if (contL == cantLetras) {
+					letrasNecesarias = true;
+				} else {
+					letrasNecesarias = false;
+				}
+
+				boolean digitosNecesarios;
+				if (contD == cantDigitos) {
+					digitosNecesarios = true;
+				} else {
+					digitosNecesarios = false;
+				}
+
+				if (letrasNecesarias == true && digitosNecesarios == true) {
+					flag = true;
+				} else {
+					String mensajeError = "";
+
+					if (cantLetras == 0 && contL > 0) {
+						mensajeError = "No se permiten letras.";
+					} else if (cantDigitos == 0 && contD > 0) {
+						mensajeError = "No se permiten números.";
+					} else {
+						if (cantLetras > 0 && cantDigitos > 0) {
+							mensajeError = "Debe ingresar exactamente " + cantLetras + " letras y " + cantDigitos
+									+ " dígitos (números).";
+						} else if (cantLetras > 0) {
+							mensajeError = "Debe ingresar exactamente " + cantLetras + " letras.";
+						} else if (cantDigitos > 0) {
+							mensajeError = "Debe ingresar exactamente " + cantDigitos + " dígitos (números).";
+						}
+					}
+					JOptionPane.showMessageDialog(null, mensajeError);
+				}
+			}
+		}
+		return input;
+	}
+
 }

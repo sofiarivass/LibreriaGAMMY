@@ -1,13 +1,11 @@
 package DLL;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.swing.JOptionPane;
-
+import BLL.CarritoDetalle;
 import BLL.Libro;
 import Repository.Validaciones;
 
@@ -46,10 +44,10 @@ public class LibroDTO {
 				statement.setString(6, libro.getIdioma());
 				statement.setString(7, libro.getPublicoObjetivo());
 				statement.setInt(8, libro.getNumPaginas());
-				statement.setBoolean(9, libro.isFirmado());
-				statement.setBoolean(10, libro.isEdicionEspecial());
+				statement.setBoolean(9, libro.getFirmado());
+				statement.setBoolean(10, libro.getEdicionEspecial());
 				statement.setString(11, libro.getTapa());
-				statement.setBoolean(12, libro.isSaga());
+				statement.setBoolean(12, libro.getSaga());
 				statement.setDouble(13, libro.getPrecio());
 				statement.setInt(14, libro.getStock());
 
@@ -105,13 +103,13 @@ public class LibroDTO {
 				statement.setString(6, libro.getIdioma());
 				statement.setString(7, libro.getPublicoObjetivo());
 				statement.setInt(8, libro.getNumPaginas());
-				statement.setBoolean(9, libro.isFirmado());
-				statement.setBoolean(10, libro.isEdicionEspecial());
+				statement.setBoolean(9, libro.getFirmado());
+				statement.setBoolean(10, libro.getEdicionEspecial());
 				statement.setString(11, libro.getTapa());
-				statement.setBoolean(12, libro.isSaga());
+				statement.setBoolean(12, libro.getSaga());
 				statement.setDouble(13, libro.getPrecio());
 				statement.setInt(14, libro.getStock());
-				statement.setInt(15, libro.getidLibro());
+				statement.setInt(15, libro.getId_libro());
 
 				int filas = statement.executeUpdate();
 				if (filas > 0) {
@@ -182,7 +180,7 @@ public class LibroDTO {
 
 		String[] librosArray = new String[libros.size()];
 		for (int i = 0; i < librosArray.length; i++) {
-			librosArray[i] = libros.get(i).getidLibro() + " - " + libros.get(i).getTitulo();
+			librosArray[i] = libros.get(i).getId_libro() + " - " + libros.get(i).getTitulo();
 		}
 		String elegido = (String) JOptionPane.showInputDialog(null, "Elija libro:", null, 0, null, librosArray,
 				librosArray[0]);
@@ -234,7 +232,7 @@ public class LibroDTO {
 			if (confirmacion.equals("Sí")) {
 				try {
 					PreparedStatement statement = con.prepareStatement("DELETE FROM libro WHERE id_libro = ?");
-					statement.setInt(1, seleccionado.getidLibro());
+					statement.setInt(1, seleccionado.getId_libro());
 
 					int filas = statement.executeUpdate();
 					if (filas > 0) {
@@ -247,7 +245,115 @@ public class LibroDTO {
 				JOptionPane.showMessageDialog(null, "No se han eliminado libros.");
 			}
 		}
+	}
+		
+	/**
+	 * funcion para traer todos los libros de la BD.
+	 * @return
+	 */
+	public static LinkedList<Libro> elegirLibros() {
+		boolean flag = false;
+		LinkedList<Libro> listaLibros = new LinkedList<Libro>();
+		
+		try {
+          PreparedStatement stmt = con.prepareStatement("SELECT * FROM libro");
+          ResultSet rs = stmt.executeQuery();
 
+          while (rs.next()) {
+              int id_libro = rs.getInt("id_libro");
+              String titulo = rs.getString("titulo");
+              String autor = rs.getString("autor");
+              String editorial = rs.getString("editorial");
+              String anio = rs.getString("anio_publicacion");
+              String genero = rs.getString("genero");
+              String idioma = rs.getString("idioma");
+              String publico_objetivo = rs.getString("publico_objetivo");
+              int numPaginas = rs.getInt("num_paginas");
+              boolean firmado = rs.getBoolean("firmado");
+              boolean edicionEspecial = rs.getBoolean("edicion_especial");
+              String materialTapa = rs.getString("tapa");
+              boolean saga = rs.getBoolean("saga");
+              double precio = rs.getDouble("precio");
+              int stock = rs.getInt("stock");
+              
+              listaLibros.add(new Libro(id_libro,titulo,autor,editorial,anio,genero,idioma,publico_objetivo,numPaginas,firmado,edicionEspecial,materialTapa,saga,precio,stock));
+          }
+          
+          for (int i = 0; i < listaLibros.size(); i++) {
+			if (listaLibros.get(i).getStock() > 0) {
+				flag = true;
+				break;
+			}
+          }
+          
+		} catch (Exception e) {
+		}
+		
+		if (listaLibros.isEmpty()) {
+			return null;				
+		} else if(!(listaLibros.isEmpty()) && flag != false){
+			return listaLibros;			
+		} else {
+			return null;
+		}
+	}
+	
+	// funcion para traer un libro en especifico de la BD.
+	public static Libro verLibro(int fkLibro) {
+		Libro libro = null;
+		
+		try {
+	          PreparedStatement stmt = con.prepareStatement("SELECT * FROM libro WHERE id_libro=?");
+	          stmt.setInt(1, fkLibro);
+	          
+	          ResultSet rs = stmt.executeQuery();
+
+	          if (rs.next()) {
+	              int id_libro = rs.getInt("id_libro");
+	              String titulo = rs.getString("titulo");
+	              String autor = rs.getString("autor");
+	              String editorial = rs.getString("editorial");
+	              String anio = rs.getString("anio_publicacion");
+	              String genero = rs.getString("genero");
+	              String idioma = rs.getString("idioma");
+	              String publico_objetivo = rs.getString("publico_objetivo");
+	              int numPaginas = rs.getInt("num_paginas");
+	              boolean firmado = rs.getBoolean("firmado");
+	              boolean edicionEspecial = rs.getBoolean("edicion_especial");
+	              String materialTapa = rs.getString("tapa");
+	              boolean saga = rs.getBoolean("saga");
+	              double precio = rs.getDouble("precio");
+	              int stock = rs.getInt("stock");
+	              
+	              libro = new Libro(id_libro,titulo,autor,editorial,anio,genero,idioma,publico_objetivo,numPaginas,firmado,edicionEspecial,materialTapa,saga,precio,stock);
+	          }
+		} catch (Exception e) {
+		}
+		
+		return libro;
+	}
+	
+	/**
+	 * funcion para actualizar el Stock de la BD.
+	 * @param carritoDetalle
+	 */
+	public static void actualizarStock(CarritoDetalle carritoDetalle) {
+		try {
+            PreparedStatement statement = con.prepareStatement(
+                "UPDATE Libro SET stock=? WHERE id_libro=?"
+            );
+            statement.setInt(1, carritoDetalle.getFkLibro().getStock());
+            statement.setInt(2, carritoDetalle.getFkLibro().getId_libro());
+
+            int filas = statement.executeUpdate();
+            if (filas > 0) {
+                System.out.println("Usuario editado correctamente.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 }
+
+
