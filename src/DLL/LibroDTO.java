@@ -54,6 +54,7 @@ public class LibroDTO {
 				statement.setBoolean(12, libro.getSaga());
 				statement.setDouble(13, libro.getPrecio());
 				statement.setInt(14, libro.getStock());
+				statement.setBoolean(15, true);
 
 				int filas = statement.executeUpdate();
 				ResultSet rs = statement.getGeneratedKeys();
@@ -168,9 +169,10 @@ public class LibroDTO {
 				boolean saga = rs.getBoolean("saga");
 				double precio = rs.getDouble("precio");
 				int stock = rs.getInt("stock");
+				boolean estado = rs.getBoolean("estado");
 
 				libros.add(new Libro(id_libro, titulo, autor, editorial, anio_publicacion, genero, idioma,
-						publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock));
+						publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado));
 			}
 
 		} catch (Exception e) {
@@ -185,75 +187,163 @@ public class LibroDTO {
 	 * 
 	 * @return Libro
 	 */
-	public static Libro libroPorID() {
+	public static Libro libroPorID(LinkedList<Libro> librosDisp) {
 		int id_libro = 0;
 		List<Libro> libros = LibroDTO.mostrarLibros();
 
-		String[] librosArray = new String[libros.size()];
-		for (int i = 0; i < librosArray.length; i++) {
-			librosArray[i] = libros.get(i).getId_libro() + " - " + libros.get(i).getTitulo();
-		}
-		String elegido = (String) JOptionPane.showInputDialog(null, "Elija libro:", null, 0, null, librosArray,
-				librosArray[0]);
-		id_libro = Integer.parseInt(elegido.split(" - ")[0]);
-		Libro libro = null;
-		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT * FROM libro WHERE id_libro = ?");
-			stmt.setInt(1, id_libro);
-
-			// executequery se utiliza cuando no hay cambios en la bdd
-			ResultSet rs = stmt.executeQuery();
-
-			if (rs.next()) {
-				String titulo = rs.getString("titulo");
-				String autor = rs.getString("autor");
-				String editorial = rs.getString("editorial");
-				String anio_publicacion = rs.getString("anio_publicacion");
-				String genero = rs.getString("genero");
-				String idioma = rs.getString("idioma");
-				String publico_objetivo = rs.getString("publico_objetivo");
-				int num_paginas = rs.getInt("num_paginas");
-				boolean firmado = rs.getBoolean("firmado");
-				boolean edicion_especial = rs.getBoolean("edicion_especial");
-				String tapa = rs.getString("tapa");
-				boolean saga = rs.getBoolean("saga");
-				double precio = rs.getDouble("precio");
-				int stock = rs.getInt("stock");
-
-				libro = new Libro(id_libro, titulo, autor, editorial, anio_publicacion, genero, idioma,
-						publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock);
+		if (librosDisp == null) {
+			String[] librosArray = new String[libros.size()];
+			for (int i = 0; i < librosArray.length; i++) {
+				librosArray[i] = libros.get(i).getId_libro() + " - " + libros.get(i).getTitulo();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			String elegido = (String) JOptionPane.showInputDialog(null, "Elija libro:", null, 0, null, librosArray,
+					librosArray[0]);
+			id_libro = Integer.parseInt(elegido.split(" - ")[0]);
+			Libro libro = null;
+			try {
+				PreparedStatement stmt = con.prepareStatement("SELECT * FROM libro WHERE id_libro = ?");
+				stmt.setInt(1, id_libro);
+
+				// executequery se utiliza cuando no hay cambios en la bdd
+				ResultSet rs = stmt.executeQuery();
+
+				if (rs.next()) {
+					String titulo = rs.getString("titulo");
+					String autor = rs.getString("autor");
+					String editorial = rs.getString("editorial");
+					String anio_publicacion = rs.getString("anio_publicacion");
+					String genero = rs.getString("genero");
+					String idioma = rs.getString("idioma");
+					String publico_objetivo = rs.getString("publico_objetivo");
+					int num_paginas = rs.getInt("num_paginas");
+					boolean firmado = rs.getBoolean("firmado");
+					boolean edicion_especial = rs.getBoolean("edicion_especial");
+					String tapa = rs.getString("tapa");
+					boolean saga = rs.getBoolean("saga");
+					double precio = rs.getDouble("precio");
+					int stock = rs.getInt("stock");
+					boolean estado = rs.getBoolean("estado");
+					
+					libro = new Libro(id_libro, titulo, autor, editorial, anio_publicacion, genero, idioma,
+							publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return libro;
+		} else {
+			String[] librosArray = new String[librosDisp.size()];
+			for (int i = 0; i < librosArray.length; i++) {
+				librosArray[i] = librosDisp.get(i).getId_libro() + " - " + librosDisp.get(i).getTitulo();
+			}
+			String elegido = (String) JOptionPane.showInputDialog(null, "Elija libro:", null, 0, null, librosArray,
+					librosArray[0]);
+			id_libro = Integer.parseInt(elegido.split(" - ")[0]);
+			Libro libro = null;
+			try {
+				PreparedStatement stmt = con.prepareStatement("SELECT * FROM libro WHERE id_libro = ?");
+				stmt.setInt(1, id_libro);
+
+				// executequery se utiliza cuando no hay cambios en la bdd
+				ResultSet rs = stmt.executeQuery();
+
+				if (rs.next()) {
+					String titulo = rs.getString("titulo");
+					String autor = rs.getString("autor");
+					String editorial = rs.getString("editorial");
+					String anio_publicacion = rs.getString("anio_publicacion");
+					String genero = rs.getString("genero");
+					String idioma = rs.getString("idioma");
+					String publico_objetivo = rs.getString("publico_objetivo");
+					int num_paginas = rs.getInt("num_paginas");
+					boolean firmado = rs.getBoolean("firmado");
+					boolean edicion_especial = rs.getBoolean("edicion_especial");
+					String tapa = rs.getString("tapa");
+					boolean saga = rs.getBoolean("saga");
+					double precio = rs.getDouble("precio");
+					int stock = rs.getInt("stock");
+					boolean estado = rs.getBoolean("estado");
+					
+					libro = new Libro(id_libro, titulo, autor, editorial, anio_publicacion, genero, idioma,
+							publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return libro;
 		}
-		return libro;
+		
+		
 	}
 
+//	/**
+//	 * Función para eliminar un libro de la base de datos.
+//	 */
+//	public static void eliminarLibro() {
+//		LinkedList<Libro> libros = mostrarLibros();
+//		if (libros == null || libros.isEmpty()) {
+//			JOptionPane.showMessageDialog(null, "No hay libros disponibles para eliminar.");
+//		} else {
+//			Libro seleccionado = LibroDTO.libroPorID();
+//			String confirmacion = Validaciones.menuSiNo("Seguro que desea eliminar el libro?\n"
+//					+ seleccionado.toString() + "\nEsta acción es irreversible!!", "Eliminar Libro", null);
+//			if (confirmacion.equals("Sí")) {
+//				try {
+//					PreparedStatement statement = con.prepareStatement("DELETE FROM libro WHERE id_libro = ?");
+//					statement.setInt(1, seleccionado.getId_libro());
+//
+//					int filas = statement.executeUpdate();
+//					if (filas > 0) {
+//						JOptionPane.showMessageDialog(null, "Libro eliminado correctamente.");
+//					}
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			} else {
+//				JOptionPane.showMessageDialog(null, "No se han eliminado libros.");
+//			}
+//		}
+//	}
+	
 	/**
-	 * Función para eliminar un libro de la base de datos.
+	 * Función para eliminar un libro de la base de datos (no elimina, edita el estado).
 	 */
 	public static void eliminarLibro() {
 		LinkedList<Libro> libros = mostrarLibros();
+		LinkedList<Libro> librosDisp = new LinkedList<Libro>();
 		if (libros == null || libros.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "No hay libros disponibles para eliminar.");
 		} else {
-			Libro seleccionado = LibroDTO.libroPorID();
-			String confirmacion = Validaciones.menuSiNo("Seguro que desea eliminar el libro?\n"
-					+ seleccionado.toString() + "\nEsta acción es irreversible!!", "Eliminar Libro", null);
-			if (confirmacion.equals("Sí")) {
-				try {
-					PreparedStatement statement = con.prepareStatement("DELETE FROM libro WHERE id_libro = ?");
-					statement.setInt(1, seleccionado.getId_libro());
-
-					int filas = statement.executeUpdate();
-					if (filas > 0) {
-						JOptionPane.showMessageDialog(null, "Libro eliminado correctamente.");
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
+			for (Libro libro : libros) {
+				if (libro.getEstado() == true) {
+					librosDisp.add(libro);
 				}
+			}
+			
+			if (librosDisp.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "No hay libros disponibles para eliminar.");
 			} else {
-				JOptionPane.showMessageDialog(null, "No se han eliminado libros.");
+				
+				Libro seleccionado = LibroDTO.libroPorID(librosDisp);				
+				
+				String confirmacion = Validaciones.menuSiNo("Seguro que desea eliminar el libro?\n"
+						+ seleccionado.toString() + "\nEsta acción es irreversible!!", "Eliminar Libro", null);
+				if (confirmacion.equals("Sí")) {
+					try {
+						PreparedStatement statement = con.prepareStatement("UPDATE libro SET estado = ? WHERE id_libro = ?");
+						statement.setBoolean(1, false);
+						statement.setInt(2, seleccionado.getId_libro());
+						
+						int filas = statement.executeUpdate();
+						if (filas > 0) {
+							JOptionPane.showMessageDialog(null, "Libro eliminado correctamente.");
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "No se han eliminado libros.");
+				}
 			}
 		}
 	}
@@ -286,8 +376,9 @@ public class LibroDTO {
               boolean saga = rs.getBoolean("saga");
               double precio = rs.getDouble("precio");
               int stock = rs.getInt("stock");
+              boolean estado = rs.getBoolean("estado");
               
-              listaLibros.add(new Libro(id_libro,titulo,autor,editorial,anio,genero,idioma,publico_objetivo,numPaginas,firmado,edicionEspecial,materialTapa,saga,precio,stock));
+              listaLibros.add(new Libro(id_libro,titulo,autor,editorial,anio,genero,idioma,publico_objetivo,numPaginas,firmado,edicionEspecial,materialTapa,saga,precio,stock,estado));
           }
           
           for (int i = 0; i < listaLibros.size(); i++) {
@@ -335,8 +426,9 @@ public class LibroDTO {
 	              boolean saga = rs.getBoolean("saga");
 	              double precio = rs.getDouble("precio");
 	              int stock = rs.getInt("stock");
+	              boolean estado = rs.getBoolean("estado");
 	              
-	              libro = new Libro(id_libro,titulo,autor,editorial,anio,genero,idioma,publico_objetivo,numPaginas,firmado,edicionEspecial,materialTapa,saga,precio,stock);
+	              libro = new Libro(id_libro,titulo,autor,editorial,anio,genero,idioma,publico_objetivo,numPaginas,firmado,edicionEspecial,materialTapa,saga,precio,stock,estado);
 	          }
 		} catch (Exception e) {
 		}

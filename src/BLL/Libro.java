@@ -1,4 +1,5 @@
 package BLL;
+
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import DLL.LibroDTO;
@@ -21,10 +22,11 @@ public class Libro {
 	private boolean saga;
 	private double precio;
 	private int stock;
-	
+	private boolean estado;
+
 	public Libro(int id_libro, String titulo, String autor, String editorial, String anioPublicacion, String genero,
-			String idioma, String publicoObjetivo, int numPaginas, boolean firmado,
-			boolean edicionEspecial, String materialTapa, boolean saga, double precio, int stock) {
+			String idioma, String publicoObjetivo, int numPaginas, boolean firmado, boolean edicionEspecial,
+			String materialTapa, boolean saga, double precio, int stock, boolean estado) {
 		this.id_libro = id_libro;
 		this.titulo = titulo;
 		this.autor = autor;
@@ -40,11 +42,12 @@ public class Libro {
 		this.saga = saga;
 		this.precio = precio;
 		this.stock = stock;
+		this.estado = estado;
 	}
-	
-	public Libro(String titulo, String autor, String editorial, String anioPublicacion, String genero,
-			String idioma, String publicoObjetivo, int numPaginas, boolean firmado,
-			boolean edicionEspecial, String materialTapa, boolean saga, double precio, int stock) {
+
+	public Libro(String titulo, String autor, String editorial, String anioPublicacion, String genero, String idioma,
+			String publicoObjetivo, int numPaginas, boolean firmado, boolean edicionEspecial, String materialTapa,
+			boolean saga, double precio, int stock, boolean estado) {
 		this.titulo = titulo;
 		this.autor = autor;
 		this.editorial = editorial;
@@ -59,6 +62,7 @@ public class Libro {
 		this.saga = saga;
 		this.precio = precio;
 		this.stock = stock;
+		this.estado = estado;
 	}
 
 	// Getters y Setters
@@ -181,7 +185,15 @@ public class Libro {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-	
+
+	public boolean getEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
 	// Métodos
 	@Override
 	public String toString() {
@@ -190,31 +202,32 @@ public class Libro {
 				+ "\nPúblico objetivo: " + publicoObjetivo + "\nNúmero de páginas: " + numPaginas + "\n¿Firmado?: "
 				+ (firmado == true ? "Sí" : "No") + "\n¿Edición especial?: " + (edicionEspecial == true ? "Sí" : "No")
 				+ "\nTipo de tapa: " + tapa + "\n¿Pertenece a una saga?: " + (saga == true ? "Sí" : "No")
-				+ "\nPrecio: $" + precio + "\nStock: " + stock + "\n";
+				+ "\nPrecio: $" + precio + "\nStock: " + stock + "\nEstado: " + (estado == true ? "Disponible" : "No disponible") + "\n";
 	}
-	
+
 	/**
 	 * funcion para elegir los libros que se van a comprar.
+	 * 
 	 * @param cliente
 	 * @return
 	 */
 	public static LinkedList<CarritoDetalle> elegirLibros(Cliente cliente) {
 		LinkedList<Libro> listaLibros = null;
 		LinkedList<CarritoDetalle> carrito = new LinkedList<CarritoDetalle>();
-		
-		String seleccion, opcion; 
+
+		String seleccion, opcion;
 		int cantidad;
 		boolean flag, flagDos, vacio;
 		Libro elegido = null;
 		CarritoDetalle listaCarrito = null;
-		
+
 		JOptionPane.showMessageDialog(null, "Hola!! " + cliente.getNombre() + "\nElija los libros que desee");
-		
+
 		// traigo todos los libros de la BD en una lista.
 		listaLibros = LibroDTO.elegirLibros();
 		if (listaLibros != null) {
-			String []elegirLibros = new String[listaLibros.size()];
-			
+			String[] elegirLibros = new String[listaLibros.size()];
+
 			do {
 				flag = false;
 				flagDos = false;
@@ -222,13 +235,14 @@ public class Libro {
 				// proceso de selección de libros por el cliente o vendedor.
 				for (int i = 0; i < elegirLibros.length; i++) {
 					elegirLibros[i] = listaLibros.get(i).getTitulo();
-					if (listaLibros.get(i).getStock()>0) {
+					if (listaLibros.get(i).getStock() > 0) {
 						flagDos = true;
 					}
 				}
-				
+
 				if (flagDos) {
-					seleccion = (String)JOptionPane.showInputDialog(null, "Seleccione los libros", "Selección de Libros", 0, null, elegirLibros, elegirLibros[0]);
+					seleccion = (String) JOptionPane.showInputDialog(null, "Seleccione los libros",
+							"Selección de Libros", 0, null, elegirLibros, elegirLibros[0]);
 					for (Libro libro : listaLibros) {
 						if (libro.getTitulo().equals(seleccion)) {
 							elegido = libro;
@@ -238,53 +252,59 @@ public class Libro {
 							break;
 						}
 					}
-					
+
 					if (vacio) {
 						JOptionPane.showMessageDialog(null, "No tenemos Stock del libro: " + elegido.getTitulo());
 						flag = true;
 					} else {
 						do {
 							flag = false;
-							cantidad = Integer.parseInt(Validaciones.validarInt("Libro: " + elegido.getTitulo() + " | Stock disponible: " 
-									+ elegido.getStock() +"\n¿cuantos libros desea?", "Realizando una Venta", null));
+							cantidad = Integer
+									.parseInt(Validaciones.validarInt(
+											"Libro: " + elegido.getTitulo() + " | Stock disponible: "
+													+ elegido.getStock() + "\n¿cuantos libros desea?",
+											"Realizando una Venta", null));
 							if (cantidad > elegido.getStock()) {
-								JOptionPane.showMessageDialog(null, "No tenemos stock suficiente!!\nStock disponible: " + elegido.getStock());
+								JOptionPane.showMessageDialog(null,
+										"No tenemos stock suficiente!!\nStock disponible: " + elegido.getStock());
 								flag = true;
-							}				
+							}
 						} while (flag);
-						
+
 						if (carrito.isEmpty()) {
-							elegido.setStock(elegido.getStock()-cantidad);
-							listaCarrito = new CarritoDetalle(cantidad,elegido);
+							elegido.setStock(elegido.getStock() - cantidad);
+							listaCarrito = new CarritoDetalle(cantidad, elegido);
 							carrito.add(listaCarrito);
-							
+
 							opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
-							flag = opcion.equalsIgnoreCase("Sí")?true:false;
-							
+							flag = opcion.equalsIgnoreCase("Sí") ? true : false;
+
 						} else {
 							for (CarritoDetalle libroRepetido : carrito) {
 								if (libroRepetido.getFkLibro().getTitulo().equals(elegido.getTitulo())) {
-									libroRepetido.setCantidad(libroRepetido.getCantidad()+cantidad);
-									elegido.setStock(elegido.getStock()-cantidad);
+									libroRepetido.setCantidad(libroRepetido.getCantidad() + cantidad);
+									elegido.setStock(elegido.getStock() - cantidad);
 									flag = true;
 									break;
 								}
 							}
-							
+
 							if (flag) {
-								opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
-								flag = opcion.equalsIgnoreCase("Sí")?true:false;					
+								opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null,
+										null);
+								flag = opcion.equalsIgnoreCase("Sí") ? true : false;
 							} else {
-								elegido.setStock(elegido.getStock()-cantidad);
-								listaCarrito = new CarritoDetalle(cantidad,elegido);
+								elegido.setStock(elegido.getStock() - cantidad);
+								listaCarrito = new CarritoDetalle(cantidad, elegido);
 								carrito.add(listaCarrito);
-								
-								opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
-								flag = opcion.equalsIgnoreCase("Sí")?true:false;
+
+								opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null,
+										null);
+								flag = opcion.equalsIgnoreCase("Sí") ? true : false;
 							}
 						}
 					}
-					
+
 				} else {
 					JOptionPane.showInternalMessageDialog(null, "Ya no tenemos Stock en ningun Libro!!");
 				}
@@ -292,21 +312,22 @@ public class Libro {
 		}
 		return carrito;
 	}
-	
+
 	// funcion para traer un libro especifico de la BD.
 	public static Libro verLibro(int fkLibro) {
 		return LibroDTO.verLibro(fkLibro);
 	}
-	
+
 	/**
 	 * funcion para actualizar el Stock de la BD despues de una Venta.
+	 * 
 	 * @param carrito
 	 */
-	public static void actualizarStock(LinkedList<CarritoDetalle>carrito) {
+	public static void actualizarStock(LinkedList<CarritoDetalle> carrito) {
 		CarritoDetalle carritoDetalle = null;
-		
+
 		for (int i = 0; i < carrito.size(); i++) {
-			carritoDetalle = new CarritoDetalle(carrito.get(i).getCantidad(),carrito.get(i).getFkLibro());
+			carritoDetalle = new CarritoDetalle(carrito.get(i).getCantidad(), carrito.get(i).getFkLibro());
 			LibroDTO.actualizarStock(carritoDetalle);
 		}
 	}
@@ -367,7 +388,7 @@ public class Libro {
 		stock = Integer.parseInt(Repository.Validaciones.validarInt("Ingrese stock del libro:", "Cargar libro", null));
 
 		return new Libro(titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, numPaginas,
-				firmado, edicionEspecial, tapa, saga, precio, stock);
+				firmado, edicionEspecial, tapa, saga, precio, stock, true);
 	}
 
 	/**
@@ -391,7 +412,7 @@ public class Libro {
 			JOptionPane.showMessageDialog(null, "No hay libros disponibles para editar.");
 			return false;
 		} else {
-			Libro encontrado = LibroDTO.libroPorID();
+			Libro encontrado = LibroDTO.libroPorID(null);
 			Libro modificado = cargarDatosLibro();
 			modificado.setId_libro(encontrado.getId_libro());
 			return LibroDTO.editarLibro(modificado);
@@ -411,7 +432,7 @@ public class Libro {
 		if (libros == null || libros.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "No hay libros disponibles para mostrar.");
 		} else {
-			JOptionPane.showMessageDialog(null, LibroDTO.libroPorID());
+			JOptionPane.showMessageDialog(null, LibroDTO.libroPorID(null));
 		}
 	}
 
