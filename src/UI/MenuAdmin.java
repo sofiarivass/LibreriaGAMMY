@@ -34,6 +34,7 @@ public class MenuAdmin {
 						
 						break;
 					case 2: // dar de baja empleado
+						Admin.eliminarEmpleados();
 						/*JOptionPane.showMessageDialog(null, "dar de baja empleado");
 						
 						GestionEmpleados.BajarEmpleado();*/

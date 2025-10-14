@@ -4,6 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
+import com.sun.tools.javac.util.List;
+
 import BLL.Usuario;
 
 public class UsuarioDTO {
@@ -56,6 +60,38 @@ public class UsuarioDTO {
 		
 		return usuario;
 		
+	}
+	
+	public static Usuario usuarioPorID() {
+		int id_usuario = 0;
+		List<Usuario> usuario = UsuarioDTO.mostrarUsuarios();
+		
+		String[] usuarioArray = new String[usuario.size()];
+		for (int i = 0; i < usuarioArray.length; i++) {
+			usuarioArray[i] = usuario.get(i).getId_usuario() + " - " + usuario.get(i).getNombre(); 
+		}
+		String elegido = (String) JOptionPane.showInputDialog(null, "Elija empleado:", null, 0, null, usuarioArray, usuarioArray[0]);
+		id_usuario = Integer.parseInt(elegido.split(" - ")[0]);
+		Usuario usuario = null;
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM usuario WHERE id_usuario = ?");
+			stmt.setInt(1, id_usuario);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				int id_user = rs.getInt("id_usuario");
+				String usuario_empleado = rs.getString("usuario");
+				String nom_empleado = rs.getString("nombre");
+				boolean estado = rs.getBoolean("estado");
+				int tipo_empleado = rs.getInt("fk_tipo_empleado");
+				
+				usuario = new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, tipo_empleado);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return usuario;
 	}
 	
 }

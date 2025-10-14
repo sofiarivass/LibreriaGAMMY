@@ -42,6 +42,15 @@ public class Admin extends Usuario {
 		JOptionPane.showMessageDialog(null,datos);
 	}
 	
+	public static void eliminarEmpleados() {
+		LinkedList<Usuario> empleado = mostrarEmpleados();
+		if (empleado == null || usuario.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No existen empleados");
+		}else {
+			Usuario seleccionado = UsuarioDTO.usuarioPorID();
+		}
+	}
+	
 	/*public static void mostrarEmpleados() {
 		
 	}*/
