@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.swing.JOptionPane;
+
 import DLL.UsuarioDTO;
 
 public class Admin extends Usuario {
@@ -32,7 +34,12 @@ public class Admin extends Usuario {
 	}
 	
 	public static void mostrarEmpleados() {
+		String datos = "";
 		LinkedList<Usuario> usuario = UsuarioDTO.mostrarUsuarios();
+		for (Usuario usuario2 : usuario) {
+			datos = datos + usuario2.toString() + "\n";
+		}
+		JOptionPane.showMessageDialog(null,datos);
 	}
 	
 	/*public static void mostrarEmpleados() {

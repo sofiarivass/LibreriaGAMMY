@@ -47,7 +47,7 @@ public class UsuarioDTO {
 				boolean estado = rs.getBoolean("estado");
 				int tipo_empleado = rs.getInt("fk_tipo_empleado");
 				
-				usuario.add(new Usuario(id_usuario, usuario, nom_empleado, estado, tipo_empleado));
+				usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, tipo_empleado));
 				
 			}
 		} catch (Exception e) {

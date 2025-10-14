@@ -21,6 +21,13 @@ public class Usuario {
 		this.estado = estado;
 		this.fk_tipo_empleado = fk_tipo_empleado;
 	}
+	public Usuario(int id_usuario, String usuario, String nombre, boolean estado, int fk_tipo_empleado) {
+		this.id_usuario = id_usuario;
+		this.usuario = usuario;
+		this.nombre = nombre;
+		this.estado = estado;
+		this.fk_tipo_empleado = fk_tipo_empleado;
+	}
 
 	// Getter y Setters
 	public int getId_usuario() {
