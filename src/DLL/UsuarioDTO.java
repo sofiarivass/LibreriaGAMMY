@@ -62,7 +62,7 @@ public class UsuarioDTO {
 		
 	}
 	
-	public static Usuario usuarioPorID() {
+	public static Usuario usuarioPorID(LinkedList<Usuario> usuarioDisp) {
 		int id_usuario = 0;
 		List<Usuario> usuario = UsuarioDTO.mostrarUsuarios();
 		
@@ -82,15 +82,41 @@ public class UsuarioDTO {
 				ResultSet rs = stmt.executeQuery();
 				
 				if (rs.next()) {
-					int id_user = rs.getInt("id_usuario");
 					String usuario_empleado = rs.getString("usuario");
 					String nom_empleado = rs.getString("nombre");
 					boolean estado = rs.getBoolean("estado");
 					int tipo_empleado = rs.getInt("fk_tipo_empleado");
 					
-					usuario = new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, tipo_empleado);
+					usuario = new Usuario(usuario_empleado, nom_empleado, estado, tipo_empleado);
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return usuario;
+		}else {
+			String [] usuariosArray = new String[usuarioDisp.size()];
+			for (int i = 0; i < usuariosArray.length; i++) {
+				usuariosArray[i] = usuarioDisp.get(i).getId_usuario() + " - " + usuarioDisp.get(i).getNombre();
+			}
+			String elegido = (String) JOptionPane.showInputDialog(null, "Elija usuario:", null, 0, null, usuariosArray, usuariosArray[0]);
+			id_usuario = Integer.parseInt(elegido.split(" - ")[0]);
+			Usuario usuario2 = null;
+			try {
+				PreparedStatement stmt = con.prepareStatement("SELECT * FROM usuario WHERE id_usuario = ?");
+				stmt.setInt(1, id_usuario);
+				
+				ResultSet rs = stmt.executeQuery();
+				
+				if (rs.next()) {
+					String usuario_empleado = rs.getString("usuario");
+					String nom_empleado = rs.getString("nombre");
+					boolean estado = rs.getBoolean("estado");
+					int tipo_empleado = rs.getInt("fk_tipo_empleado");
+					
+					usuario = new Usuario(usuario_empleado, nom_empleado, estado, tipo_empleado);
+				
+				} 
+			}catch(Exception e) {
 				e.printStackTrace();
 			}
 			return usuario;
@@ -98,3 +124,4 @@ public class UsuarioDTO {
 	}
 	
 }
+	
