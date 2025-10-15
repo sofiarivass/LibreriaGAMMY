@@ -44,10 +44,15 @@ public class Admin extends Usuario {
 	
 	public static void eliminarEmpleados() {
 		LinkedList<Usuario> empleado = mostrarEmpleados();
-		if (empleado == null || usuario.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "No existen empleados");
+		LinkedList<Usuario> usuarioDisp = new LinkedList<Usuario>();
+		if (empleado == null || empleado.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No existen empleados para eliminar");
 		}else {
-			Usuario seleccionado = UsuarioDTO.usuarioPorID();
+			for (Usuario usuario : empleado) {
+				if (null) {
+					usuarioDisp.add(usuario);
+				}
+			}
 		}
 	}
 	
