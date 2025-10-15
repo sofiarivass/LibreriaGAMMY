@@ -73,7 +73,7 @@ public class UsuarioDTO {
 			}
 			String elegido = (String) JOptionPane.showInputDialog(null, "Elija empleado:", null, 0, null, usuarioArray, usuarioArray[0]);
 			id_usuario = Integer.parseInt(elegido.split(" - ")[0]);
-			Usuario usuario2 = null;
+			Usuario empleado = null;
 			
 			try {
 				PreparedStatement stmt = con.prepareStatement("SELECT * FROM usuario WHERE id_usuario = ?");
@@ -87,12 +87,12 @@ public class UsuarioDTO {
 					boolean estado = rs.getBoolean("estado");
 					int tipo_empleado = rs.getInt("fk_tipo_empleado");
 					
-					usuario = new Usuario(usuario_empleado, nom_empleado, estado, tipo_empleado);
+					empleado = new Usuario(tipo_empleado, usuario_empleado, nom_empleado, estado, tipo_empleado);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			return usuario;
+			return empleado;
 		}else {
 			String [] usuariosArray = new String[usuarioDisp.size()];
 			for (int i = 0; i < usuariosArray.length; i++) {
@@ -100,7 +100,7 @@ public class UsuarioDTO {
 			}
 			String elegido = (String) JOptionPane.showInputDialog(null, "Elija usuario:", null, 0, null, usuariosArray, usuariosArray[0]);
 			id_usuario = Integer.parseInt(elegido.split(" - ")[0]);
-			Usuario usuario2 = null;
+			Usuario empleado = null;
 			try {
 				PreparedStatement stmt = con.prepareStatement("SELECT * FROM usuario WHERE id_usuario = ?");
 				stmt.setInt(1, id_usuario);
@@ -113,13 +113,13 @@ public class UsuarioDTO {
 					boolean estado = rs.getBoolean("estado");
 					int tipo_empleado = rs.getInt("fk_tipo_empleado");
 					
-					usuario = new Usuario(usuario_empleado, nom_empleado, estado, tipo_empleado);
+					empleado = new Usuario(tipo_empleado, usuario_empleado, nom_empleado, estado, tipo_empleado);
 				
 				} 
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-			return usuario;
+			return empleado;
 		}
 	}
 	
