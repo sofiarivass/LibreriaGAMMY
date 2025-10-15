@@ -34,12 +34,18 @@ public class Admin extends Usuario {
 	}
 	
 	public static void mostrarEmpleados() {
-		String datos = "";
+		/*String datos = "";
 		LinkedList<Usuario> usuario = UsuarioDTO.mostrarUsuarios();
 		for (Usuario usuario2 : usuario) {
 			datos = datos + usuario2.toString() + "\n";
 		}
-		JOptionPane.showMessageDialog(null,datos);
+		JOptionPane.showMessageDialog(null,datos);*/
+		LinkedList<Usuario> usuario = UsuarioDTO.mostrarUsuarios();
+		if (usuario == null || usuario.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No hay empleados para mostrar.");
+		}else {
+			JOptionPane.showMessageDialog(null, UsuarioDTO.usuarioPorID(null));
+		}
 	}
 	
 	public static void eliminarEmpleados() {
