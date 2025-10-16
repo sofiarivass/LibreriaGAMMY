@@ -34,51 +34,16 @@ public class Admin extends Usuario {
 		return "Admin [listaEmpleados=" + listaEmpleados + "]";
 	}
 	
-	public static void mostrarEmpleados() {
+	public static LinkedList<Usuario> mostrarEmpleados() {
 		LinkedList<Usuario> usuario = UsuarioDTO.mostrarUsuarios();
 		if (usuario == null || usuario.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "No hay empleados para mostrar.");
 		}else {
 			JOptionPane.showMessageDialog(null, UsuarioDTO.usuarioPorID(null));
 		}
+		return usuario;
 	}
 	
-	public static void eliminarEmpleados() {
-		LinkedList<Usuario> empleados = mostrarEmpleados();
-		LinkedList<Usuario> empleadosDisp = new LinkedList<Usuario>();
-		if (empleados = null || empleados.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "No hay empleados para eliminar");
-		}else {
-			for (Usuario usuario : empleados) {
-				if(usuario.getEstado() == true) {
-					empleadosDisp.add(usuario);
-				}
-			}
-			
-			if (empleadosDisp.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "No hay empleados para eliminar");
-			} else {
-				Usuario seleccionado = UsuarioDTO.usuarioPorID(empleadosDisp);
-				
-				String confirmacion = Validaciones.menuSiNo("Seguro que desea eliminar el empleado?\n" + seleccionado.toString() + "\nEsta accion es irreversible!!", "Eliminar Empleado", null);
-				if (confirmacion.equals("Si")) {
-					try {
-						PreparedStatement statement = con.prepareStatement ("UPDATE usuario SET  estado = ? WHERE id_usuario = ?");
-						statement.setBoolean(1, false);
-						statement.setInt(2, seleccionado.getId_usuario());
-						
-						int filas = statement.executeUpdate();
-						if (filas > 0) {
-							JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente.");
-						}
-					}catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-		
-	}
 	/*
 	public static void eliminarEmpleados() {
 		LinkedList<Usuario> empleado = mostrarEmpleados();

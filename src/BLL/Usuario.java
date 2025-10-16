@@ -84,8 +84,10 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [id_usuario=" + id_usuario + ", usuario=" + usuario + ", nombre=" + nombre + ", contrasenia="
-				+ contrasenia + ", estado=" + estado + ", fk_tipo_empleado=" + fk_tipo_empleado + "]";
+		return "\n ID: " + id_usuario + "\nUsuario: " + usuario + "\nNombre: " + nombre + "\nEstado: " + (estado == true ? "Empleado" : "Desempleado") + "\nTipo de empleado: " + (fk_tipo_empleado == 1 ? "Admin" : "Vendedor Local");
+		//Como hago para mostar dependiedno el tipo de empleado
+		/*return "Usuario [id_usuario=" + id_usuario + ", usuario=" + usuario + ", nombre=" + nombre + ", contrasenia="
+				+ contrasenia + ", estado=" + estado + ", fk_tipo_empleado=" + fk_tipo_empleado + "]";*/
 	}
 
 	/**

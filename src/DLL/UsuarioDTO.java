@@ -7,8 +7,9 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-
+import BLL.Admin;
 import BLL.Usuario;
+import Repository.Validaciones;
 
 public class UsuarioDTO {
 	private static Connection con = Conexion.getInstance().getConnection();
@@ -121,6 +122,43 @@ public class UsuarioDTO {
 			}
 			return empleado;
 		}
+	}
+	
+	public static void eliminarEmpleados() {
+		LinkedList<Usuario> usuarios = Admin.mostrarEmpleados();
+		LinkedList<Usuario> empleadosDisp = new LinkedList<Usuario>();
+		if (usuarios = null || usuarios.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No hay empleados para eliminar");
+		}else {
+			for (Usuario usuario : usuarios) {
+				if(usuario.getEstado() == true) {
+					empleadosDisp.add(usuario);
+				}
+			}
+			
+			if (empleadosDisp.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "No hay empleados para eliminar");
+			} else {
+				Usuario seleccionado = UsuarioDTO.usuarioPorID(empleadosDisp);
+				
+				String confirmacion = Validaciones.menuSiNo("Seguro que desea eliminar el empleado?\n" + seleccionado.toString() + "\nEsta accion es irreversible!!", "Eliminar Empleado", null);
+				if (confirmacion.equals("Si")) {
+					try {
+						PreparedStatement statement = con.prepareStatement ("UPDATE usuario SET  estado = ? WHERE id_usuario = ?");
+						statement.setBoolean(1, false);
+						statement.setInt(2, seleccionado.getId_usuario());
+						
+						int filas = statement.executeUpdate();
+						if (filas > 0) {
+							JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente.");
+						}
+					}catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		
 	}
 	
 }
