@@ -41,6 +41,29 @@ public class Admin extends Usuario {
 			JOptionPane.showMessageDialog(null, UsuarioDTO.usuarioPorID(null));
 		}
 	}
+	
+	public static void eliminarEmpleados() {
+		LinkedList<Usuario> empleados = mostrarEmpleados();
+		LinkedList<Usuario> empleadosDisp = new LinkedList<Usuario>();
+		if (empleados = null || empleados.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No hay empleados para eliminar");
+		}else {
+			for (Usuario usuario : empleados) {
+				if(usuario.getEstado() == true) {
+					empleadosDisp.add(usuario);
+				}
+			}
+			
+			if (empleadosDisp.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "No hay empleados para eliminar");
+			} else {
+				Usuario seleccionado = UsuarioDTO.usuarioPorID(empleadosDisp);
+				
+				String confirmacion = Validacion.menuSiNo("Seguro que desea eliminar el empleado?\n" + seleccionado.toString() + "\nEsta accion es irreversible!!", "Eliminar Empleado", null);
+			}
+		}
+		
+	}
 	/*
 	public static void eliminarEmpleados() {
 		LinkedList<Usuario> empleado = mostrarEmpleados();
