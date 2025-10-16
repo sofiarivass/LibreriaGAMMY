@@ -354,53 +354,30 @@ public class LibroDTO {
 	 */
 	public static LinkedList<Libro> elegirLibros() {
 		boolean flag = false;
-		LinkedList<Libro> listaLibros = new LinkedList<Libro>();
+		LinkedList<Libro> listaLibros = mostrarLibros();
+		LinkedList<Libro> listaLibrosDisponibles = new LinkedList<Libro>();
 		
-		try {
-          PreparedStatement stmt = con.prepareStatement("SELECT * FROM libro");
-          ResultSet rs = stmt.executeQuery();
-
-          while (rs.next()) {
-              int id_libro = rs.getInt("id_libro");
-              String titulo = rs.getString("titulo");
-              String autor = rs.getString("autor");
-              String editorial = rs.getString("editorial");
-              String anio = rs.getString("anio_publicacion");
-              String genero = rs.getString("genero");
-              String idioma = rs.getString("idioma");
-              String publico_objetivo = rs.getString("publico_objetivo");
-              int numPaginas = rs.getInt("num_paginas");
-              boolean firmado = rs.getBoolean("firmado");
-              boolean edicionEspecial = rs.getBoolean("edicion_especial");
-              String materialTapa = rs.getString("tapa");
-              boolean saga = rs.getBoolean("saga");
-              double precio = rs.getDouble("precio");
-              int stock = rs.getInt("stock");
-              boolean estado = rs.getBoolean("estado");
-              
-              listaLibros.add(new Libro(id_libro,titulo,autor,editorial,anio,genero,idioma,publico_objetivo,numPaginas,firmado,edicionEspecial,materialTapa,saga,precio,stock,estado));
-          }
-          
-          for (int i = 0; i < listaLibros.size(); i++) {
-			if (listaLibros.get(i).getStock() > 0) {
+		for (Libro libro : listaLibros) {
+			if (libro.getEstado() != false && libro.getStock() > 0) {
 				flag = true;
-				break;
+				listaLibrosDisponibles.add(libro);
 			}
-          }
-          
-		} catch (Exception e) {
 		}
-		
+     
 		if (listaLibros.isEmpty()) {
-			return null;				
-		} else if(!(listaLibros.isEmpty()) && flag != false){
-			return listaLibros;			
+			return listaLibrosDisponibles;
+		} else if (flag) {
+			return listaLibrosDisponibles;				
 		} else {
-			return null;
-		}
+			return null;			
+		} 
 	}
 	
-	// funcion para traer un libro en especifico de la BD.
+	/**
+	 * funcion para traer un libro en especifico de la BD.
+	 * @param fkLibro
+	 * @return
+	 */
 	public static Libro verLibro(int fkLibro) {
 		Libro libro = null;
 		

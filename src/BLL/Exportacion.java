@@ -352,11 +352,11 @@ public class Exportacion extends Venta {
 					case 0:
 						// modificar datos de la venta
 						do {
-							detallesVenta = "Datos Venta:" + "\nMetodo de Pago: " + ventaElegida.getMetodoPago()
-							+ "\nTipo de Moneda: " + ventaElegida.getMoneda()
-							+ "\nEstado: " + ventaElegida.getEstado()
-							+ "\nOrigen: " + ventaElegida.getOrigen()
-							+ "\nDestino: " + ventaElegida.getDestino();
+							detallesVenta = "Datos Venta:" + "\n[ Metodo de Pago: " + ventaElegida.getMetodoPago()
+							+ " - Tipo de Moneda: " + ventaElegida.getMoneda()
+							+ " - Estado: " + ventaElegida.getEstado()
+							+ " - Origen: " + ventaElegida.getOrigen()
+							+ " - Destino: " + ventaElegida.getDestino() + " ]";
 							
 							opcion = JOptionPane.showOptionDialog(null, detallesVenta ,"Modificacion de Ventas", 0, 1, null, menuVentas, menuVentas[0]);
 							switch (opcion) {
@@ -398,6 +398,12 @@ public class Exportacion extends Venta {
 								String preguntar = Validaciones.menuSiNo("¿Esta seguro que desea guardar los cambios?", "Guardar Cambios", null);
 								if (preguntar.equalsIgnoreCase("Sí")) {
 									ventaElegida.setEstado(estados[1]);
+									detallesVenta = "Datos Venta:" 
+									+ "\nMetodo de Pago: " + ventaElegida.getMetodoPago()
+									+ "\nTipo de Moneda: " + ventaElegida.getMoneda()
+									+ "\nEstado: " + ventaElegida.getEstado()
+									+ "\nOrigen: " + ventaElegida.getOrigen()
+									+ "\nDestino: " + ventaElegida.getDestino();
 									VentasExportDTO.actualizarVentaExport(ventaElegida, detallesVenta);
 								}
 								break;
