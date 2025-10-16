@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.JOptionPane;
 
 import DLL.UsuarioDTO;
+import Repository.Validaciones;
 
 public class Admin extends Usuario {
 	private LinkedList<Usuario> listaEmpleados = new LinkedList<Usuario>();
@@ -59,7 +60,21 @@ public class Admin extends Usuario {
 			} else {
 				Usuario seleccionado = UsuarioDTO.usuarioPorID(empleadosDisp);
 				
-				String confirmacion = Validacion.menuSiNo("Seguro que desea eliminar el empleado?\n" + seleccionado.toString() + "\nEsta accion es irreversible!!", "Eliminar Empleado", null);
+				String confirmacion = Validaciones.menuSiNo("Seguro que desea eliminar el empleado?\n" + seleccionado.toString() + "\nEsta accion es irreversible!!", "Eliminar Empleado", null);
+				if (confirmacion.equals("Si")) {
+					try {
+						PreparedStatement statement = con.prepareStatement ("UPDATE usuario SET  estado = ? WHERE id_usuario = ?");
+						statement.setBoolean(1, false);
+						statement.setInt(2, seleccionado.getId_usuario());
+						
+						int filas = statement.executeUpdate();
+						if (filas > 0) {
+							JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente.");
+						}
+					}catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 		
