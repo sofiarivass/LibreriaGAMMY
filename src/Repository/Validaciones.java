@@ -290,6 +290,7 @@ public interface Validaciones {
 		return inputAnio;
 	}
 
+	
 	public static String menuSiNo(String mensaje, String titulo, String img) {
 		String respuesta;
 		String[] opciones = { "Sí", "No" };

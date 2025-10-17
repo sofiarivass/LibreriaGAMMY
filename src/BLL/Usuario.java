@@ -66,6 +66,10 @@ public class Usuario {
 	public boolean getEstado() {
 		return estado;
 	}
+	
+	public boolean getEstado() {
+		return estado;
+	}
 
 	public void setEstado(boolean estado) {
 		this.estado = estado;
@@ -77,6 +81,13 @@ public class Usuario {
 
 	public void setFkTipoEmpleado(TipoEmpleado fkTipoEmpleado) {
 		this.fkTipoEmpleado = fkTipoEmpleado;
+
+	@Override
+	public String toString() {
+		return "\n ID: " + id_usuario + "\nUsuario: " + usuario + "\nNombre: " + nombre + "\nEstado: " + (estado == true ? "Empleado" : "Desempleado") + "\nTipo de empleado: " + fkTipoEmpleado;
+		//Como hago para mostar dependiedno el tipo de empleado
+		/*return "Usuario [id_usuario=" + id_usuario + ", usuario=" + usuario + ", nombre=" + nombre + ", contrasenia="
+				+ contrasenia + ", estado=" + estado + ", fk_tipo_empleado=" + fk_tipo_empleado + "]";*/
 	}
 
 	/**

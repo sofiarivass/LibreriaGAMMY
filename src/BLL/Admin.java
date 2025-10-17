@@ -1,5 +1,7 @@
 package BLL;
 import java.util.LinkedList;
+import javax.swing.JOptionPane;
+import DLL.UsuarioDTO;
 
 public class Admin extends Usuario {
 	private LinkedList<Usuario> listaEmpleados = new LinkedList<Usuario>();
@@ -24,5 +26,34 @@ public class Admin extends Usuario {
 	public String toString() {
 		return "Admin [listaEmpleados=" + listaEmpleados + "]";
 	}
+	
+	public static LinkedList<Usuario> mostrarEmpleados() {
+		LinkedList<Usuario> usuario = UsuarioDTO.mostrarUsuarios();
+		if (usuario == null || usuario.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No hay empleados para mostrar.");
+		}else {
+			JOptionPane.showMessageDialog(null, UsuarioDTO.usuarioPorID(null));
+		}
+		return usuario;
+	}
+	
 
+	public static void eliminarEmpleados() {
+		String elegido;
+		String []elegido2;
+		int usuarioElegido;
+		LinkedList<Usuario> usuarios = UsuarioDTO.mostrarUsuarios();
+		String[] elegirUsuario = new String[usuarios.size()];
+		
+		for (int i = 0; i < elegirUsuario.length; i++) {
+			elegirUsuario[i] = usuarios.get(i).getId_usuario() + "," + usuarios.get(i).getNombre();
+		}
+		
+		elegido = (String) JOptionPane.showInputDialog(null, "Elija el usuario", "", 0, null, elegirUsuario, elegirUsuario[0]);
+		elegido2 = elegido.split(",");
+		
+		usuarioElegido = Integer.parseInt(elegido2[0]);
+		UsuarioDTO.eliminarUsuarioPorID(usuarioElegido);
+	}
+	
 }
