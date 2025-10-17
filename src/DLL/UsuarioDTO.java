@@ -127,7 +127,7 @@ public class UsuarioDTO {
 	public static void eliminarEmpleados() {
 		LinkedList<Usuario> usuarios = Admin.mostrarEmpleados();
 		LinkedList<Usuario> empleadosDisp = new LinkedList<Usuario>();
-		if (usuarios = null || usuarios.isEmpty()) {
+		if (usuarios.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "No hay empleados para eliminar");
 		}else {
 			for (Usuario usuario : usuarios) {
