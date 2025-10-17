@@ -341,7 +341,7 @@ public class Libro {
 	public static Libro cargarDatosLibro() {
 		String titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, tapa;
 		int numPaginas, stock;
-		boolean firmado, edicionEspecial, saga;
+		boolean firmado, edicionEspecial, saga, estado;
 		double precio;
 		Generos generoElegido;
 		Idiomas idiomaElegido;
@@ -386,7 +386,9 @@ public class Libro {
 			precio = Repository.Validaciones.validarDouble("Ingrese precio del libro:", "Cargar libro", null);
 		} while (precio <= 0);
 		stock = Integer.parseInt(Repository.Validaciones.validarInt("Ingrese stock del libro:", "Cargar libro", null));
-
+		estado = Repository.Validaciones.menuSiNo("¿El libro está disponible?", "Cargar libro", null)
+				.equals("Sí") ? true : false;
+		
 		return new Libro(titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, numPaginas,
 				firmado, edicionEspecial, tapa, saga, precio, stock, true);
 	}

@@ -38,7 +38,7 @@ public class LibroDTO {
 		if (flag) {
 			try {
 				PreparedStatement statement = con.prepareStatement(
-						"INSERT INTO libro (titulo, autor, editorial, anio_publicacion, genero, idioma, publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+						"INSERT INTO libro (titulo, autor, editorial, anio_publicacion, genero, idioma, publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 						, Statement.RETURN_GENERATED_KEYS);
 				statement.setString(1, libro.getTitulo());
 				statement.setString(2, libro.getAutor());
@@ -106,7 +106,7 @@ public class LibroDTO {
 		if (flag) {
 			try {
 				PreparedStatement statement = con.prepareStatement(
-						"UPDATE libro SET titulo=?, autor=?, editorial=?, anio_publicacion=?, genero=?, idioma=?, publico_objetivo=?, num_paginas=?, firmado=?, edicion_especial=?, tapa=?, saga=?, precio=?, stock=? WHERE id_libro=?");
+						"UPDATE libro SET titulo=?, autor=?, editorial=?, anio_publicacion=?, genero=?, idioma=?, publico_objetivo=?, num_paginas=?, firmado=?, edicion_especial=?, tapa=?, saga=?, precio=?, stock=?, estado=? WHERE id_libro=?");
 				statement.setString(1, libro.getTitulo());
 				statement.setString(2, libro.getAutor());
 				statement.setString(3, libro.getEditorial());
@@ -121,7 +121,8 @@ public class LibroDTO {
 				statement.setBoolean(12, libro.getSaga());
 				statement.setDouble(13, libro.getPrecio());
 				statement.setInt(14, libro.getStock());
-				statement.setInt(15, libro.getId_libro());
+				statement.setBoolean(15, libro.getEstado());
+				statement.setInt(16, libro.getId_libro());
 
 				int filas = statement.executeUpdate();
 				if (filas > 0) {

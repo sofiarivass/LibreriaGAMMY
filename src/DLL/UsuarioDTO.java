@@ -12,7 +12,7 @@ public class UsuarioDTO {
 		Usuario user = null;
 		try {
 			PreparedStatement stmt = con
-					.prepareStatement("SELECT * FROM usuario WHERE usuario = ? AND contrasenia = ?");
+					.prepareStatement("SELECT * FROM usuario WHERE BINARY usuario = ? AND BINARY contrasenia = ?");
 			stmt.setString(1, usuario);
 			stmt.setString(2, contrasenia);
 			// executequery se utiliza cuando no hay cambios en la bdd
