@@ -18,9 +18,7 @@ public class ClienteDTO {
 		Cliente encontrado = null;
 		
 		try {
-            PreparedStatement stmt = con.prepareStatement(
-                "SELECT * FROM cliente WHERE dni = ?"
-            );
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE dni = ?");
             stmt.setInt(1, dni);
   
             ResultSet rs = stmt.executeQuery();
@@ -72,7 +70,7 @@ public class ClienteDTO {
 		LinkedList<Cliente> listaClientes = consultarClientes();
 		
 		for (Cliente cliente2 : listaClientes) {
-			if (cliente2.getDni() == cliente.getDni() || cliente2.getMail().equals(cliente.getMail())) {
+			if (cliente2.getNombre().equalsIgnoreCase(cliente.getNombre()) || cliente2.getMail().equals(cliente.getMail())) {
 				flag = false;
 				break;
 			}

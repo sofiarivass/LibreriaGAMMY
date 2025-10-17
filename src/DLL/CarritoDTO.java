@@ -21,9 +21,7 @@ public class CarritoDTO {
 	public static Carrito cargarCarrito(Carrito carrito) {
 		try {
 			PreparedStatement statement = con.prepareStatement(
-	                "INSERT INTO carrito (fecha, fk_cliente) VALUES (?, ?)",
-	                Statement.RETURN_GENERATED_KEYS
-	            );
+	                "INSERT INTO carrito (fecha, fk_cliente) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
             statement.setDate(1, Date.valueOf(carrito.getFecha()));
             statement.setInt(2, carrito.getFkCliente().getIdCliente());
 
@@ -53,12 +51,10 @@ public class CarritoDTO {
 		LinkedList<Carrito> listaCarrito = new LinkedList<Carrito>();
 		
 		try {
-            PreparedStatement stmt = con.prepareStatement(
-                "SELECT * FROM carrito WHERE fk_cliente = ?"
-            );
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM carrito WHERE fk_cliente = ?");
             stmt.setInt(1, cliente.getIdCliente());
-  
             ResultSet rs = stmt.executeQuery();
+            
             while (rs.next()) {
             	int id_carrito = rs.getInt("id_carrito");
                 LocalDate fecha = rs.getDate("fecha").toLocalDate();
