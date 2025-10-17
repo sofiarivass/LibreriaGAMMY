@@ -63,6 +63,23 @@ public class UsuarioDTO {
 		
 	}
 	
+	public static boolean eliminarUsuarioPorID(int usuario) {
+		try {
+			PreparedStatement stmt = con.prepareStatement("UPDATE `usuario` SET `estado`=? WHERE `id_usuario` = ?");
+			stmt.setInt(1, 0);
+			stmt.setInt(2, usuario);
+			
+			int filas = stmt.executeUpdate();
+			if (filas > 0) {
+				JOptionPane.showMessageDialog(null, "Usuario dio de baja correctamente.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return true;
+	}
+	
 	public static Usuario usuarioPorID(LinkedList<Usuario> usuarioDisp) {
 		int id_usuario = 0;
 		List<Usuario> usuario = UsuarioDTO.mostrarUsuarios();

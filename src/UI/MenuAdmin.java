@@ -1,9 +1,7 @@
 package UI;
 import javax.swing.JOptionPane;
-
 import BLL.Admin;
 import BLL.Usuario;
-import DLL.UsuarioDTO;
 import Enums.*;
 
 public class MenuAdmin {
@@ -35,7 +33,7 @@ public class MenuAdmin {
 						
 						break;
 					case 2: // dar de baja empleado
-						UsuarioDTO.eliminarEmpleados();
+						Admin.eliminarEmpleados();
 						/*JOptionPane.showMessageDialog(null, "dar de baja empleado");
 						
 						GestionEmpleados.BajarEmpleado();*/
