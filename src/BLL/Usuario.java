@@ -30,6 +30,15 @@ public class Usuario {
 		this.fkTipoEmpleado = fkTipoEmpleado;
 	}
 	
+	public Usuario(int id_usuario, String nombre, String usuario, boolean estado,
+			TipoEmpleado fkTipoEmpleado) {
+		this.id_usuario = id_usuario;
+		this.nombre = nombre;
+		this.usuario = usuario;
+		this.estado = estado;
+		this.fkTipoEmpleado = fkTipoEmpleado;
+	}
+	
 	// Getter y Setters
 	public int getId_usuario() {
 		return id_usuario;
@@ -66,10 +75,6 @@ public class Usuario {
 	public boolean getEstado() {
 		return estado;
 	}
-	
-	public boolean getEstado() {
-		return estado;
-	}
 
 	public void setEstado(boolean estado) {
 		this.estado = estado;
@@ -81,6 +86,7 @@ public class Usuario {
 
 	public void setFkTipoEmpleado(TipoEmpleado fkTipoEmpleado) {
 		this.fkTipoEmpleado = fkTipoEmpleado;
+	}
 
 	@Override
 	public String toString() {

@@ -44,6 +44,31 @@ public class UsuarioDTO {
 		return user;
 	}
 	
+	public static TipoEmpleado buscarEmpleado(int fkEmpleado) {
+		TipoEmpleado empleado = null;
+		
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM tipo_empleado WHERE id_tipo_empleado =?");
+			stmt.setInt(1, fkEmpleado);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				int id_empleado = rs.getInt("id_tipo_empleado");
+				String tipoEmpleado = rs.getString("tipo_empleado");
+				
+				empleado = new TipoEmpleado(id_empleado,tipoEmpleado);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return empleado;
+	}
+	
+	
 	public static LinkedList<Usuario> mostrarUsuarios(){
 		LinkedList<Usuario> usuario = new LinkedList<Usuario>();
 		try {
@@ -57,7 +82,10 @@ public class UsuarioDTO {
 				boolean estado = rs.getBoolean("estado");
 				int tipo_empleado = rs.getInt("fk_tipo_empleado");
 				
-				usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, tipo_empleado));
+				TipoEmpleado empleado = buscarEmpleado(tipo_empleado);
+				
+				
+				usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, empleado));
 				
 			}
 		} catch (Exception e) {
@@ -110,7 +138,11 @@ public class UsuarioDTO {
 					boolean estado = rs.getBoolean("estado");
 					int tipo_empleado = rs.getInt("fk_tipo_empleado");
 					
-					empleado = new Usuario(tipo_empleado, usuario_empleado, nom_empleado, estado, tipo_empleado);
+					TipoEmpleado empleado2 = buscarEmpleado(tipo_empleado);
+					
+					
+					usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, empleado2));
+					
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -136,8 +168,10 @@ public class UsuarioDTO {
 					boolean estado = rs.getBoolean("estado");
 					int tipo_empleado = rs.getInt("fk_tipo_empleado");
 					
-					empleado = new Usuario(tipo_empleado, usuario_empleado, nom_empleado, estado, tipo_empleado);
-				
+					TipoEmpleado empleado2 = buscarEmpleado(tipo_empleado);
+					
+					
+					usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, empleado2));
 				} 
 			}catch(Exception e) {
 				e.printStackTrace();
