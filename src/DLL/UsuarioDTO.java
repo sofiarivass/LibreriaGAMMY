@@ -82,10 +82,10 @@ public class UsuarioDTO {
 				boolean estado = rs.getBoolean("estado");
 				int tipo_empleado = rs.getInt("fk_tipo_empleado");
 				
-				TipoEmpleado empleado = buscarEmpleado(tipo_empleado);
+				TipoEmpleado tp_empleado = buscarEmpleado(tipo_empleado);
 				
 				
-				usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, empleado));
+				usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, tp_empleado));
 				
 			}
 		} catch (Exception e) {
@@ -120,7 +120,7 @@ public class UsuarioDTO {
 		if(usuarioDisp == null) {
 			String[] usuarioArray = new String[usuario.size()];
 			for (int i = 0; i < usuarioArray.length; i++) {
-				usuarioArray[i] = usuario.get(i).getId_usuario() + " - " + usuario.get(i).getNombre(); 
+				usuarioArray[i] = usuario.get(i).getId_usuario() + " - " + usuario.get(i).getUsuario(); 
 			}
 			String elegido = (String) JOptionPane.showInputDialog(null, "Elija empleado:", null, 0, null, usuarioArray, usuarioArray[0]);
 			id_usuario = Integer.parseInt(elegido.split(" - ")[0]);
@@ -133,6 +133,7 @@ public class UsuarioDTO {
 				ResultSet rs = stmt.executeQuery();
 				
 				if (rs.next()) {
+					int id_empleado = rs.getInt("id_usuario");
 					String usuario_empleado = rs.getString("usuario");
 					String nom_empleado = rs.getString("nombre");
 					boolean estado = rs.getBoolean("estado");
@@ -141,7 +142,7 @@ public class UsuarioDTO {
 					TipoEmpleado empleado2 = buscarEmpleado(tipo_empleado);
 					
 					
-					usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, empleado2));
+					usuario.add(new Usuario(id_empleado, usuario_empleado, nom_empleado, estado, empleado2));
 					
 				}
 			} catch (Exception e) {
@@ -163,6 +164,7 @@ public class UsuarioDTO {
 				ResultSet rs = stmt.executeQuery();
 				
 				if (rs.next()) {
+					int id_empleado = rs.getInt("id_usuario");
 					String usuario_empleado = rs.getString("usuario");
 					String nom_empleado = rs.getString("nombre");
 					boolean estado = rs.getBoolean("estado");
@@ -171,7 +173,7 @@ public class UsuarioDTO {
 					TipoEmpleado empleado2 = buscarEmpleado(tipo_empleado);
 					
 					
-					usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, empleado2));
+					usuario.add(new Usuario(id_empleado, usuario_empleado, nom_empleado, estado, empleado2));
 				} 
 			}catch(Exception e) {
 				e.printStackTrace();
