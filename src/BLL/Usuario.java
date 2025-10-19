@@ -1,6 +1,10 @@
 package BLL;
 import javax.swing.JOptionPane;
 import DLL.UsuarioDTO;
+import Enums.Generos;
+import Enums.Idiomas;
+import Enums.Publico;
+import Enums.Tapa;
 import Repository.Encriptador;
 
 public class Usuario {
@@ -39,6 +43,10 @@ public class Usuario {
 		this.fkTipoEmpleado = fkTipoEmpleado;
 	}
 	
+	public Usuario(String usuario2, String nombre2, String contrasenia2, int tipo_empleado) {
+		// TODO Auto-generated constructor stub
+	}
+
 	// Getter y Setters
 	public int getId_usuario() {
 		return id_usuario;

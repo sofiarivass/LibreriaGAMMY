@@ -27,6 +27,7 @@ public class MenuAdmin {
 						
 						break;
 					case 1: // crear empleado
+						Admin.nuevoEmpleado();
 						/*JOptionPane.showMessageDialog(null, "crear empleado");
 						
 						GestionEmpleados.CrearEmpleados();*/

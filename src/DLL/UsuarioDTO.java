@@ -8,7 +8,10 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import com.mysql.jdbc.Statement;
+
 import BLL.Admin;
+import BLL.Libro;
 import BLL.Usuario;
 import Repository.Validaciones;
 
@@ -81,10 +84,10 @@ public class UsuarioDTO {
 				boolean estado = rs.getBoolean("estado");
 				int tipo_empleado = rs.getInt("fk_tipo_empleado");
 				
-				TipoEmpleado tp_empleado = buscarEmpleado(tipo_empleado);
+				TipoEmpleado empleado = buscarEmpleado(tipo_empleado);
 				
 				
-				usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, tp_empleado));
+				usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, empleado));
 				
 			}
 		} catch (Exception e) {
@@ -119,7 +122,7 @@ public class UsuarioDTO {
 		if(usuarioDisp == null) {
 			String[] usuarioArray = new String[usuario.size()];
 			for (int i = 0; i < usuarioArray.length; i++) {
-				usuarioArray[i] = usuario.get(i).getId_usuario() + " - " + usuario.get(i).getUsuario(); 
+				usuarioArray[i] = usuario.get(i).getId_usuario() + " - " + usuario.get(i).getNombre(); 
 			}
 			String elegido = (String) JOptionPane.showInputDialog(null, "Elija empleado:", null, 0, null, usuarioArray, usuarioArray[0]);
 			id_usuario = Integer.parseInt(elegido.split(" - ")[0]);
@@ -132,7 +135,6 @@ public class UsuarioDTO {
 				ResultSet rs = stmt.executeQuery();
 				
 				if (rs.next()) {
-					int id_empleado = rs.getInt("id_usuario");
 					String usuario_empleado = rs.getString("usuario");
 					String nom_empleado = rs.getString("nombre");
 					boolean estado = rs.getBoolean("estado");
@@ -141,7 +143,7 @@ public class UsuarioDTO {
 					TipoEmpleado empleado2 = buscarEmpleado(tipo_empleado);
 					
 					
-					usuario.add(new Usuario(id_empleado, usuario_empleado, nom_empleado, estado, empleado2));
+					usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, empleado2));
 					
 				}
 			} catch (Exception e) {
@@ -163,7 +165,6 @@ public class UsuarioDTO {
 				ResultSet rs = stmt.executeQuery();
 				
 				if (rs.next()) {
-					int id_empleado = rs.getInt("id_usuario");
 					String usuario_empleado = rs.getString("usuario");
 					String nom_empleado = rs.getString("nombre");
 					boolean estado = rs.getBoolean("estado");
@@ -172,7 +173,7 @@ public class UsuarioDTO {
 					TipoEmpleado empleado2 = buscarEmpleado(tipo_empleado);
 					
 					
-					usuario.add(new Usuario(id_empleado, usuario_empleado, nom_empleado, estado, empleado2));
+					usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, empleado2));
 				} 
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -180,6 +181,67 @@ public class UsuarioDTO {
 			return empleado;
 		}
 	}
+	
+	public static boolean agregarUsuario(Usuario nuevo) {
+		boolean flag = true;
+		Usuario coincidencia = null;
+		for (Usuario elemento : UsuarioDTO.mostrarUsuarios()) {
+			if (elemento.getUsuario().equals(nuevo.getUsuario()) && elemento.getNombre().equals(nuevo.getNombre())) {
+				flag = false;
+				coincidencia = elemento;
+				break;
+			}
+		}
+		if (flag) {
+			try {
+				PreparedStatement statement = con.prepareStatement(
+						"INSERT INTO libro (titulo, autor, editorial, anio_publicacion, genero, idioma, publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+						, Statement.RETURN_GENERATED_KEYS);
+				statement.setString(1, nuevo.getTitulo());
+				statement.setString(2, nuevo.getAutor());
+				statement.setString(3, nuevo.getEditorial());
+				statement.setString(4, nuevo.getAnioPublicacion());
+				statement.setString(5, nuevo.getGenero());
+				statement.setString(6, nuevo.getIdioma());
+				statement.setString(7, nuevo.getPublicoObjetivo());
+				statement.setInt(8, nuevo.getNumPaginas());
+				statement.setBoolean(9, nuevo.getFirmado());
+				statement.setBoolean(10, nuevo.getEdicionEspecial());
+				statement.setString(11, nuevo.getTapa());
+				statement.setBoolean(12, nuevo.getSaga());
+				statement.setDouble(13, nuevo.getPrecio());
+				statement.setInt(14, nuevo.getStock());
+				statement.setBoolean(15, true);
+
+				int filas = statement.executeUpdate();
+				ResultSet rs = statement.getGeneratedKeys();
+	            
+				if (rs.next()) {
+					int idGenerado = rs.getInt(1);
+					nuevo.setId_libro(idGenerado);
+				}
+				
+				if (filas > 0) {
+					JOptionPane.showMessageDialog(null, "Libro agregado correctamente\n" + nuevo.toString());
+					return true;
+				} else {
+					return false;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+
+			}
+
+		} else {
+			JOptionPane.showMessageDialog(null,
+					"ERROR! Ya hay un libro con las mismas carácteristicas cargado en el sistema:\n"
+							+ coincidencia.toString());
+			return false;
+		}
+	}
+	
+	
 	
 	public static void eliminarEmpleados() {
 		LinkedList<Usuario> usuarios = Admin.mostrarEmpleados();
