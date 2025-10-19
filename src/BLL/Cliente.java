@@ -114,7 +114,7 @@ public class Cliente {
 		
 		JOptionPane.showMessageDialog(null, "Registrar nuevo Cliente");
 		
-		dni = Integer.parseInt(Validaciones.validarInt("ingrese su número de DNI", "Registrando un Cliente", null));
+		dni = Integer.parseInt(Validaciones.validarDigitos("ingrese su número de DNI", "Registrando un Cliente", null, 8, 0));
 		cliente = ClienteDTO.buscarCliente(dni);
 		if (cliente != null) {
 			JOptionPane.showMessageDialog(null, "El cliente " + cliente.getNombre() + " Ya esta registrado!!");

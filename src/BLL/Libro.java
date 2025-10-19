@@ -338,10 +338,10 @@ public class Libro {
 	 * 
 	 * @return Libro
 	 */
-	public static Libro cargarDatosLibro() {
+	public static Libro cargarDatosLibro(String accion) {
 		String titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, tapa;
 		int numPaginas, stock;
-		boolean firmado, edicionEspecial, saga;
+		boolean firmado, edicionEspecial, saga, estado;
 		double precio;
 		Generos generoElegido;
 		Idiomas idiomaElegido;
@@ -386,9 +386,16 @@ public class Libro {
 			precio = Repository.Validaciones.validarDouble("Ingrese precio del libro:", "Cargar libro", null);
 		} while (precio <= 0);
 		stock = Integer.parseInt(Repository.Validaciones.validarInt("Ingrese stock del libro:", "Cargar libro", null));
-
-		return new Libro(titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, numPaginas,
-				firmado, edicionEspecial, tapa, saga, precio, stock, true);
+		
+		if (accion.equals("Crear")) {			
+			return new Libro(titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, numPaginas,
+					firmado, edicionEspecial, tapa, saga, precio, stock, true);
+		} else {
+			estado = Repository.Validaciones.menuSiNo("¿El libro está disponible para la venta?", "Cargar libro", null)
+					.equals("Sí") ? true : false;
+			return new Libro(titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, numPaginas,
+					firmado, edicionEspecial, tapa, saga, precio, stock, estado);
+		}
 	}
 
 	/**
@@ -397,7 +404,7 @@ public class Libro {
 	 * @return boolean
 	 */
 	public static boolean nuevoLibro() {
-		Libro nuevo = cargarDatosLibro();
+		Libro nuevo = cargarDatosLibro("Crear");
 		return LibroDTO.agregarLibro(nuevo);
 	}
 
@@ -413,7 +420,7 @@ public class Libro {
 			return false;
 		} else {
 			Libro encontrado = LibroDTO.libroPorID(null);
-			Libro modificado = cargarDatosLibro();
+			Libro modificado = cargarDatosLibro("Editar");
 			modificado.setId_libro(encontrado.getId_libro());
 			return LibroDTO.editarLibro(modificado);
 		}

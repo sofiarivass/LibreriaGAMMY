@@ -95,9 +95,10 @@ public class Exportacion extends Venta {
 		boolean flag;
 		String []estados = {"completada", "modificada", "anulada"};
 		String []estadoEnvios = {"en preparación", "en camino", "Entregado"};
+		int cantidadTotal = 0;
 		double totalVenta = 0;
 		LocalDate fechaVenta = LocalDate.now();
-		String metodoPago, moneda, estado, origen, destino, estadoEnvio, detalles, continuarVenta = "";;
+		String metodoPago, moneda, estado, origen, destino, estadoEnvio, detalles, continuarVenta = "";
 		Cliente cliente = null;
 		TipoVenta fkTipoVenta = null;
 		Carrito fkCarrito = null;
@@ -113,14 +114,15 @@ public class Exportacion extends Venta {
 			} else {
 				do {
 					flag = false;
-					detalles = "";
+					detalles = "Datos de Libros:\n\n";
 					
 					// contador de precio total y cantidad de libros
 					for (int i = 0; i < carrito.size(); i++) {
+						cantidadTotal = cantidadTotal + carrito.get(i).getCantidad();
 						totalVenta = totalVenta + (carrito.get(i).getCantidad() * carrito.get(i).getFkLibro().getPrecio());
-						detalles = detalles + "Libro: " + carrito.get(i).getFkLibro().getTitulo() 
-								+ " -cantidad: " + carrito.get(i).getCantidad() 
-								+ " -Precio x Unidad: $" + carrito.get(i).getFkLibro().getPrecio() + "\n";
+						detalles = detalles + (i+1) + " - " + carrito.get(i).getFkLibro().getTitulo() 
+								+ "- cantidad: " + carrito.get(i).getCantidad() 
+								+ "- Precio x Unidad: $" + carrito.get(i).getFkLibro().getPrecio() + "\n";
 					}
 					
 					// si el vendedor que se logea es el de internacional siempre sera venta Mayorista
@@ -147,10 +149,11 @@ public class Exportacion extends Venta {
 					estado = estados[0];
 					estadoEnvio = estadoEnvios[0];
 					
-					detalles = detalles + "Precio Total: $" + totalVenta + "\nPago: " + metodoPago + "\nMoneda: " + moneda 
-							+ "\nEstado: " + estado + "\nOrigen: " + origen + "\nDestino: " + destino + "\nEstado de Envio: " + estadoEnvio;
+					detalles = detalles + "- Cantidad Total: " + cantidadTotal + " libros.\n- Precio Total: $" + totalVenta 
+							+ "\n\nDatos de Pago:\n\n- Pago: " + metodoPago + "\n- Moneda: " + moneda + "\n- Estado: " + estado 
+							+ "\n- Origen: " + origen + "\n- Destino: " + destino + "\n- Estado de Envio: " + estadoEnvio;
 					
-					continuarVenta = Validaciones.menuContinuar(detalles + "\n¿Desea continuar con la Venta?", "Detalles de la Venta!!", null);
+					continuarVenta = Validaciones.menuContinuar(detalles + "\n\n¿Desea continuar con la Venta?", "Detalles de la Venta!!", null);
 					
 					if (continuarVenta.equalsIgnoreCase("Modificar")) {
 						flag = true;
@@ -189,6 +192,7 @@ public class Exportacion extends Venta {
 		if (cliente != null ) {
 			String []estados = {"completado", "pendiente"};
 			String []estadoEnvios = {"en preparación", "en camino", "Entregado"};
+			int cantidadTotal = 0;
 			double totalVenta = 0;
 			LocalDate fechaVenta = LocalDate.now();
 			String metodoPago, moneda, estado, origen, destino, estadoEnvio, detalles;
@@ -204,14 +208,15 @@ public class Exportacion extends Venta {
 			} else {
 				do {
 					flag = false;
-					detalles = "";
+					detalles = "Datos de Libros:\n\n";
 					
 					// conteo de precio total y cantidad de libros
 					for (int i = 0; i < carrito.size(); i++) {
+						cantidadTotal = cantidadTotal + carrito.get(i).getCantidad();
 						totalVenta = totalVenta + (carrito.get(i).getCantidad() * carrito.get(i).getFkLibro().getPrecio());
-						detalles = detalles + "Libro: " + carrito.get(i).getFkLibro().getTitulo() 
-								+ " -cantidad: " + carrito.get(i).getCantidad() 
-								+ " -Precio x Unidad: $" + carrito.get(i).getFkLibro().getPrecio() + "\n";
+						detalles = detalles + (i+1) + " - " + carrito.get(i).getFkLibro().getTitulo() 
+								+ "- cantidad: " + carrito.get(i).getCantidad() 
+								+ "- Precio x Unidad: $" + carrito.get(i).getFkLibro().getPrecio() + "\n";
 					}
 					
 					// si el vendedor que se registra es el de internacional siempre sera venta Mayorista
@@ -238,10 +243,12 @@ public class Exportacion extends Venta {
 					estado = estados[0];
 					estadoEnvio = estadoEnvios[0];
 					
-					detalles = detalles + "Precio Total: $" + totalVenta + "\nPago: " + metodoPago + "\nMoneda: " + moneda 
-							+ "\nEstado: " + estado + "\nOrigen: " + origen + "\nDestino: " + destino + "\nEstado de Envio: " + estadoEnvio;
+					detalles = detalles + "- Cantidad Total: " + cantidadTotal + " libros.\n- Precio Total: $" + totalVenta 
+							+ "Datos de Pago:\n\n- Pago: " + metodoPago + "\n- Moneda: " + moneda + "\n- Estado: " + estado 
+							+ "\n- Origen: " + origen + "\n - Destino: " + destino + "\n- Estado de Envio: " + estadoEnvio;
 					
-					continuarVenta = Validaciones.menuContinuar(detalles + "\n¿Desea continuar con la Venta?", "Detalles de la Venta!!", null);
+					continuarVenta = Validaciones.menuContinuar(detalles + "\n\n¿Desea continuar con la Venta?", 
+							"Detalles de la Venta!!", null);
 					
 					if (continuarVenta.equalsIgnoreCase("Modificar")) {
 						flag = true;
@@ -293,11 +300,11 @@ public class Exportacion extends Venta {
 		} else {
 			clientes = new String[listaClientes.size()];
 			for (int i = 0; i < clientes.length; i++) {
-				clientes[i] = listaClientes.get(i).getIdCliente() + ", " + listaClientes.get(i).getNombre();
+				clientes[i] = listaClientes.get(i).getIdCliente() + "- " + listaClientes.get(i).getNombre();
 			}
 			
 			seleccion = (String) JOptionPane.showInputDialog(null, "Seleccione un Cliente para ver sus Ventas", "Registro de Clientes!!", 1, null, clientes, clientes[0]);
-			eleccion = seleccion.split(",");
+			eleccion = seleccion.split("-");
 			
 			for (Cliente cliente2 : listaClientes) {
 				if (cliente2.getIdCliente() == Integer.parseInt(eleccion[0])) {
@@ -316,28 +323,29 @@ public class Exportacion extends Venta {
 				ventas = new String[listaVentas.size()];
 				
 				for (int i = 0; i < ventas.length; i++) {
-					ventas[i] = listaVentas.get(i).getIdVenta() + ", fecha: " + listaVentas.get(i).getFechaVenta();
+					ventas[i] = listaVentas.get(i).getIdVenta() + "- fecha: " + listaVentas.get(i).getFechaVenta();
 				}
 				
 				
 				seleccion = (String) JOptionPane.showInputDialog(null, "El Cliente: " + cliente.getNombre() + ", registra: " 
 						+ ventas.length + " ventas" + "\nSeleccione una venta para ver en Detalle:", "Registro de Ventas!!", 1, null, ventas, ventas[0]);
-				eleccion = seleccion.split(",");
+				eleccion = seleccion.split("-");
 				
 				do {
 					for (Exportacion venta : listaVentas) {
 						if (venta.getIdVenta() == Integer.parseInt(eleccion[0])) {
 							ventaElegida = venta;
-							detallesVenta = "\nDatos Venta:" 
-							+ "\nMetodo de Pago: " + ventaElegida.getMetodoPago()
-							+ "\nTipo de Moneda: " + ventaElegida.getMoneda()
-							+ "\nEstado: " + ventaElegida.getEstado()
-							+ "\nOrigen: " + ventaElegida.getOrigen()
-							+ "\nDestino: " + ventaElegida.getDestino();
+							detallesVenta = "Datos de la Venta:" 
+							+ "\n- Metodo de Pago: " + ventaElegida.getMetodoPago()
+							+ "\n- Tipo de Moneda: " + ventaElegida.getMoneda()
+							+ "\n- Estado: " + ventaElegida.getEstado()
+							+ "\n- Origen: " + ventaElegida.getOrigen()
+							+ "\n- Destino: " + ventaElegida.getDestino();
+							
 							for (CarritoDetalle detalleLibros : listaCarritoDetalle) {
 								if (detalleLibros.getFkCarrito().getIdCarrito() == Integer.parseInt(eleccion[0])) {
 									librosCarrito = detalleLibros;
-									detallesLibro = "\nDatos Libros:\n en proceso";
+									detallesLibro = "\n\nDatos Libros:\n en proceso";
 									break;
 								}
 							}
@@ -345,14 +353,14 @@ public class Exportacion extends Venta {
 						}
 					}
 					
-					opcionDos = JOptionPane.showOptionDialog(null, "Seleccione que desea modificar:\n" + detallesVenta 
-							+ "\n" + detallesLibro, "Modificacion de Ventas", 0, 1, null, menu, menu[0]);
+					opcionDos = JOptionPane.showOptionDialog(null, "Seleccione que desea modificar:\n\n" + detallesVenta 
+							+ detallesLibro, "Modificacion de Ventas", 0, 1, null, menu, menu[0]);
 					
 					switch (opcionDos) {
 					case 0:
 						// modificar datos de la venta
 						do {
-							detallesVenta = "Datos Venta:" + "\n[ Metodo de Pago: " + ventaElegida.getMetodoPago()
+							detallesVenta = "Datos de la Venta:" + "\n[ Metodo de Pago: " + ventaElegida.getMetodoPago()
 							+ " - Tipo de Moneda: " + ventaElegida.getMoneda()
 							+ " - Estado: " + ventaElegida.getEstado()
 							+ " - Origen: " + ventaElegida.getOrigen()
@@ -374,8 +382,17 @@ public class Exportacion extends Venta {
 								break;
 							case 2:
 								// origen
-								String origen = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Origen", "Modificando", 1, null, 
-										Sucursales.values(), Sucursales.values())).name();
+								boolean flag2;
+								String origen;
+								do {
+									flag2 = false;
+									origen = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Origen", "Modificando", 1, null, 
+											Sucursales.values(), Sucursales.values())).name();
+									if (origen.equals(ventaElegida.getDestino())) {
+										JOptionPane.showMessageDialog(null, "El lugar de Origen no puede ser igual al lugar de Destino");
+										flag2 = true;
+									}
+								} while (flag2);
 								ventaElegida.setOrigen(origen);
 								break;
 							case 3:
@@ -387,7 +404,7 @@ public class Exportacion extends Venta {
 									destino = ((Sucursales) JOptionPane.showInputDialog(null, "ingrese el lugar de Destino", "Modificando", 1, null, 
 											Sucursales.values(), Sucursales.values())).name();
 									if (destino.equals(ventaElegida.getOrigen())) {
-										JOptionPane.showMessageDialog(null, "El destino no puede ser igual al Origen");
+										JOptionPane.showMessageDialog(null, "El lugar de Destino no puede ser igual al lugar de Origen");
 										flag = true;						
 									}
 								} while (flag);
@@ -398,12 +415,12 @@ public class Exportacion extends Venta {
 								String preguntar = Validaciones.menuSiNo("¿Esta seguro que desea guardar los cambios?", "Guardar Cambios", null);
 								if (preguntar.equalsIgnoreCase("Sí")) {
 									ventaElegida.setEstado(estados[1]);
-									detallesVenta = "Datos Venta:" 
-									+ "\nMetodo de Pago: " + ventaElegida.getMetodoPago()
-									+ "\nTipo de Moneda: " + ventaElegida.getMoneda()
-									+ "\nEstado: " + ventaElegida.getEstado()
-									+ "\nOrigen: " + ventaElegida.getOrigen()
-									+ "\nDestino: " + ventaElegida.getDestino();
+									detallesVenta = "Datos de la Venta:" 
+											+ "\n- Metodo de Pago: " + ventaElegida.getMetodoPago()
+											+ "\n- Tipo de Moneda: " + ventaElegida.getMoneda()
+											+ "\n- Estado: " + ventaElegida.getEstado()
+											+ "\n- Origen: " + ventaElegida.getOrigen()
+											+ "\n- Destino: " + ventaElegida.getDestino();
 									VentasExportDTO.actualizarVentaExport(ventaElegida, detallesVenta);
 								}
 								break;
@@ -422,7 +439,7 @@ public class Exportacion extends Venta {
 				} while (opcionDos != 2);
 				
 			} else {
-				JOptionPane.showMessageDialog(null, "El Cliente aún no tiene registrado alguna compra!!");
+				JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");
 			}
 			
 		}
@@ -450,11 +467,11 @@ public class Exportacion extends Venta {
 		} else {
 			clientes = new String[listaClientes.size()];
 			for (int i = 0; i < clientes.length; i++) {
-				clientes[i] = listaClientes.get(i).getIdCliente() + ", " + listaClientes.get(i).getNombre();
+				clientes[i] = listaClientes.get(i).getIdCliente() + "- " + listaClientes.get(i).getNombre();
 			}
 			
 			seleccion = (String) JOptionPane.showInputDialog(null, "Seleccione un Cliente para ver sus Ventas", "Registro de Clientes!!", 1, null, clientes, clientes[0]);
-			eleccion = seleccion.split(",");
+			eleccion = seleccion.split("-");
 			
 			for (Cliente cliente2 : listaClientes) {
 				if (cliente2.getIdCliente() == Integer.parseInt(eleccion[0])) {
@@ -472,43 +489,47 @@ public class Exportacion extends Venta {
 				ventas = new String[listaVentas.size()];
 				
 				for (int i = 0; i < ventas.length; i++) {
-					ventas[i] = listaVentas.get(i).getIdVenta() + ", fecha: " + listaVentas.get(i).getFechaVenta();
+					ventas[i] = listaVentas.get(i).getIdVenta() + "- fecha: " + listaVentas.get(i).getFechaVenta();
 				}
-				
 				
 				seleccion = (String) JOptionPane.showInputDialog(null, "El Cliente: " + cliente.getNombre() + ", registra: " 
 						+ ventas.length + " ventas" + "\nSeleccione una venta que desee anular", "Registro de Ventas!!", 1, null, ventas, ventas[0]);
-				eleccion = seleccion.split(",");
+				eleccion = seleccion.split("-");
 				
 				do {
 					for (Exportacion venta : listaVentas) {
 						if (venta.getIdVenta() == Integer.parseInt(eleccion[0])) {
 							ventaElegida = venta;
-							detallesVenta = "\nDatos Venta:" + "\nMetodo de Pago: " + ventaElegida.getMetodoPago()
-							+ "\nTipo de Moneda: " + ventaElegida.getMoneda()
-							+ "\nOrigen: " + ventaElegida.getOrigen()
-							+ "\nDestino: " + ventaElegida.getDestino();
+							detallesVenta = "Datos de la Venta:" 
+									+ "\n- Metodo de Pago: " + ventaElegida.getMetodoPago()
+									+ "\n- Tipo de Moneda: " + ventaElegida.getMoneda()
+									+ "\n- Estado: " + ventaElegida.getEstado()
+									+ "\n- Origen: " + ventaElegida.getOrigen()
+									+ "\n- Destino: " + ventaElegida.getDestino();
 							break;
 						}
 					}
 					
-					opcion = JOptionPane.showOptionDialog(null, "Detalles de la Venta:\n" + detallesVenta, "Anulacion de Venta", 0, 1, null, menu, menu[0]);
+					opcion = JOptionPane.showOptionDialog(null, "Detalles de la Venta:\n\n" + detallesVenta, "Anulacion de Venta", 0, 1, null, menu, menu[0]);
 					
 					switch (opcion) {
 					case 0:
 						// modificar datos de la venta
 						String preguntar = Validaciones.menuSiNo("¿Esta seguro que desea Anular esta Venta?", "Anular Venta!!", null);
-						if (preguntar.equalsIgnoreCase("Sí")) {
+						if (preguntar.equalsIgnoreCase("Sí") && !(ventaElegida.getEstado().equals(estados[2]))) {
+							
 							ventaElegida.setEstado(estados[2]);
 							
 							VentasExportDTO.anularVentaExport(ventaElegida, null);
+						} else {
+							JOptionPane.showMessageDialog(null, "La venta con fecha: " + ventaElegida.getFechaVenta() + "\nYa se encuentra Anulada!!");
 						}
 						break;
 					}
 				} while (opcion != 1);
 				
 			} else {
-				JOptionPane.showMessageDialog(null, "El Cliente aún no tiene registrado alguna compra!!");
+				JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");
 			}
 			
 		}

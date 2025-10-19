@@ -19,9 +19,9 @@ public class UsuarioDTO {
 		Usuario user = null;
 		try {
 			PreparedStatement stmt = con
-					.prepareStatement("SELECT * FROM usuario WHERE usuario = ? AND contrasenia = ?");
-			stmt.setString(1, usuario);
-			stmt.setString(2, contrasenia);
+					.prepareStatement("SELECT * FROM usuario WHERE BINARY usuario = ? AND BINARY contrasenia = ?");
+				stmt.setString(1, usuario);
+				stmt.setString(2, contrasenia);
 			// executequery se utiliza cuando no hay cambios en la bdd
 			ResultSet rs = stmt.executeQuery();
 
@@ -30,7 +30,6 @@ public class UsuarioDTO {
 				String nombre = rs.getString("nombre");
 				boolean estado = rs.getBoolean("estado");
 				int fkEmpleado = rs.getInt("fk_tipo_empleado");
-				
 				
 				// tenemos que mandar a llamar a la tabla tipo empleado para que con el fk que llega poder crear un objeto tipo empleado
 				TipoEmpleado fk_tipo_empleado =  TipoEmpleado.tipoEmpleado(fkEmpleado);
