@@ -194,31 +194,18 @@ public class UsuarioDTO {
 		}
 		if (flag) {
 			try {
-				PreparedStatement statement = con.prepareStatement(
-						"INSERT INTO libro (titulo, autor, editorial, anio_publicacion, genero, idioma, publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-						, Statement.RETURN_GENERATED_KEYS);
-				statement.setString(1, nuevo.getTitulo());
-				statement.setString(2, nuevo.getAutor());
-				statement.setString(3, nuevo.getEditorial());
-				statement.setString(4, nuevo.getAnioPublicacion());
-				statement.setString(5, nuevo.getGenero());
-				statement.setString(6, nuevo.getIdioma());
-				statement.setString(7, nuevo.getPublicoObjetivo());
-				statement.setInt(8, nuevo.getNumPaginas());
-				statement.setBoolean(9, nuevo.getFirmado());
-				statement.setBoolean(10, nuevo.getEdicionEspecial());
-				statement.setString(11, nuevo.getTapa());
-				statement.setBoolean(12, nuevo.getSaga());
-				statement.setDouble(13, nuevo.getPrecio());
-				statement.setInt(14, nuevo.getStock());
-				statement.setBoolean(15, true);
+				PreparedStatement statement = con.prepareStatement( "INSERT INTO `usuario`(`usuario`, `nombre`, `contrasenia`, `estado`, `fk_tipo_empleado`) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+				statement.setString(1, nuevo.getUsuario());
+				statement.setString(2, nuevo.getNombre());
+				statement.setString(3, nuevo.getContrasenia());
+				statement.setBoolean(4, nuevo.getEstado());
 
 				int filas = statement.executeUpdate();
 				ResultSet rs = statement.getGeneratedKeys();
 	            
 				if (rs.next()) {
 					int idGenerado = rs.getInt(1);
-					nuevo.setId_libro(idGenerado);
+					nuevo.setId_usuario(idGenerado);
 				}
 				
 				if (filas > 0) {

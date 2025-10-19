@@ -1,13 +1,7 @@
 package BLL;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
-
-import DLL.LibroDTO;
 import DLL.UsuarioDTO;
-import Enums.Generos;
-import Enums.Idiomas;
-import Enums.Publico;
-import Enums.Tapa;
 
 public class Admin extends Usuario {
 	private LinkedList<Usuario> listaEmpleados = new LinkedList<Usuario>();
@@ -45,22 +39,21 @@ public class Admin extends Usuario {
 	
 	public static Usuario cargarDatosUsuario(String accion) {
 		String usuario, nombre, contrasenia;
-		int tipo_empleado;
+		TipoEmpleado tipo_empleado;
+		boolean estadoEmpleado;
 
 		usuario = Repository.Validaciones.validarVacio("Ingrese usuario:", "Cargar usuario", null);
 		nombre = Repository.Validaciones.validarString("Ingrese nombre del usuario:", "Cargar usuario", null);
 		contrasenia = Repository.Validaciones.validarVacio("Ingrese la contrasenea:", "Cargar usuario", null);
-		do {
-			tipo_empleado = Integer.parseInt(Repository.Validaciones.validarInt("Seleccione el tipo de empleado (1: Admin, 2: Vendedor Local, 3: Vendedor Internacional):", "Cargar usuario", null));
-		} while (tipo_empleado != 1 || tipo_empleado != 2 || tipo_empleado != 3);
+		
+		
 		if (accion.equals("Crear")) {			
-			return new Usuario(usuario,nombre, contrasenia, tipo_empleado);
-		} /*else {
-			estado = Repository.Validaciones.menuSiNo("¿El Usuario ya fue creaod?", "Cargar usuario", null)
+			return new Usuario(usuario,nombre, contrasenia, estadoEmpleado, tipo_empleado);
+		}else {
+			estadoEmpleado = Repository.Validaciones.menuSiNo("¿El Usuario ya fue creaod?", "Cargar usuario", null)
 					.equals("Sí") ? true : false;
-			return new Usuario(usuario,nombre, contrasenia, tipo_empleado);
-		}*/
-		return null;
+			return new Usuario(usuario,nombre, contrasenia, estadoEmpleado, tipo_empleado);
+		}
 	}
 	
 	
