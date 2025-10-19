@@ -34,6 +34,7 @@ public class MenuVendedor {
 							GestionarVentas.values());
 					switch (opcionVenta2) {
 					case 0: // nueva venta
+						
 						JOptionPane.showMessageDialog(null, "nueva venta");
 						break;
 					case 1: // modificar venta

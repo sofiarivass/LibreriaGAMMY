@@ -59,6 +59,7 @@ public class VentasExportDTO {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
             	int id_venta = rs.getInt("id_venta");
+            	double totalVenta = rs.getDouble("total_venta");
                 LocalDate fecha_venta = rs.getDate("fecha_venta").toLocalDate();
                 String metodo_pago = rs.getString("metodo_pago");
                 String moneda = rs.getString("moneda");
@@ -67,7 +68,7 @@ public class VentasExportDTO {
                 String destino = rs.getString("destino");
                 String estado_envio = rs.getString("estado_envio");
 
-                venta = new Exportacion(id_venta,fecha_venta,metodo_pago,moneda,estado,origen,destino,estado_envio);
+                venta = new Exportacion(id_venta,totalVenta,fecha_venta,metodo_pago,moneda,estado,origen,destino,estado_envio);
             }
        
         } catch (Exception e) {

@@ -2,6 +2,7 @@ package DLL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.LinkedList;
 import BLL.Carrito;
 import BLL.CarritoDetalle;
 import BLL.Libro;
@@ -32,8 +33,8 @@ public class CarritoDetalleDTO {
 	}
 	
 	// funcion para traer los datos de la tabla carrito_detalle
-	public static CarritoDetalle verDetalle(Carrito fkCarrito) {
-		CarritoDetalle carrito_detalle = null;
+	public static LinkedList<CarritoDetalle> verDetalle(Carrito fkCarrito) {
+		LinkedList<CarritoDetalle> carrito_detalle = new LinkedList<CarritoDetalle>();
 		
 		try {
             PreparedStatement stmt = con.prepareStatement(
@@ -42,14 +43,13 @@ public class CarritoDetalleDTO {
             stmt.setInt(1, fkCarrito.getIdCarrito());
   
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
             	int cantidad = rs.getInt("cantidad");
             	int fkLibro = rs.getInt("fk_libro");
             	
             	Libro libro = Libro.verLibro(fkLibro);
                
-
-                carrito_detalle = new CarritoDetalle(cantidad,libro,fkCarrito);
+                carrito_detalle.add(new CarritoDetalle(cantidad,libro,fkCarrito));
             }
        
         } catch (Exception e) {

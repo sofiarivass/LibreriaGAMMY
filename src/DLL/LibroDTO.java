@@ -428,7 +428,7 @@ public class LibroDTO {
 
             int filas = statement.executeUpdate();
             if (filas > 0) {
-                System.out.println("Usuario editado correctamente.");
+                System.out.println("Libro editado correctamente.");
             }
         } catch (Exception e) {
             e.printStackTrace();

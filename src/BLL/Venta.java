@@ -28,8 +28,9 @@ public class Venta {
 		this.fkUsuario = fkUsuario;
 	}
 	
-	public Venta(int idVenta, LocalDate fechaVenta, String metodoPago, String moneda, String estado) {
+	public Venta(int idVenta, double totalVenta, LocalDate fechaVenta, String metodoPago, String moneda, String estado) {
 		this.idVenta = idVenta;
+		this.totalVenta = totalVenta;
 		this.fechaVenta = fechaVenta;
 		this.metodoPago = metodoPago;
 		this.moneda = moneda;

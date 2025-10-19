@@ -56,7 +56,7 @@ public class CarritoDetalle {
 	}
 	
 	// funcion para traer los datos de la tabla carrito_detalle
-	public static CarritoDetalle verDetalle(Carrito fkCarrito) {
+	public static LinkedList<CarritoDetalle> verDetalle(Carrito fkCarrito) {
 		return CarritoDetalleDTO.verDetalle(fkCarrito);
 	}
 
