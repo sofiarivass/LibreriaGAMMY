@@ -288,7 +288,8 @@ public class Exportacion extends Venta {
 		String []menuVentas = {"Metodo-Pago", "Moneda", "Origen", "Destino", "Guardar-Cambios", "volver"};
 		String []menuLibros = {"Agregar_libros", "Eliminar_libros", "volver"};
 		String seleccion, detallesVenta = "", detallesLibro = "";
-		int opcion, opcionDos, cantidadTotal = 0;
+		int opcion, opcionDos, cantidadTotal;
+		double totalVenta = 0;
 		LinkedList<Exportacion> listaVentas = new LinkedList<Exportacion>();
 		LinkedList<CarritoDetalle> listaCarritoDetalle = new LinkedList<CarritoDetalle>();
 		Exportacion ventaElegida = null;
@@ -316,7 +317,7 @@ public class Exportacion extends Venta {
 			
 			if (listaCarrito != null) {
 				for (int i = 0; i < listaCarrito.size(); i++) {
-					listaCarritoDetalle = CarritoDetalle.verDetalle(listaCarrito.get(i));
+//					listaCarritoDetalle = CarritoDetalle.verDetalle(listaCarrito.get(i));
 					listaVentas.add(VentasExportDTO.verVentas(listaCarrito.get(i).getIdCarrito()));
 				}
 
@@ -332,6 +333,7 @@ public class Exportacion extends Venta {
 				eleccion = seleccion.split("-");
 				
 				do {
+					cantidadTotal = 0;
 					detallesLibro = "Datos de los Libros Comprados:\n";
 					for (Exportacion venta : listaVentas) {
 						if (venta.getIdVenta() == Integer.parseInt(eleccion[0])) {
@@ -342,15 +344,22 @@ public class Exportacion extends Venta {
 							+ "\n- Estado: " + ventaElegida.getEstado()
 							+ "\n- Origen: " + ventaElegida.getOrigen()
 							+ "\n- Destino: " + ventaElegida.getDestino();
-//							System.out.println("tamaño inicial de la lista: " + listaCarritoDetalle.size());
-							for (int i = 0; i < listaCarritoDetalle.size(); i++) {
-								if (listaCarritoDetalle.get(i).getFkCarrito().getIdCarrito() == Integer.parseInt(eleccion[0])) {
-									cantidadTotal = cantidadTotal + listaCarritoDetalle.get(i).getCantidad();
-									detallesLibro = detallesLibro 
-											+ (i+1) + "- " + listaCarritoDetalle.get(i).getFkLibro().getTitulo() 
-											+ " - Cantidad: " + listaCarritoDetalle.get(i).getCantidad() + " libros. - precio(unidad): $"
-											+ listaCarritoDetalle.get(i).getFkLibro().getPrecio() + "\n";								
+							
+							System.out.println("tamaño inicial de la lista: " + listaCarritoDetalle.size());
+							
+							// llamo a la tabla carrito_detalle y traigo los libros que tengo dentro de esa venta y carrito
+							for (int i = 0; i < listaCarrito.size(); i++) {
+								if (listaCarrito.get(i).getIdCarrito() == Integer.parseInt(eleccion[0])) {
+									listaCarritoDetalle = CarritoDetalle.verDetalle(listaCarrito.get(i));																	
 								}
+							}
+							
+							for (int i = 0; i < listaCarritoDetalle.size(); i++) {
+								cantidadTotal = cantidadTotal + listaCarritoDetalle.get(i).getCantidad();
+								detallesLibro = detallesLibro 
+										+ (i+1) + "- " + listaCarritoDetalle.get(i).getFkLibro().getTitulo() 
+										+ " - Cantidad: " + listaCarritoDetalle.get(i).getCantidad() + " libros. - precio(unidad): $"
+										+ listaCarritoDetalle.get(i).getFkLibro().getPrecio() + "\n";								
 							}
 							
 							detallesLibro = detallesLibro + "\nCantidad total: " + cantidadTotal + " libros.\n"
@@ -437,19 +446,45 @@ public class Exportacion extends Venta {
 						break;
 					case 1:
 						// modificar libros de la venta
+						boolean flag = true;
+						String detalleActual;
+						int cantidadTotalActual;
 						do {
-							opcion = JOptionPane.showOptionDialog(null, detallesLibro ,"Modificacion de Libros", 0, 1, null, menuLibros, menuLibros[0]);
+							cantidadTotalActual = 0;
+							detalleActual = "Datos de los Libros Modificados:\n";
+							if (flag) {
+								opcion = JOptionPane.showOptionDialog(null, detallesLibro ,"Modificacion de Libros", 0, 1, null, menuLibros, menuLibros[0]);								
+							} else {
+								opcion = JOptionPane.showOptionDialog(null, detalleActual ,"Modificacion de Libros", 0, 1, null, menuLibros, menuLibros[0]);								
+							}
+							flag = false;
 							switch (opcion) {
 							case 0:
 								// agregar libros
 								LinkedList<CarritoDetalle> librosAgregados = Libro.agregarLibros(cliente,listaCarritoDetalle);
 								if (librosAgregados != null) {
-									JOptionPane.showMessageDialog(null, "Todo correctamente, luego continuo!!");
+									for (int i = 0; i < librosAgregados.size(); i++) {
+										cantidadTotalActual = cantidadTotalActual + librosAgregados.get(i).getCantidad();
+										totalVenta = totalVenta + (librosAgregados.get(i).getFkLibro().getPrecio()*librosAgregados.get(i).getCantidad());
+										detalleActual = detalleActual
+												+ (i+1) + "- " + librosAgregados.get(i).getFkLibro().getTitulo() 
+												+ " - Cantidad: " + librosAgregados.get(i).getCantidad() + " libros. - precio(unidad): $"
+												+ librosAgregados.get(i).getFkLibro().getPrecio() + "\n";								
+									}
+									detalleActual = detalleActual
+											+ "\nCantidad total Actual: " + cantidadTotalActual + " libros.\n"
+											+ "Pago Total Actual: $" + totalVenta;									
+								} else {
+									flag = true;
 								}
 								break;
 							case 1:
 								// eliminar libros
 								
+								break;
+							case 2:
+								// guardar cambios
+								JOptionPane.showMessageDialog(null, "esto aun no hace nada!!");
 								break;
 							}
 						} while (opcion!=2);
