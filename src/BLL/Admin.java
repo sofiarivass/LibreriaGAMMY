@@ -29,31 +29,47 @@ public class Admin extends Usuario {
 	
 	public static LinkedList<Usuario> mostrarEmpleados() {
 		LinkedList<Usuario> usuario = UsuarioDTO.mostrarUsuarios();
+		
 		if (usuario == null || usuario.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "No hay empleados para mostrar.");
 		}else {
-			JOptionPane.showMessageDialog(null, UsuarioDTO.usuarioPorID(null));
+			JOptionPane.showMessageDialog(null, UsuarioDTO.usuarioPorID(usuario));
 		}
 		return usuario;
 	}
 	
 	public static Usuario cargarDatosUsuario(String accion) {
-		String usuario, nombre, contrasenia;
-		TipoEmpleado tipo_empleado;
+		LinkedList<TipoEmpleado> listaTipos = UsuarioDTO.seleccionarTipoEmpleado();
+		String[] tipos = new String[listaTipos.size()];
+		String[] eleccion;
+		String usuario, nombre, contrasenia, seleccion;
 		boolean estadoEmpleado;
+		Usuario usuario2 = null;
+		TipoEmpleado tipo_empleado = null;
 
-		usuario = Repository.Validaciones.validarVacio("Ingrese usuario:", "Cargar usuario", null);
-		nombre = Repository.Validaciones.validarString("Ingrese nombre del usuario:", "Cargar usuario", null);
-		contrasenia = Repository.Validaciones.validarVacio("Ingrese la contrasenea:", "Cargar usuario", null);
-		
-		
-		if (accion.equals("Crear")) {			
-			return new Usuario(usuario,nombre, contrasenia, estadoEmpleado, tipo_empleado);
-		}else {
-			estadoEmpleado = Repository.Validaciones.menuSiNo("¿El Usuario ya fue creaod?", "Cargar usuario", null)
-					.equals("Sí") ? true : false;
-			return new Usuario(usuario,nombre, contrasenia, estadoEmpleado, tipo_empleado);
+		if (accion.equals("Crear")) {	
+			usuario = Repository.Validaciones.validarVacio("Ingrese usuario:", "Cargar usuario", null);
+			nombre = Repository.Validaciones.validarString("Ingrese nombre del usuario:", "Cargar usuario", null);
+			contrasenia = Repository.Validaciones.validarVacio("Ingrese la contrasenea:", "Cargar usuario", null);
+			estadoEmpleado = true;
+			
+			for (int i = 0; i < tipos.length; i++) {
+				tipos[i] = listaTipos.get(i).getIdTipoEmpleado() + " - " + listaTipos.get(i).getTipoEmpleado();
+			}
+			
+			seleccion = (String) JOptionPane.showInputDialog(null, "Seleccione el tipo de Empleado", "Seleccion Tipo Empleado", 1, null, tipos, tipos[0]);
+			eleccion = seleccion.split(" - ");
+			
+			for (TipoEmpleado lista : listaTipos) {
+				if (lista.getIdTipoEmpleado() == Integer.parseInt(eleccion[0])) {
+					tipo_empleado = lista;
+					break;
+				}
+			}
+			
+			usuario2 = new Usuario(nombre,usuario, contrasenia, estadoEmpleado, tipo_empleado);
 		}
+		return usuario2;
 	}
 	
 	
@@ -65,8 +81,8 @@ public class Admin extends Usuario {
 		LinkedList<Usuario> usuarios = UsuarioDTO.mostrarUsuarios();
 		String[] elegirUsuario = new String[usuarios.size()];
 		
-		for (int i = 0; i < elegirUsuario.length; i++) {
-			elegirUsuario[i] = usuarios.get(i).getId_usuario() + "," + usuarios.get(i).getNombre();
+		for (int i = 1; i < elegirUsuario.length; i++) {
+			elegirUsuario[i] = usuarios.get(i).getId_usuario() + "," + usuarios.get(i).getUsuario();
 		}
 		
 		elegido = (String) JOptionPane.showInputDialog(null, "Elija el usuario", "", 0, null, elegirUsuario, elegirUsuario[0]);

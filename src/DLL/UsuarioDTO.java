@@ -62,12 +62,33 @@ public class UsuarioDTO {
 				empleado = new TipoEmpleado(id_empleado,tipoEmpleado);
 			}
 			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		return empleado;
+	}
+	
+	public static LinkedList<TipoEmpleado> seleccionarTipoEmpleado() {
+		LinkedList<TipoEmpleado> listaTipos = new LinkedList<TipoEmpleado>();
+		TipoEmpleado empleado = null;
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM tipo_empleado");
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				int id_empleado = rs.getInt("id_tipo_empleado");
+				String tipoEmpleado = rs.getString("tipo_empleado");
+				
+				empleado = new TipoEmpleado(id_empleado,tipoEmpleado);
+				listaTipos.add(empleado);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listaTipos;
 	}
 	
 	
@@ -122,7 +143,7 @@ public class UsuarioDTO {
 		if(usuarioDisp == null) {
 			String[] usuarioArray = new String[usuario.size()];
 			for (int i = 0; i < usuarioArray.length; i++) {
-				usuarioArray[i] = usuario.get(i).getId_usuario() + " - " + usuario.get(i).getNombre(); 
+				usuarioArray[i] = usuario.get(i).getId_usuario() + " - " + usuario.get(i).getUsuario(); 
 			}
 			String elegido = (String) JOptionPane.showInputDialog(null, "Elija empleado:", null, 0, null, usuarioArray, usuarioArray[0]);
 			id_usuario = Integer.parseInt(elegido.split(" - ")[0]);
@@ -143,7 +164,7 @@ public class UsuarioDTO {
 					TipoEmpleado empleado2 = buscarEmpleado(tipo_empleado);
 					
 					
-					usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, empleado2));
+					empleado = new Usuario(id_usuario, nom_empleado, usuario_empleado, estado, empleado2);
 					
 				}
 			} catch (Exception e) {
@@ -153,7 +174,7 @@ public class UsuarioDTO {
 		}else {
 			String [] usuariosArray = new String[usuarioDisp.size()];
 			for (int i = 0; i < usuariosArray.length; i++) {
-				usuariosArray[i] = usuarioDisp.get(i).getId_usuario() + " - " + usuarioDisp.get(i).getNombre();
+				usuariosArray[i] = usuarioDisp.get(i).getId_usuario() + " - " + usuarioDisp.get(i).getUsuario();
 			}
 			String elegido = (String) JOptionPane.showInputDialog(null, "Elija usuario:", null, 0, null, usuariosArray, usuariosArray[0]);
 			id_usuario = Integer.parseInt(elegido.split(" - ")[0]);
@@ -173,7 +194,7 @@ public class UsuarioDTO {
 					TipoEmpleado empleado2 = buscarEmpleado(tipo_empleado);
 					
 					
-					usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, empleado2));
+					empleado = new Usuario(id_usuario, nom_empleado, usuario_empleado, estado, empleado2);
 				} 
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -199,6 +220,7 @@ public class UsuarioDTO {
 				statement.setString(2, nuevo.getNombre());
 				statement.setString(3, nuevo.getContrasenia());
 				statement.setBoolean(4, nuevo.getEstado());
+				statement.setInt(5, nuevo.getFkTipoEmpleado().getIdTipoEmpleado());
 
 				int filas = statement.executeUpdate();
 				ResultSet rs = statement.getGeneratedKeys();
