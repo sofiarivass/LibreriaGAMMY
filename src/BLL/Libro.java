@@ -202,7 +202,8 @@ public class Libro {
 				+ "\nPúblico objetivo: " + publicoObjetivo + "\nNúmero de páginas: " + numPaginas + "\n¿Firmado?: "
 				+ (firmado == true ? "Sí" : "No") + "\n¿Edición especial?: " + (edicionEspecial == true ? "Sí" : "No")
 				+ "\nTipo de tapa: " + tapa + "\n¿Pertenece a una saga?: " + (saga == true ? "Sí" : "No")
-				+ "\nPrecio: $" + precio + "\nStock: " + stock + "\nEstado: " + (estado == true ? "Disponible" : "No disponible") + "\n";
+				+ "\nPrecio: $" + precio + "\nStock: " + stock + "\nEstado: "
+				+ (estado == true ? "Disponible" : "No disponible") + "\n";
 	}
 
 	/**
@@ -312,31 +313,32 @@ public class Libro {
 		}
 		return carrito;
 	}
-	
+
 	/**
 	 * funcion para agregar nuevos libros al carrito existente del Cliente
+	 * 
 	 * @param cliente
 	 * @return
 	 */
 	public static LinkedList<CarritoDetalle> agregarLibros(Cliente cliente, LinkedList<CarritoDetalle> carritoActual) {
 		LinkedList<Libro> listaLibros = null;
 		LinkedList<CarritoDetalle> carrito = carritoActual;
-		
+
 		String seleccion, opcion, condicion;
 		int cantidad;
 		boolean flag, flagDos, vacio;
 		Libro elegido = null;
 		CarritoDetalle listaCarrito = null;
-		
-		condicion = Validaciones.menuSiNo("Hola!! " + cliente.getNombre() + " actualmente tienes " 
-					+ carrito.size() +  " libros.\n¿Deseas Agregar más?", null, null);
-		
+
+		condicion = Validaciones.menuSiNo("Hola!! " + cliente.getNombre() + " actualmente tienes " + carrito.size()
+				+ " libros.\n¿Deseas Agregar más?", null, null);
+
 		if (condicion.equalsIgnoreCase("Sí")) {
 			// traigo todos los libros de la BD en una lista.
 			listaLibros = LibroDTO.elegirLibros();
 			if (listaLibros != null) {
 				String[] elegirLibros = new String[listaLibros.size()];
-				
+
 				do {
 					flag = false;
 					flagDos = false;
@@ -348,7 +350,7 @@ public class Libro {
 							flagDos = true;
 						}
 					}
-					
+
 					if (flagDos) {
 						seleccion = (String) JOptionPane.showInputDialog(null, "Seleccione los libros",
 								"Selección de Libros", 1, null, elegirLibros, elegirLibros[0]);
@@ -361,7 +363,7 @@ public class Libro {
 								break;
 							}
 						}
-						
+
 						if (vacio) {
 							JOptionPane.showMessageDialog(null, "No tenemos Stock del libro: " + elegido.getTitulo());
 							flag = true;
@@ -372,22 +374,23 @@ public class Libro {
 										.parseInt(Validaciones.validarInt(
 												"Libro: " + elegido.getTitulo() + " | Stock disponible: "
 														+ elegido.getStock() + "\n¿cuantos libros desea?",
-														"Realizando una Venta", null));
+												"Realizando una Venta", null));
 								if (cantidad > elegido.getStock()) {
 									JOptionPane.showMessageDialog(null,
 											"No tenemos stock suficiente!!\nStock disponible: " + elegido.getStock());
 									flag = true;
 								}
 							} while (flag);
-							
+
 							if (carrito.isEmpty()) {
 								elegido.setStock(elegido.getStock() - cantidad);
 								listaCarrito = new CarritoDetalle(cantidad, elegido);
 								carrito.add(listaCarrito);
-								
-								opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null, null);
+
+								opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null,
+										null);
 								flag = opcion.equalsIgnoreCase("Sí") ? true : false;
-								
+
 							} else {
 								for (CarritoDetalle libroRepetido : carrito) {
 									if (libroRepetido.getFkLibro().getTitulo().equals(elegido.getTitulo())) {
@@ -397,7 +400,7 @@ public class Libro {
 										break;
 									}
 								}
-								
+
 								if (flag) {
 									opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null,
 											null);
@@ -406,14 +409,14 @@ public class Libro {
 									elegido.setStock(elegido.getStock() - cantidad);
 									listaCarrito = new CarritoDetalle(cantidad, elegido);
 									carrito.add(listaCarrito);
-									
+
 									opcion = Validaciones.menuSiNo("¿Desea agregar otro producto a su carrito?", null,
 											null);
 									flag = opcion.equalsIgnoreCase("Sí") ? true : false;
 								}
 							}
 						}
-						
+
 					} else {
 						JOptionPane.showInternalMessageDialog(null, "Ya no tenemos Stock en ningun Libro!!");
 					}
@@ -423,11 +426,12 @@ public class Libro {
 		} else {
 			return null;
 		}
-		
+
 	}
 
 	/**
 	 * funcion para traer un libro especifico de la BD.
+	 * 
 	 * @param fkLibro
 	 * @return
 	 */
@@ -442,7 +446,8 @@ public class Libro {
 	 */
 	public static void actualizarStock(LinkedList<CarritoDetalle> carrito) {
 		for (int i = 0; i < carrito.size(); i++) {
-			CarritoDetalle carritoDetalle = new CarritoDetalle(carrito.get(i).getCantidad(), carrito.get(i).getFkLibro());
+			CarritoDetalle carritoDetalle = new CarritoDetalle(carrito.get(i).getCantidad(),
+					carrito.get(i).getFkLibro());
 			LibroDTO.actualizarStock(carritoDetalle);
 		}
 	}
@@ -453,7 +458,7 @@ public class Libro {
 	 * 
 	 * @return Libro
 	 */
-	public static Libro cargarDatosLibro(String accion) {
+	public static Libro cargarDatosLibro() {
 		String titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, tapa;
 		int numPaginas, stock;
 		boolean firmado, edicionEspecial, saga, estado;
@@ -501,16 +506,9 @@ public class Libro {
 			precio = Repository.Validaciones.validarDouble("Ingrese precio del libro:", "Cargar libro", null);
 		} while (precio <= 0);
 		stock = Integer.parseInt(Repository.Validaciones.validarInt("Ingrese stock del libro:", "Cargar libro", null));
-		
-		if (accion.equals("Crear")) {			
-			return new Libro(titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, numPaginas,
-					firmado, edicionEspecial, tapa, saga, precio, stock, true);
-		} else {
-			estado = Repository.Validaciones.menuSiNo("¿El libro está disponible para la venta?", "Cargar libro", null)
-					.equals("Sí") ? true : false;
-			return new Libro(titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, numPaginas,
-					firmado, edicionEspecial, tapa, saga, precio, stock, estado);
-		}
+
+		return new Libro(titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, numPaginas,
+				firmado, edicionEspecial, tapa, saga, precio, stock, true);
 	}
 
 	/**
@@ -519,7 +517,7 @@ public class Libro {
 	 * @return boolean
 	 */
 	public static boolean nuevoLibro() {
-		Libro nuevo = cargarDatosLibro("Crear");
+		Libro nuevo = cargarDatosLibro();
 		return LibroDTO.agregarLibro(nuevo);
 	}
 
@@ -534,16 +532,128 @@ public class Libro {
 			JOptionPane.showMessageDialog(null, "No hay libros disponibles para editar.");
 			return false;
 		} else {
+			String titulo, autor, editorial, anioPublicacion;
+			int numPaginas, stock;
+			boolean firmado, edicionEspecial, saga, estado;
+			double precio;
+			Generos genero;
+			Idiomas idioma;
+			Publico publicoObjetivo;
+			Tapa tapa;
+
 			Libro encontrado = LibroDTO.libroPorID(null);
-			Libro modificado = cargarDatosLibro("Editar");
-			modificado.setId_libro(encontrado.getId_libro());
-			return LibroDTO.editarLibro(modificado);
+			EditarLibro opcion;
+			boolean flag = true;
+			do {
+				do {
+					opcion = (EditarLibro) JOptionPane.showInputDialog(null, "Elija el campo que desea editar:",
+							"Editar libro", 1, null, EditarLibro.values(), EditarLibro.values()[0]);
+				} while (opcion == null);
+
+				switch (opcion) {
+				case Título:
+					titulo = Repository.Validaciones.validarVacio("Ingrese titulo del libro:", "Editar libro", null);
+					encontrado.setTitulo(titulo);
+					break;
+				case Autor:
+					autor = Repository.Validaciones.validarString("Ingrese nombre del autor:", "Editar libro", null);
+					encontrado.setAutor(autor);
+					break;
+				case Editorial:
+					editorial = Repository.Validaciones.validarVacio("Ingrese nombre de la editorial:", "Editar libro",
+							null);
+					encontrado.setEditorial(editorial);
+					break;
+				case Año_Publicación:
+					anioPublicacion = Repository.Validaciones.validarAnio("Ingrese año de publicación del libro:",
+							"Editar libro");
+					encontrado.setAnioPublicacion(anioPublicacion);
+					break;
+				case Género:
+					do {
+						genero = (Generos) JOptionPane.showInputDialog(null,
+								"Seleccione el género literario del libro:", "Editar libro", 1, null, Generos.values(),
+								Generos.values()[0]);
+					} while (genero == null);
+					encontrado.setGenero(genero.toString());
+					break;
+				case Idioma:
+					do {
+						idioma = (Idiomas) JOptionPane.showInputDialog(null, "Seleccione el idioma del libro:",
+								"Editar libro", 1, null, Idiomas.values(), Idiomas.values()[0]);
+					} while (idioma == null);
+					encontrado.setIdioma(idioma.toString());
+					break;
+				case Publico_Objetivo:
+					do {
+						publicoObjetivo = (Publico) JOptionPane.showInputDialog(null,
+								"Seleccione el público objetivo del libro:", "Editar libro", 1, null, Publico.values(),
+								Publico.values()[0]);
+					} while (publicoObjetivo == null);
+					encontrado.setPublicoObjetivo(publicoObjetivo.toString());
+					break;
+				case Número_Páginas:
+					numPaginas = Integer.parseInt(Repository.Validaciones
+							.validarInt("Ingrese número de páginas del libro:", "Editar libro", null));
+					encontrado.setNumPaginas(numPaginas);
+					break;
+				case Firmado:
+					firmado = Repository.Validaciones
+							.menuSiNo("¿El libro está firmado por su autor/a?", "Editar libro", null).equals("Sí")
+									? true
+									: false;
+					encontrado.setFirmado(firmado);
+					break;
+				case Edición_Especial:
+					edicionEspecial = Repository.Validaciones
+							.menuSiNo("¿El libro es edición especial?", "Editar libro", null).equals("Sí") ? true
+									: false;
+					encontrado.setEdicionEspecial(edicionEspecial);
+					break;
+				case Tapa:
+					do {
+						tapa = (Tapa) JOptionPane.showInputDialog(null, "Seleccione el tipo de tapa del libro:",
+								"Editar libro", 1, null, Tapa.values(), Tapa.values()[0]);
+					} while (tapa == null);
+					encontrado.setTapa(tapa.toString());
+					break;
+				case Saga:
+					saga = Repository.Validaciones.menuSiNo("¿El libro pertenece a una saga?", "Editar libro", null)
+							.equals("Sí") ? true : false;
+					encontrado.setSaga(saga);
+					break;
+				case Precio:
+					do {
+						precio = Repository.Validaciones.validarDouble("Ingrese precio del libro:", "Editar libro",
+								null);
+					} while (precio <= 0);
+					encontrado.setPrecio(precio);
+					break;
+				case Stock:
+					stock = Integer.parseInt(
+							Repository.Validaciones.validarInt("Ingrese stock del libro:", "Editar libro", null));
+					encontrado.setStock(stock);
+					break;
+				case Estado:
+					estado = Repository.Validaciones
+							.menuSiNo("¿El libro está disponible para su venta?", "Editar libro", null).equals("Sí")
+									? true
+									: false;
+					encontrado.setEstado(estado);
+					break;
+				default:
+					break;
+				}
+				
+				String continuar = Validaciones.menuSiNo("¿Desea seguir editando el libro " + encontrado.getTitulo() + "?", "Editar Libro", null);
+				if (continuar.equals("No")) {
+					flag = false;
+				}
+			} while (flag);
+
+			return LibroDTO.editarLibro(encontrado);
 		}
 	}
-
-//	public static LinkedList<Libro> mostrarLibros() {
-//		return LibroDTO.mostrarLibros();
-//	}
 
 	/**
 	 * Método que muestra la información del libro seleccionado de un menú

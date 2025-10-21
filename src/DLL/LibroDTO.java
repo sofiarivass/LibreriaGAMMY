@@ -197,7 +197,7 @@ public class LibroDTO {
 			for (int i = 0; i < librosArray.length; i++) {
 				librosArray[i] = libros.get(i).getId_libro() + " - " + libros.get(i).getTitulo();
 			}
-			String elegido = (String) JOptionPane.showInputDialog(null, "Elija libro:", null, 0, null, librosArray,
+			String elegido = (String) JOptionPane.showInputDialog(null, "Elija un libro:", null, 0, null, librosArray,
 					librosArray[0]);
 			id_libro = Integer.parseInt(elegido.split(" - ")[0]);
 			Libro libro = null;
