@@ -203,7 +203,7 @@ public class Libro {
 				+ (firmado == true ? "Sí" : "No") + "\n¿Edición especial?: " + (edicionEspecial == true ? "Sí" : "No")
 				+ "\nTipo de tapa: " + tapa + "\n¿Pertenece a una saga?: " + (saga == true ? "Sí" : "No")
 				+ "\nPrecio: $" + precio + "\nStock: " + stock + "\nEstado: "
-				+ (estado == true ? "Disponible" : "No disponible") + "\n";
+				+ (estado == true ? "Activo" : "Inactivo") + "\n";
 	}
 
 	/**
@@ -476,18 +476,18 @@ public class Libro {
 			generoElegido = (Generos) JOptionPane.showInputDialog(null, "Seleccione el género literario del libro:",
 					"Cargar libro", 1, null, Generos.values(), Generos.values()[0]);
 		} while (generoElegido == null);
-		genero = generoElegido.toString();
+		genero = generoElegido.name();
 		do {
 			idiomaElegido = (Idiomas) JOptionPane.showInputDialog(null, "Seleccione el idioma del libro:",
 					"Cargar libro", 1, null, Idiomas.values(), Idiomas.values()[0]);
 		} while (idiomaElegido == null);
-		idioma = idiomaElegido.toString();
+		idioma = idiomaElegido.name();
 		do {
 			publicoObjetivoElegido = (Publico) JOptionPane.showInputDialog(null,
 					"Seleccione el público objetivo del libro:", "Cargar libro", 1, null, Publico.values(),
 					Publico.values()[0]);
 		} while (publicoObjetivoElegido == null);
-		publicoObjetivo = publicoObjetivoElegido.toString();
+		publicoObjetivo = publicoObjetivoElegido.name();
 		numPaginas = Integer.parseInt(
 				Repository.Validaciones.validarInt("Ingrese número de páginas del libro:", "Cargar libro", null));
 		firmado = Repository.Validaciones.menuSiNo("¿El libro está firmado por su autor/a?", "Cargar libro", null)
@@ -498,7 +498,7 @@ public class Libro {
 			tapaElegida = (Tapa) JOptionPane.showInputDialog(null, "Seleccione el tipo de tapa del libro:",
 					"Cargar libro", 1, null, Tapa.values(), Tapa.values()[0]);
 		} while (tapaElegida == null);
-		tapa = tapaElegida.toString();
+		tapa = tapaElegida.name();
 		saga = Repository.Validaciones.menuSiNo("¿El libro pertenece a una saga?", "Cargar libro", null).equals("Sí")
 				? true
 				: false;
@@ -575,14 +575,14 @@ public class Libro {
 								"Seleccione el género literario del libro:", "Editar libro", 1, null, Generos.values(),
 								Generos.values()[0]);
 					} while (genero == null);
-					encontrado.setGenero(genero.toString());
+					encontrado.setGenero(genero.name());
 					break;
 				case Idioma:
 					do {
 						idioma = (Idiomas) JOptionPane.showInputDialog(null, "Seleccione el idioma del libro:",
 								"Editar libro", 1, null, Idiomas.values(), Idiomas.values()[0]);
 					} while (idioma == null);
-					encontrado.setIdioma(idioma.toString());
+					encontrado.setIdioma(idioma.name());
 					break;
 				case Publico_Objetivo:
 					do {
@@ -590,7 +590,7 @@ public class Libro {
 								"Seleccione el público objetivo del libro:", "Editar libro", 1, null, Publico.values(),
 								Publico.values()[0]);
 					} while (publicoObjetivo == null);
-					encontrado.setPublicoObjetivo(publicoObjetivo.toString());
+					encontrado.setPublicoObjetivo(publicoObjetivo.name());
 					break;
 				case Número_Páginas:
 					numPaginas = Integer.parseInt(Repository.Validaciones
@@ -615,7 +615,7 @@ public class Libro {
 						tapa = (Tapa) JOptionPane.showInputDialog(null, "Seleccione el tipo de tapa del libro:",
 								"Editar libro", 1, null, Tapa.values(), Tapa.values()[0]);
 					} while (tapa == null);
-					encontrado.setTapa(tapa.toString());
+					encontrado.setTapa(tapa.name());
 					break;
 				case Saga:
 					saga = Repository.Validaciones.menuSiNo("¿El libro pertenece a una saga?", "Editar libro", null)
@@ -644,8 +644,9 @@ public class Libro {
 				default:
 					break;
 				}
-				
-				String continuar = Validaciones.menuSiNo("¿Desea seguir editando el libro " + encontrado.getTitulo() + "?", "Editar Libro", null);
+
+				String continuar = Validaciones.menuSiNo(
+						"¿Desea seguir editando el libro " + encontrado.getTitulo() + "?", "Editar Libro", null);
 				if (continuar.equals("No")) {
 					flag = false;
 				}
@@ -661,10 +662,49 @@ public class Libro {
 	 */
 	public static void mostrarLibro() {
 		LinkedList<Libro> libros = LibroDTO.mostrarLibros();
+		LinkedList<Libro> activos = new LinkedList<Libro>();
+		LinkedList<Libro> inactivos = new LinkedList<Libro>();
+
 		if (libros == null || libros.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "No hay libros disponibles para mostrar.");
 		} else {
-			JOptionPane.showMessageDialog(null, LibroDTO.libroPorID(null));
+			int mostrar = JOptionPane.showOptionDialog(null, "Elija qué libros desea ver:", "Mostrar libros",
+					0, 1, null, Enums.MenuMostrar.values(), Enums.MenuMostrar.values());
+			
+			switch (mostrar) {
+			// ACTIVOS
+			case 0:
+				for (Libro libro : libros) {
+					if (libro.getEstado() == true) {
+						activos.add(libro);
+					}
+				}
+				if (activos == null || activos.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "No hay libros activos");
+				} else {
+					JOptionPane.showMessageDialog(null, LibroDTO.libroPorID(activos));
+				}
+				break;
+			// INACTIVOS
+			case 1:
+				for (Libro libro : libros) {
+					if (libro.getEstado() == false) {
+						inactivos.add(libro);
+					}
+				}
+				if (inactivos == null || inactivos.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "No hay libros inactivos");
+				} else {
+					JOptionPane.showMessageDialog(null, LibroDTO.libroPorID(inactivos));
+				}
+				break;
+			// TODOS
+			case 2:
+				JOptionPane.showMessageDialog(null, LibroDTO.libroPorID(null));
+				break;
+			default:
+				break;
+			}
 		}
 	}
 

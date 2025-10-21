@@ -8,17 +8,15 @@ import javax.swing.border.EmptyBorder;
 
 import BLL.Usuario;
 
-import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.SwingConstants;
-import javax.swing.JSeparator;
-import javax.swing.JTabbedPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
 
 public class Main extends JFrame {
 
@@ -46,7 +44,7 @@ public class Main extends JFrame {
 	 */
 	public Main() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 526, 359);
+		setBounds(100, 100, 526, 534);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -83,7 +81,7 @@ public class Main extends JFrame {
 				dispose();
 			}
 		});
-		btnLogin.setBounds(177, 134, 157, 35);
+		btnLogin.setBounds(177, 323, 157, 35);
 		contentPane.add(btnLogin);
 
 		JButton btnInfo = new JButton("Información");
@@ -95,7 +93,7 @@ public class Main extends JFrame {
 			}
 		});
 		btnInfo.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnInfo.setBounds(177, 179, 157, 35);
+		btnInfo.setBounds(177, 368, 157, 35);
 		contentPane.add(btnInfo);
 
 		JButton btnSalir = new JButton("Salir");
@@ -107,20 +105,26 @@ public class Main extends JFrame {
 		});
 		btnSalir.setForeground(new Color(153, 17, 20));
 		btnSalir.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnSalir.setBounds(177, 249, 157, 28);
+		btnSalir.setBounds(177, 438, 157, 28);
 		contentPane.add(btnSalir);
 
 		JLabel lblNewLabel = new JLabel("¡Bienvenido al sistema de Librería GAMMY!");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblNewLabel.setBounds(10, 27, 491, 44);
+		lblNewLabel.setBounds(10, 216, 491, 44);
 		contentPane.add(lblNewLabel);
 
 		JLabel lblPorFavorElija = new JLabel("Por favor elija una opción");
 		lblPorFavorElija.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPorFavorElija.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblPorFavorElija.setBounds(72, 66, 366, 44);
+		lblPorFavorElija.setBounds(72, 255, 366, 44);
 		contentPane.add(lblPorFavorElija);
+		
+		JLabel lblLogo = new JLabel("");
+		lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLogo.setIcon(new ImageIcon(Main.class.getResource("/img/logo.png")));
+		lblLogo.setBounds(0, 6, 510, 220);
+		contentPane.add(lblLogo);
 
 	}
 }
