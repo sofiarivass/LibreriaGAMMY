@@ -231,7 +231,7 @@ public class UsuarioDTO {
 				}
 				
 				if (filas > 0) {
-					JOptionPane.showMessageDialog(null, "Libro agregado correctamente\n" + nuevo.toString());
+					JOptionPane.showMessageDialog(null, "Usuario agregado correctamente\n" + nuevo.toString());
 					return true;
 				} else {
 					return false;

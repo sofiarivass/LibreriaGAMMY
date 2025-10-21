@@ -81,8 +81,12 @@ public class Admin extends Usuario {
 		LinkedList<Usuario> usuarios = UsuarioDTO.mostrarUsuarios();
 		String[] elegirUsuario = new String[usuarios.size()];
 		
-		for (int i = 1; i < elegirUsuario.length; i++) {
-			elegirUsuario[i] = usuarios.get(i).getId_usuario() + "," + usuarios.get(i).getUsuario();
+		for (int i = 0; i < elegirUsuario.length; i++) {
+			if(usuarios.get(i).getEstado() == true) {
+				elegirUsuario[i] = usuarios.get(i).getId_usuario() + "," + usuarios.get(i).getUsuario();
+				
+			}
+			
 		}
 		
 		elegido = (String) JOptionPane.showInputDialog(null, "Elija el usuario", "", 0, null, elegirUsuario, elegirUsuario[0]);
