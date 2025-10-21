@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.LinkedList;
-
 import com.mysql.jdbc.Statement;
 import BLL.Carrito;
 import BLL.Cliente;

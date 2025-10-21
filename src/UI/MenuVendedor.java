@@ -1,6 +1,7 @@
 package UI;
 import javax.swing.JOptionPane;
 import BLL.Usuario;
+import BLL.Venta;
 import Enums.*;
 
 public class MenuVendedor {
@@ -34,14 +35,13 @@ public class MenuVendedor {
 							GestionarVentas.values());
 					switch (opcionVenta2) {
 					case 0: // nueva venta
-						
-						JOptionPane.showMessageDialog(null, "nueva venta");
+						Venta.nuevaVenta(user);
 						break;
 					case 1: // modificar venta
-						JOptionPane.showMessageDialog(null, "modificar venta");
+						Venta.modificarVentaLocal(user);
 						break;
 					case 2: // anular venta
-						JOptionPane.showMessageDialog(null, "anular venta");
+						Venta.anularVentaLocal(user);
 						break;
 					case 3: // mostrar ventas
 						JOptionPane.showMessageDialog(null, "mostrar ventas");
