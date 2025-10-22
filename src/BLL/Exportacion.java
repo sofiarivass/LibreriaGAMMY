@@ -318,10 +318,14 @@ public class Exportacion extends Venta {
 			if (listaCarrito != null) {
 				for (int i = 0; i < listaCarrito.size(); i++) {
 					ventaExport = VentasExportDTO.verVentas(listaCarrito.get(i).getIdCarrito(),fkTipoVenta);
+					if (ventaExport != null) {
+						listaVentas.add(ventaExport);						
+					}
 				}
 
-				if (ventaExport != null) {
-					listaVentas.add(ventaExport);
+				if (listaVentas.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");
+				} else {
 					ventas = new String[listaVentas.size()];
 					
 					for (int i = 0; i < ventas.length; i++) {
@@ -425,8 +429,6 @@ public class Exportacion extends Venta {
 						}
 						
 					} while (opcionDos != 1);
-				} else {
-					JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");					
 				}
 			} else {
 				JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");
@@ -480,10 +482,14 @@ public class Exportacion extends Venta {
 			if (listaCarrito != null) {
 				for (int i = 0; i < listaCarrito.size(); i++) {
 					ventaExport = VentasExportDTO.verVentas(listaCarrito.get(i).getIdCarrito(),fkTipoVenta);
+					if (ventaExport != null) {
+						listaVentas.add(ventaExport);						
+					}
 				}
 
-				if (ventaExport != null) {
-					listaVentas.add(ventaExport);
+				if (listaVentas.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");
+				} else {
 					ventas = new String[listaVentas.size()];
 					
 					for (int i = 0; i < ventas.length; i++) {
@@ -525,8 +531,6 @@ public class Exportacion extends Venta {
 							break;
 						}
 					} while (opcion != 1);
-				} else {
-					JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");					
 				}
 			} else {
 				JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");

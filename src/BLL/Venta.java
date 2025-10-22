@@ -357,10 +357,14 @@ public class Venta {
 			if (listaCarrito != null) {
 				for (int i = 0; i < listaCarrito.size(); i++) {
 					ventaLocal = VentasLocalDTO.verVentasLocales(listaCarrito.get(i).getIdCarrito(),fkTipoVenta);
+					if (ventaLocal != null) {
+						listaVentas.add(ventaLocal);						
+					}
 				}
 
-				if (ventaLocal != null) {
-					listaVentas.add(ventaLocal);
+				if (listaVentas.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");
+				} else {
 					ventas = new String[listaVentas.size()];
 					
 					for (int i = 0; i < ventas.length; i++) {
@@ -428,9 +432,6 @@ public class Venta {
 						}
 						
 					} while (opcionDos != 1);
-					
-				} else {
-					JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");					
 				}
 			} else {
 				JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");
@@ -482,10 +483,14 @@ public class Venta {
 			if (listaCarrito != null) {
 				for (int i = 0; i < listaCarrito.size(); i++) {
 					ventaLocal = VentasLocalDTO.verVentasLocales(listaCarrito.get(i).getIdCarrito(),fkTipoVenta);
+					if (ventaLocal != null) {
+						listaVentas.add(ventaLocal);						
+					}
 				}
 				
-				if (ventaLocal != null) {
-					listaVentas.add(ventaLocal);
+				if (listaVentas.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");
+				} else {
 					ventas = new String[listaVentas.size()];
 					
 					for (int i = 0; i < ventas.length; i++) {
@@ -525,9 +530,6 @@ public class Venta {
 							break;
 						}
 					} while (opcion != 1);
-					
-				} else {
-					JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");					
 				}
 			} else {
 				JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", aún no tiene compras registradas!!");
