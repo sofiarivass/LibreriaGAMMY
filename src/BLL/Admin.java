@@ -2,6 +2,7 @@ package BLL;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import DLL.UsuarioDTO;
+import Repository.Encriptador;
 
 public class Admin extends Usuario {
 	private LinkedList<Usuario> listaEmpleados = new LinkedList<Usuario>();
@@ -67,7 +68,7 @@ public class Admin extends Usuario {
 				}
 			}
 			
-			usuario2 = new Usuario(nombre,usuario, contrasenia, estadoEmpleado, tipo_empleado);
+			usuario2 = new Usuario(nombre,usuario, Encriptador.encriptar(contrasenia), estadoEmpleado, tipo_empleado);
 		}
 		return usuario2;
 	}

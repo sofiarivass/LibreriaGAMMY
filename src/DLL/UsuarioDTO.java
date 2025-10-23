@@ -46,6 +46,17 @@ public class UsuarioDTO {
 		return user;
 	}
 	
+	/*public static boolean estadoEmpleado() {
+		boolean estadoUser = true;
+		try {
+			PerparedStatement stmt = con.prepareStatement("SELECT * FROM usuario WHERE BINARY usuario = ? AND BINARY contrasenia = ?");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return estadoUser;
+		
+	}*/
+	
 	public static TipoEmpleado buscarEmpleado(int fkEmpleado) {
 		TipoEmpleado empleado = null;
 		
@@ -244,8 +255,7 @@ public class UsuarioDTO {
 
 		} else {
 			JOptionPane.showMessageDialog(null,
-					"ERROR! Ya hay un libro con las mismas carácteristicas cargado en el sistema:\n"
-							+ coincidencia.toString());
+					"ERROR! Ya hay un usuario con las mismas carácteristicas cargado en el sistema:\n" + coincidencia.toString());
 			return false;
 		}
 	}

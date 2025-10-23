@@ -114,14 +114,19 @@ public class Usuario {
 		String contrasenia = Repository.Validaciones.validarVacio("Ingrese contraseña:", "Login", null);
 
 		Usuario user = UsuarioDTO.login(usuario, Encriptador.encriptar(contrasenia));
-
+		
+		
 		if (user == null) {
 			JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
 		} else {
-			JOptionPane.showMessageDialog(null, "Bienvenido " + user.getNombre() + "!");			
+			if (user.getEstado() == false) {
+				JOptionPane.showMessageDialog(null, "El usuario ingresado, esta dado de baja");
+			}else {
+				JOptionPane.showMessageDialog(null, "Bienvenido " + user.getNombre() + "!");
+			}
 		}
-
 		return user;
+
 	}
 
 }
