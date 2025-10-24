@@ -5,13 +5,9 @@ import java.sql.ResultSet;
 import BLL.TipoEmpleado;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.swing.JOptionPane;
-
 import com.mysql.jdbc.Statement;
-
 import BLL.Admin;
-import BLL.Libro;
 import BLL.Usuario;
 import Repository.Validaciones;
 
@@ -215,16 +211,6 @@ public class UsuarioDTO {
 	}
 	
 	public static boolean agregarUsuario(Usuario nuevo) {
-		boolean flag = true;
-		Usuario coincidencia = null;
-		for (Usuario elemento : UsuarioDTO.mostrarUsuarios()) {
-			if (elemento.getUsuario().equals(nuevo.getUsuario()) && elemento.getNombre().equals(nuevo.getNombre())) {
-				flag = false;
-				coincidencia = elemento;
-				break;
-			}
-		}
-		if (flag) {
 			try {
 				PreparedStatement statement = con.prepareStatement( "INSERT INTO `usuario`(`usuario`, `nombre`, `contrasenia`, `estado`, `fk_tipo_empleado`) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 				statement.setString(1, nuevo.getUsuario());
@@ -244,20 +230,11 @@ public class UsuarioDTO {
 				if (filas > 0) {
 					JOptionPane.showMessageDialog(null, "Usuario agregado correctamente\n" + nuevo.toString());
 					return true;
-				} else {
-					return false;
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
-
 			}
-
-		} else {
-			JOptionPane.showMessageDialog(null,
-					"ERROR! Ya hay un usuario con las mismas carácteristicas cargado en el sistema:\n" + coincidencia.toString());
-			return false;
-		}
+			
+		return false;
 	}
 	
 	

@@ -40,18 +40,29 @@ public class Admin extends Usuario {
 	}
 	
 	public static Usuario cargarDatosUsuario(String accion) {
+		LinkedList<Usuario> usuarios = UsuarioDTO.mostrarUsuarios();
 		LinkedList<TipoEmpleado> listaTipos = UsuarioDTO.seleccionarTipoEmpleado();
 		String[] tipos = new String[listaTipos.size()];
 		String[] eleccion;
 		String usuario, nombre, contrasenia, seleccion;
-		boolean estadoEmpleado;
+		boolean estadoEmpleado, flag;
 		Usuario usuario2 = null;
 		TipoEmpleado tipo_empleado = null;
 
-		if (accion.equals("Crear")) {	
-			usuario = Repository.Validaciones.validarVacio("Ingrese usuario:", "Cargar usuario", null);
+		if (accion.equals("Crear")) {
+			do {
+				flag = false;
+				usuario = Repository.Validaciones.validarVacio("Ingrese usuario:", "Cargar usuario", null);
+				for (Usuario user : usuarios) {
+					if (user.getUsuario().equalsIgnoreCase(usuario)) {
+						JOptionPane.showMessageDialog(null, "El nombre de Usuario ya Existe!!");
+						flag = true;
+						break;
+					}
+				}
+			} while (flag);
 			nombre = Repository.Validaciones.validarString("Ingrese nombre del usuario:", "Cargar usuario", null);
-			contrasenia = Repository.Validaciones.validarVacio("Ingrese la contrasenea:", "Cargar usuario", null);
+			contrasenia = Repository.Validaciones.validarVacio("Ingrese la contraseña:", "Cargar usuario", null);
 			estadoEmpleado = true;
 			
 			for (int i = 0; i < tipos.length; i++) {
@@ -75,31 +86,40 @@ public class Admin extends Usuario {
 	
 	
 
-	public static void eliminarEmpleados() {
+	public static void eliminarEmpleados(Usuario admin) {
 		String elegido;
 		String []elegido2;
 		int usuarioElegido;
 		LinkedList<Usuario> usuarios = UsuarioDTO.mostrarUsuarios();
-		String[] elegirUsuario = new String[usuarios.size()];
+		LinkedList<Usuario> usuariosActivos = new LinkedList<Usuario>();
 		
-		for (int i = 0; i < elegirUsuario.length; i++) {
-			if(usuarios.get(i).getEstado() == true) {
-				elegirUsuario[i] = usuarios.get(i).getId_usuario() + "," + usuarios.get(i).getUsuario();
-				
+		for (Usuario usuario : usuarios) {
+			if (usuario.getEstado() != false && admin.getId_usuario() != usuario.getId_usuario()) {
+				System.out.println("entre porque mi estado es true");
+				usuariosActivos.add(usuario);					
 			}
-			
 		}
 		
-		elegido = (String) JOptionPane.showInputDialog(null, "Elija el usuario", "", 0, null, elegirUsuario, elegirUsuario[0]);
-		elegido2 = elegido.split(",");
-		
-		usuarioElegido = Integer.parseInt(elegido2[0]);
-		UsuarioDTO.eliminarUsuarioPorID(usuarioElegido);
+		if (usuariosActivos.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No hay más Empleados Activos!!");
+		} else {
+			String[] elegirUsuario = new String[usuariosActivos.size()];
+			
+			for (int i = 0; i < elegirUsuario.length; i++) {
+				elegirUsuario[i] = usuariosActivos.get(i).getId_usuario() + "," + usuariosActivos.get(i).getUsuario();
+			}
+			
+			elegido = (String) JOptionPane.showInputDialog(null, "Elija el usuario", "", 0, null, elegirUsuario, elegirUsuario[0]);
+			elegido2 = elegido.split(",");
+			
+			usuarioElegido = Integer.parseInt(elegido2[0]);
+			UsuarioDTO.eliminarUsuarioPorID(usuarioElegido);			
+		}
 	}
 	
 	public static boolean nuevoEmpleado() {
 		Usuario nuevo = cargarDatosUsuario("Crear");
-		return UsuarioDTO.agregarUsuario(nuevo);
+		return UsuarioDTO.agregarUsuario(nuevo);			
 	}
 	
 }

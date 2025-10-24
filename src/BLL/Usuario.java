@@ -121,6 +121,7 @@ public class Usuario {
 		} else {
 			if (user.getEstado() == false) {
 				JOptionPane.showMessageDialog(null, "El usuario ingresado, esta dado de baja");
+				user = null;
 			}else {
 				JOptionPane.showMessageDialog(null, "Bienvenido " + user.getNombre() + "!");
 			}
