@@ -77,8 +77,6 @@ public class Main extends JFrame {
 					MenuVendedorInternacional.Menu(user);
 					break;
 				}
-
-				dispose();
 			}
 		});
 		btnLogin.setBounds(177, 323, 157, 35);
@@ -87,8 +85,8 @@ public class Main extends JFrame {
 		JButton btnInfo = new JButton("Información");
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null,
-						"Sistema interno de Librería GAMMY\nVersion ?.?\n\nDesarrollado por:\n- Aldeir Aponte\n- Juan Caamaño\n- Mariano Dominguez\n- Sofía Rivas\n\n© DaVinci 2025");
+				Informacion frame = new Informacion();
+				frame.setVisible(true);
 				dispose();
 			}
 		});
@@ -99,7 +97,6 @@ public class Main extends JFrame {
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "¡Vuelva pronto!");
 				dispose();
 			}
 		});
@@ -125,6 +122,5 @@ public class Main extends JFrame {
 		lblLogo.setIcon(new ImageIcon(Main.class.getResource("/img/logo.png")));
 		lblLogo.setBounds(0, 6, 510, 220);
 		contentPane.add(lblLogo);
-
 	}
 }
