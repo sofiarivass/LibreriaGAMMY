@@ -1,4 +1,6 @@
 package UI;
+import java.awt.EventQueue;
+
 import javax.swing.JOptionPane;
 import BLL.Usuario;
 import Enums.*;
@@ -35,7 +37,17 @@ public class Main {
 					break;
 				// MENU VENDEDOR INTERNACIONAL
 				case 3:
-					MenuVendedorInternacional.Menu(user);
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								VendedorInternacional frame = new VendedorInternacional(user);
+								frame.setVisible(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+//					MenuVendedorInternacional.Menu(user);
 					break;
 				}
 				break;
