@@ -54,7 +54,8 @@ public class Main extends JFrame {
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				dispose();
+				
 				Usuario user = null;
 
 				while (user == null) {

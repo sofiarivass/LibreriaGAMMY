@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import BLL.Usuario;
+import Repository.Validaciones;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -24,8 +25,8 @@ public class Login extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField txtUsuario;
+	private JTextField txtContrasenia;
 	private JButton btnIngresar;
 	private JLabel lblError;
 
@@ -57,10 +58,10 @@ public class Login extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(108, 93, 217, 30);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		txtUsuario = new JTextField();
+		txtUsuario.setBounds(108, 93, 217, 30);
+		contentPane.add(txtUsuario);
+		txtUsuario.setColumns(10);
 		
 		JLabel lblUsuario = new JLabel("Usuario");
 		lblUsuario.setBounds(109, 77, 46, 14);
@@ -76,27 +77,23 @@ public class Login extends JFrame {
 		lblContrasenia.setBounds(108, 143, 79, 14);
 		contentPane.add(lblContrasenia);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(108, 158, 217, 30);
-		contentPane.add(textField_1);
+		txtContrasenia = new JTextField();
+		txtContrasenia.setColumns(10);
+		txtContrasenia.setBounds(108, 158, 217, 30);
+		contentPane.add(txtContrasenia);
+		
+		lblError = new JLabel("");
+		lblError.setHorizontalAlignment(SwingConstants.CENTER);
+		lblError.setForeground(new Color(170, 0, 0));
+		lblError.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblError.setBounds(44, 207, 346, 31);
+		contentPane.add(lblError);
 		
 		btnIngresar = new JButton("Ingresar");
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Usuario user = Usuario.login();
-				
-				if (user == null) {					
-					lblError = new JLabel("Usuario o contraseña incorrectos");
-					lblError.setHorizontalAlignment(SwingConstants.CENTER);
-					lblError.setForeground(new Color(170, 0, 0));
-					lblError.setFont(new Font("Tahoma", Font.BOLD, 14));
-					lblError.setBounds(44, 207, 346, 31);
-					contentPane.add(lblError);
-				} else {
-					JOptionPane.showMessageDialog(null, "entrò");
-				}
-				dispose();
+				//aca iria la funcion de login
+					dispose();
 			}
 		});
 		btnIngresar.setFont(new Font("Tahoma", Font.PLAIN, 14));
