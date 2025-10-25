@@ -1,5 +1,6 @@
 package UI;
 import javax.swing.JOptionPane;
+import BLL.Admin;
 import BLL.Usuario;
 import Enums.*;
 
@@ -19,13 +20,16 @@ public class MenuAdmin {
 							GestionarEmpleados.values());
 					switch (opcionAdmin1) {
 					case 0: // mostrar empleados
-						JOptionPane.showMessageDialog(null, "mostrando empleados");
+						Admin.mostrarEmpleados();
+						
 						break;
 					case 1: // crear empleado
-						JOptionPane.showMessageDialog(null, "crear empleado");
+						Admin.nuevoEmpleado();
+						
 						break;
 					case 2: // dar de baja empleado
-						JOptionPane.showMessageDialog(null, "dar de baja empleado");
+						Admin.eliminarEmpleados(user);
+						
 						break;
 					}
 				} while (opcionAdmin1 != 3);
