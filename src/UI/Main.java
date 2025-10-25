@@ -15,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 
 public class Main extends JFrame {
@@ -55,7 +54,7 @@ public class Main extends JFrame {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				
+
 				Usuario user = null;
 
 				while (user == null) {
@@ -117,7 +116,7 @@ public class Main extends JFrame {
 		lblPorFavorElija.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblPorFavorElija.setBounds(72, 255, 366, 44);
 		contentPane.add(lblPorFavorElija);
-		
+
 		JLabel lblLogo = new JLabel("");
 		lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLogo.setIcon(new ImageIcon(Main.class.getResource("/img/logo.png")));

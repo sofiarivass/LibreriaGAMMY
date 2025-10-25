@@ -79,6 +79,8 @@ public class MenuVendedorInternacional {
 				break;
 			case 4:
 				JOptionPane.showMessageDialog(null, "Hasta pronto, " + user.getNombre() + " (" + user.getUsuario() +")!");
+				Main frame = new Main();
+				frame.setVisible(true);
 				// opcion salir
 				break;
 			}
