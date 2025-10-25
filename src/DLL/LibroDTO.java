@@ -97,7 +97,7 @@ public class LibroDTO {
 		for (Libro elemento : LibroDTO.mostrarLibros()) {
 			if (elemento.getTitulo().equals(libro.getTitulo()) && elemento.getAutor().equals(libro.getAutor())
 					&& elemento.getEditorial().equals(libro.getEditorial())
-					&& elemento.getIdioma().equals(libro.getIdioma())) {
+					&& elemento.getIdioma().equals(libro.getIdioma()) && elemento.getId_libro() != libro.getId_libro()) {
 				flag = false;
 				coincidencia = elemento;
 				break;
@@ -195,9 +195,9 @@ public class LibroDTO {
 		if (librosDisp == null) {
 			String[] librosArray = new String[libros.size()];
 			for (int i = 0; i < librosArray.length; i++) {
-				librosArray[i] = libros.get(i).getId_libro() + " - " + libros.get(i).getTitulo();
+				librosArray[i] = libros.get(i).getId_libro() + " - " + libros.get(i).getTitulo() + " (" + (libros.get(i).getEstado() == true ? "Activo" : "Inactivo") +")";
 			}
-			String elegido = (String) JOptionPane.showInputDialog(null, "Elija libro:", null, 0, null, librosArray,
+			String elegido = (String) JOptionPane.showInputDialog(null, "Elija un libro:", null, 0, null, librosArray,
 					librosArray[0]);
 			id_libro = Integer.parseInt(elegido.split(" - ")[0]);
 			Libro libro = null;
@@ -328,7 +328,7 @@ public class LibroDTO {
 				Libro seleccionado = LibroDTO.libroPorID(librosDisp);				
 				
 				String confirmacion = Validaciones.menuSiNo("Seguro que desea eliminar el libro?\n"
-						+ seleccionado.toString() + "\nEsta acción es irreversible!!", "Eliminar Libro", null);
+						+ seleccionado.toString() + "\nEsta acción es reversible", "Eliminar Libro", null);
 				if (confirmacion.equals("Sí")) {
 					try {
 						PreparedStatement statement = con.prepareStatement("UPDATE libro SET estado = ? WHERE id_libro = ?");
