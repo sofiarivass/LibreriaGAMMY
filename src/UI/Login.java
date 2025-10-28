@@ -1,25 +1,18 @@
 package UI;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import BLL.Usuario;
-import Repository.Validaciones;
-
 import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.EventQueue;
 
 public class Login extends JFrame {
 
@@ -29,10 +22,7 @@ public class Login extends JFrame {
 	private JTextField txtContrasenia;
 	private JButton btnIngresar;
 	private JLabel lblError;
-
-	/**
-	 * Launch the application.
-	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -92,11 +82,10 @@ public class Login extends JFrame {
 		btnIngresar = new JButton("Ingresar");
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Usuario user = null;
-				user = Usuario.login(txtUsuario.getText(), txtContrasenia.getText());
+				Usuario user = Usuario.login(txtUsuario.getText(), txtContrasenia.getText());
 				if (user != null) {
-					Main inicio = new Main(user);
-					inicio.setVisible(true);
+					Main principal = new Main(user);
+					principal.setVisible(true);
 					dispose();
 				} else {
 					lblError.setText("Por favor complete los campos");

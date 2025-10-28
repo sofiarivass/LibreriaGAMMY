@@ -1,21 +1,18 @@
 package UI;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import BLL.Usuario;
-
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.EventQueue;
+
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 
 public class Main extends JFrame {
@@ -26,11 +23,11 @@ public class Main extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(Usuario user) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Main frame = new Main(null);
+					Main frame = new Main(user);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -38,11 +35,9 @@ public class Main extends JFrame {
 			}
 		});
 	}
-
-	/**
-	 * Create the frame.
-	 */
+	
 	public Main(Usuario user) {
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 526, 534);
 		contentPane = new JPanel();
@@ -54,7 +49,6 @@ public class Main extends JFrame {
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 
 				if (user == null) {
 //					user = Usuario.login();
@@ -62,24 +56,8 @@ public class Main extends JFrame {
 					frame.setVisible(true);
 					dispose();
 				} else {
-					int tipo_empleado = user.getFkTipoEmpleado().getIdTipoEmpleado();
-					System.out.println(tipo_empleado);
-					switch (tipo_empleado) {
-					// MENU ADMIN
-					case 1:
-						MenuAdmin.Menu(user);
-						break;
-						// MENU VENDEDOR
-					case 2:
-						MenuVendedor.Menu(user);
-						break;
-						// MENU VENDEDOR INTERNACIONAL
-					case 3:
-						MenuVendedorInternacional.Menu(user);
-						break;
-					}					
+					dispose();
 				}
-
 			}
 		});
 		btnLogin.setBounds(177, 323, 157, 35);
@@ -119,11 +97,34 @@ public class Main extends JFrame {
 		lblPorFavorElija.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblPorFavorElija.setBounds(72, 255, 366, 44);
 		contentPane.add(lblPorFavorElija);
-		
+
 		JLabel lblLogo = new JLabel("");
 		lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLogo.setIcon(new ImageIcon(Main.class.getResource("/img/logo.png")));
 		lblLogo.setBounds(0, 6, 510, 220);
 		contentPane.add(lblLogo);
+
+		if (user != null) {
+			dispose();
+			int tipo_empleado = user.getFkTipoEmpleado().getIdTipoEmpleado();
+			System.out.println(tipo_empleado);
+			switch (tipo_empleado) {
+			// MENU ADMIN
+			case 1:
+				MenuAdmin.Menu(user);
+				break;
+			// MENU VENDEDOR
+			case 2:
+				MenuVendedor.Menu(user);
+				break;
+			// MENU VENDEDOR INTERNACIONAL
+			case 3:
+//				MenuVendedorInternacional.Menu(user);
+				PanelVendedorInternacional venInt = new PanelVendedorInternacional(user);
+				venInt.setVisible(true);
+				dispose();
+				break;
+			}
+		}
 	}
 }

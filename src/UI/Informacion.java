@@ -104,7 +104,7 @@ public class Informacion extends JFrame {
 		JButton btnRegresar = new JButton("Regresar");
 		btnRegresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main frame = new Main();
+				Main frame = new Main(null);
 				frame.setVisible(true);
 				dispose();
 			}
