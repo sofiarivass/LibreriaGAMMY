@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
 import DLL.ClienteDTO;
+import DLL.UsuarioDTO;
 import Repository.Validaciones;
 
 public class Cliente {
@@ -133,6 +134,38 @@ public class Cliente {
 			} else {
 				return null;
 			}
+		}
+	}
+	
+	
+	public static void eliminarCliente(Usuario admin) {
+		String elegido;
+		String []elegido2;
+		int usuarioElegido;
+		LinkedList<Cliente> clientes = ClienteDTO.consultarClientes();
+		LinkedList<Cliente> clientesActivos = new LinkedList<Cliente>();
+		
+		for (Cliente cliente : clientes) {
+			if (cliente.getEstado() != false ) {
+				System.out.println("entre porque mi estado es true");
+				clientesActivos.add(cliente);					
+			}
+		}
+		
+		if (usuariosActivos.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No hay más Empleados Activos!!");
+		} else {
+			String[] elegirUsuario = new String[usuariosActivos.size()];
+			
+			for (int i = 0; i < elegirUsuario.length; i++) {
+				elegirUsuario[i] = usuariosActivos.get(i).getId_usuario() + "," + usuariosActivos.get(i).getUsuario();
+			}
+			
+			elegido = (String) JOptionPane.showInputDialog(null, "Elija el usuario", "", 0, null, elegirUsuario, elegirUsuario[0]);
+			elegido2 = elegido.split(",");
+			
+			usuarioElegido = Integer.parseInt(elegido2[0]);
+			UsuarioDTO.eliminarUsuarioPorID(usuarioElegido);			
 		}
 	}
 	
