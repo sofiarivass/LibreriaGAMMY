@@ -1,6 +1,7 @@
 package UI;
 import javax.swing.JOptionPane;
 import BLL.Libro;
+import BLL.Cliente;
 import BLL.Exportacion;
 import BLL.Usuario;
 import DLL.LibroDTO;
@@ -24,6 +25,8 @@ public class MenuVendedorInternacional {
 							GestionarClientes.values(), GestionarClientes.values());
 					switch (opcionVI1) {
 					case 0: // Modificar o eliminar datos de un cliente
+						
+						Cliente.eliminarCliente(user);
 						JOptionPane.showMessageDialog(null, "Modificar o eliminar datos de un cliente");
 						break;
 					case 1: // Mostrar Clientes

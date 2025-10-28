@@ -28,8 +28,9 @@ public class ClienteDTO {
                 String nombre = rs.getString("nombre");
                 String telefono = rs.getString("telefono");
                 String email = rs.getString("mail");
+                boolean estado= rs.getBoolean("estado");
 
-                encontrado = new Cliente(id,dni_cliente,nombre,telefono,email);
+                encontrado = new Cliente(id,dni_cliente,nombre,telefono,email,estado);
                 }
         } catch (Exception e) {
         	
@@ -51,8 +52,9 @@ public class ClienteDTO {
                 String telefono = rs.getString("telefono");
                 String mail = rs.getString("mail");
                 int dni = rs.getInt("dni");
+                boolean estado= rs.getBoolean("estado");
                 
-                listaClientes.add(new Cliente(id_cliente,dni,nombre,telefono,mail));
+                listaClientes.add(new Cliente(id_cliente,dni,nombre,telefono,mail,estado));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,5 +99,23 @@ public class ClienteDTO {
 			JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", Ya existe!!");
 			return false;			
 		}
+	}
+	
+	
+	public static boolean eliminarClientePorID(int cliente) {
+		try {
+			PreparedStatement stmt = con.prepareStatement("UPDATE `cliente` SET `estado`=? WHERE `id_cliente` = ?");
+			stmt.setInt(1, 0);
+			stmt.setInt(2, cliente);
+			
+			int filas = stmt.executeUpdate();
+			if (filas > 0) {
+				JOptionPane.showMessageDialog(null, "cliente dio de baja correctamente.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return true;
 	}
 }
