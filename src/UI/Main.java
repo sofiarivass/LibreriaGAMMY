@@ -1,5 +1,5 @@
 package UI;
-
+import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,8 +10,6 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import java.awt.EventQueue;
-
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 
@@ -23,11 +21,11 @@ public class Main extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(Usuario user) {
+	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Main frame = new Main(user);
+					Main frame = new Main(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -35,9 +33,11 @@ public class Main extends JFrame {
 			}
 		});
 	}
-	
-	public Main(Usuario user) {
 
+	/**
+	 * Create the frame.
+	 */
+	public Main(Usuario user) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 526, 534);
 		contentPane = new JPanel();
@@ -51,13 +51,11 @@ public class Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				if (user == null) {
-//					user = Usuario.login();
 					Login frame = new Login();
 					frame.setVisible(true);
 					dispose();
-				} else {
-					dispose();
 				}
+
 			}
 		});
 		btnLogin.setBounds(177, 323, 157, 35);
@@ -103,7 +101,7 @@ public class Main extends JFrame {
 		lblLogo.setIcon(new ImageIcon(Main.class.getResource("/img/logo.png")));
 		lblLogo.setBounds(0, 6, 510, 220);
 		contentPane.add(lblLogo);
-
+		
 		if (user != null) {
 			dispose();
 			int tipo_empleado = user.getFkTipoEmpleado().getIdTipoEmpleado();
@@ -119,12 +117,13 @@ public class Main extends JFrame {
 				break;
 			// MENU VENDEDOR INTERNACIONAL
 			case 3:
-//				MenuVendedorInternacional.Menu(user);
-				PanelVendedorInternacional venInt = new PanelVendedorInternacional(user);
-				venInt.setVisible(true);
+				PanelVendedorInternacional frame = new PanelVendedorInternacional(user);
+				frame.setVisible(true);
 				dispose();
+//				MenuVendedorInternacional.Menu(user);
 				break;
 			}
 		}
 	}
+	
 }
