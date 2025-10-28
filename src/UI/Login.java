@@ -92,8 +92,15 @@ public class Login extends JFrame {
 		btnIngresar = new JButton("Ingresar");
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//aca iria la funcion de login
+				Usuario user = null;
+				user = Usuario.login(txtUsuario.getText(), txtContrasenia.getText());
+				if (user != null) {
+					Main inicio = new Main(user);
+					inicio.setVisible(true);
 					dispose();
+				} else {
+					lblError.setText("Por favor complete los campos");
+				}
 			}
 		});
 		btnIngresar.setFont(new Font("Tahoma", Font.PLAIN, 14));

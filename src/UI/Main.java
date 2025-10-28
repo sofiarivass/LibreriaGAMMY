@@ -30,7 +30,7 @@ public class Main extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Main frame = new Main();
+					Main frame = new Main(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,7 +42,7 @@ public class Main extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Main() {
+	public Main(Usuario user) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 526, 534);
 		contentPane = new JPanel();
@@ -54,30 +54,32 @@ public class Main extends JFrame {
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
 				
-				Usuario user = null;
 
-				while (user == null) {
-					user = Usuario.login();
+				if (user == null) {
+//					user = Usuario.login();
+					Login frame = new Login();
+					frame.setVisible(true);
+					dispose();
+				} else {
+					int tipo_empleado = user.getFkTipoEmpleado().getIdTipoEmpleado();
+					System.out.println(tipo_empleado);
+					switch (tipo_empleado) {
+					// MENU ADMIN
+					case 1:
+						MenuAdmin.Menu(user);
+						break;
+						// MENU VENDEDOR
+					case 2:
+						MenuVendedor.Menu(user);
+						break;
+						// MENU VENDEDOR INTERNACIONAL
+					case 3:
+						MenuVendedorInternacional.Menu(user);
+						break;
+					}					
 				}
 
-				int tipo_empleado = user.getFkTipoEmpleado().getIdTipoEmpleado();
-				System.out.println(tipo_empleado);
-				switch (tipo_empleado) {
-				// MENU ADMIN
-				case 1:
-					MenuAdmin.Menu(user);
-					break;
-				// MENU VENDEDOR
-				case 2:
-					MenuVendedor.Menu(user);
-					break;
-				// MENU VENDEDOR INTERNACIONAL
-				case 3:
-					MenuVendedorInternacional.Menu(user);
-					break;
-				}
 			}
 		});
 		btnLogin.setBounds(177, 323, 157, 35);

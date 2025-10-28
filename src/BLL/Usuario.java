@@ -84,17 +84,19 @@ public class Usuario {
 	 * 
 	 * @return Usuario
 	 */
-	public static Usuario login() {
+	public static Usuario login(String lblUsuario, String lblContrasenia) {
 
-		String usuario = Repository.Validaciones.validarVacio("Ingrese nombre de usuario:", "Login", null);
-		String contrasenia = Repository.Validaciones.validarVacio("Ingrese contraseña:", "Login", null);
+//		String usuario = Repository.Validaciones.validarVacio(lblUsuario);
+//		String contrasenia = Repository.Validaciones.validarVacio(lblContrasenia);
+//		String usuario = lblUsuario;
+//		String contrasenia = lblContrasenia;
 
-		Usuario user = UsuarioDTO.login(usuario, Encriptador.encriptar(contrasenia));
+		Usuario user = UsuarioDTO.login(lblUsuario, Encriptador.encriptar(lblContrasenia));
 
 		if (user == null) {
-			JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+//			JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
 		} else {
-			JOptionPane.showMessageDialog(null, "Bienvenido " + user.getNombre() + "!");			
+//			JOptionPane.showMessageDialog(null, "Bienvenido " + user.getNombre() + "!");			
 		}
 
 		return user;

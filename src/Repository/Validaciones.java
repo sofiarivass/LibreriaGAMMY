@@ -78,23 +78,11 @@ public interface Validaciones {
 	 * @param img
 	 * @return String
 	 */
-	public static String validarVacio(String mensaje, String titulo, String img) {
-		String input = "";
+	public static String validarVacio(String input) {
 		boolean flag = false;
 
 		while (flag == false) {
-
-			do {
-				if (img == null) {
-					input = JOptionPane.showInputDialog(mensaje);
-				} else {
-					input = (String) JOptionPane.showInputDialog(null, mensaje, titulo, JOptionPane.DEFAULT_OPTION,
-							new ImageIcon(Validaciones.class.getResource("/img/" + img)), null, null);
-				}
-			} while (input == null);
-
 			if (input.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Por favor complete este campo");
 				flag = false;
 			} else {
 				flag = true;
