@@ -1,6 +1,5 @@
 package UI;
 
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -22,22 +21,6 @@ public class Login extends JFrame {
 	private JTextField txtContrasenia;
 	private JButton btnIngresar;
 	private JLabel lblError;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Login frame = new Login();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -86,9 +69,13 @@ public class Login extends JFrame {
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Usuario user = Usuario.login(txtUsuario.getText(),txtContrasenia.getText());
-				Main frame = new Main(user);
-				frame.setVisible(false);
-				dispose();
+				if (user != null) {
+					Main frame = new Main(user);
+					frame.setVisible(false);
+					dispose();					
+				} else {
+					lblError.setText("Error al ingresar los Datos");
+				}
 			}
 		});
 		btnIngresar.setFont(new Font("Tahoma", Font.PLAIN, 14));

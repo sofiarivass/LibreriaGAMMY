@@ -3,7 +3,6 @@ package UI;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import BLL.Exportacion;
 import BLL.Usuario;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -27,20 +26,26 @@ public class PanelVendedorInternacional extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Bienvenido " + user.getNombre());
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel.setBounds(139, 11, 250, 32);
-		contentPane.add(lblNewLabel);
+		JLabel lblTitulo = new JLabel("Bienvenido " + user.getNombre());
+		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblTitulo.setBounds(139, 11, 250, 32);
+		contentPane.add(lblTitulo);
 		
-		JButton btnNewButton = new JButton("Gestionar Clientes");
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnNewButton.setBounds(58, 105, 165, 32);
-		contentPane.add(btnNewButton);
+		JButton btnGestionarClientes = new JButton("Gestionar Clientes");
+		btnGestionarClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnGestionarClientes.setFont(new Font("Tahoma", Font.BOLD, 10));
+		btnGestionarClientes.setBounds(58, 105, 165, 32);
+		contentPane.add(btnGestionarClientes);
 		
 		JButton btnGestionarExportaciones = new JButton("Gestionar Exportaciones");
 		btnGestionarExportaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Exportacion.modificarVentaExport(user);
+				PanelGestionarExport gestionExport = new PanelGestionarExport(user);
+				gestionExport.setVisible(true);
+				dispose();
 			}
 		});
 		btnGestionarExportaciones.setFont(new Font("Tahoma", Font.BOLD, 10));
@@ -57,17 +62,17 @@ public class PanelVendedorInternacional extends JFrame {
 		btnGestionarInventario.setBounds(281, 105, 165, 32);
 		contentPane.add(btnGestionarInventario);
 		
-		JButton btnCerrarSesin = new JButton("Cerrar Sesión");
-		btnCerrarSesin.addActionListener(new ActionListener() {
+		JButton btnCerrarSesion = new JButton("Cerrar Sesión");
+		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main frame = new Main(null);
-				frame.setVisible(true);
+				Main principal = new Main(null);
+				principal.setVisible(true);
 				dispose();
 			}
 		});
-		btnCerrarSesin.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnCerrarSesin.setBounds(182, 228, 141, 32);
-		contentPane.add(btnCerrarSesin);
+		btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 10));
+		btnCerrarSesion.setBounds(182, 228, 141, 32);
+		contentPane.add(btnCerrarSesion);
 	}
 }
 

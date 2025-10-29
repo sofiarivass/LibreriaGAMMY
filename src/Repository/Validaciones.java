@@ -3,7 +3,6 @@ package Repository;
 import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -70,6 +69,7 @@ public interface Validaciones {
 		return input;
 	}
 
+	
 	/**
 	 * Método para validar Strings. Evita que el usuario deje el campo vacío.
 	 * 
@@ -78,15 +78,25 @@ public interface Validaciones {
 	 * @param img
 	 * @return String
 	 */
-	public static String validarVacio(String input) {
+	public static String validarVacio(String mensaje, String titulo, String img) {
+		String input = "";
 		boolean flag = false;
 
 		while (flag == false) {
+
+			do {
+				if (img == null) {
+					input = JOptionPane.showInputDialog(mensaje);
+				} else {
+					input = (String) JOptionPane.showInputDialog(null, mensaje, titulo, JOptionPane.DEFAULT_OPTION,
+							new ImageIcon(Validaciones.class.getResource("/img/" + img)), null, null);
+				}
+			} while (input == null);
+
 			if (input.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Por favor complete este campo");
 				flag = false;
-			} else {
-				flag = true;
-			}
+			} 
 		}
 		return input;
 	}
@@ -193,6 +203,7 @@ public interface Validaciones {
 		}
 		return input;
 	}
+	
 
 	/**
 	 * Método para validar double. Evita que el usuario deje el campo vacío y se
@@ -418,6 +429,69 @@ public interface Validaciones {
 			}
 		}
 		return input;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// VALIDACIONES PARA LOS PANELES DEL JFRAME
+	
+	/**
+	 * funcion para validar los paneles del Jframe(no se permite campo Vacio)
+	 * @param input
+	 * @return
+	 */
+	public static String validarVacioJframe(String input) {
+		boolean flag = false;
+
+		while (flag == false) {
+			if (input.isEmpty()) {
+				flag = false;
+			} else {
+				flag = true;
+			}
+		}
+		return input;
+	}
+	
+	
+	/**
+	 * funcion que no permite campos vacios ni letras solo numeros
+	 * @param dni
+	 * @return
+	 */
+	public static String validarIntJframe(String dni) {
+		boolean numero = false;
+		
+		while (numero == false) {
+			if (dni.isEmpty()) {
+				numero = true;
+			} else {
+				int contL = 0;
+				
+				for (int i = 0; i < dni.length(); i++) {
+					if (Character.isAlphabetic(dni.charAt(i))) {
+						contL++;
+					}
+				}
+				
+				if (contL > 0) {
+					numero = false;
+				} else if (dni.length() >= 10) {
+					numero = false;
+				} else if (Integer.parseInt(dni) > 0) {
+					numero = true;
+				} else {
+					numero = false;
+				}
+			}
+		}
+		return dni;
 	}
 
 }

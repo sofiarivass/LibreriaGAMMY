@@ -55,7 +55,6 @@ public class Main extends JFrame {
 					frame.setVisible(true);
 					dispose();
 				}
-
 			}
 		});
 		btnLogin.setBounds(177, 323, 157, 35);
@@ -103,7 +102,6 @@ public class Main extends JFrame {
 		contentPane.add(lblLogo);
 		
 		if (user != null) {
-			dispose();
 			int tipo_empleado = user.getFkTipoEmpleado().getIdTipoEmpleado();
 			System.out.println(tipo_empleado);
 			switch (tipo_empleado) {
@@ -117,8 +115,8 @@ public class Main extends JFrame {
 				break;
 			// MENU VENDEDOR INTERNACIONAL
 			case 3:
-				PanelVendedorInternacional frame = new PanelVendedorInternacional(user);
-				frame.setVisible(true);
+				PanelVendedorInternacional vendedorInt = new PanelVendedorInternacional(user);
+				vendedorInt.setVisible(true);
 				dispose();
 //				MenuVendedorInternacional.Menu(user);
 				break;
