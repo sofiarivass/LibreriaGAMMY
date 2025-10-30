@@ -446,17 +446,15 @@ public interface Validaciones {
 	 * @param input
 	 * @return
 	 */
-	public static String validarVacioJframe(String input) {
-		boolean flag = false;
+	public static boolean validarVacioJframe(String texto) {
+		boolean flag;
 
-		while (flag == false) {
-			if (input.isEmpty()) {
-				flag = false;
-			} else {
-				flag = true;
-			}
+		if (texto.isEmpty()) {
+			flag = true;
+		} else {
+			flag = false;
 		}
-		return input;
+		return flag;
 	}
 	
 	
@@ -465,33 +463,34 @@ public interface Validaciones {
 	 * @param dni
 	 * @return
 	 */
-	public static String validarIntJframe(String dni) {
-		boolean numero = false;
+	public static boolean validarDniJframe(String numero) {
+		boolean num;
+		int contL = 0;
 		
-		while (numero == false) {
-			if (dni.isEmpty()) {
-				numero = true;
-			} else {
-				int contL = 0;
-				
-				for (int i = 0; i < dni.length(); i++) {
-					if (Character.isAlphabetic(dni.charAt(i))) {
-						contL++;
-					}
-				}
-				
-				if (contL > 0) {
-					numero = false;
-				} else if (dni.length() >= 10) {
-					numero = false;
-				} else if (Integer.parseInt(dni) > 0) {
-					numero = true;
-				} else {
-					numero = false;
-				}
+		for (int i = 0; i < numero.length(); i++) {
+			if (Character.isAlphabetic(numero.charAt(i))) {
+				contL++;
 			}
 		}
-		return dni;
+		
+		if (contL == 0) {
+			if (numero.length() == 8) {
+				if (Integer.parseInt(numero) > 0) {
+					num = false;
+				} else {
+					System.out.println("numero no es mayor a 0");
+					num = true;									
+				}
+			} else {
+				System.out.println("numero no es menor o = a 8");
+				num = true;				
+			}
+		} else {
+			System.out.println("contL es mayor a 0");
+			num = true;
+		}
+		
+		return num;
 	}
 
 }

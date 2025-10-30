@@ -1,9 +1,11 @@
-package UI;
+package UI.PanelExportacion;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import BLL.Usuario;
+import UI.Main;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JButton;

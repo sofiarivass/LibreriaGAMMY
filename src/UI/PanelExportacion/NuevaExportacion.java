@@ -1,4 +1,4 @@
-package UI;
+package UI.PanelExportacion;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -6,6 +6,9 @@ import javax.swing.border.EmptyBorder;
 
 import BLL.Cliente;
 import BLL.Usuario;
+import Repository.Validaciones;
+import UI.Main;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -18,7 +21,7 @@ public class NuevaExportacion extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField dniCiente;
+	private JTextField dniCliente;
 
 	/**
 	 * Create the frame.
@@ -42,10 +45,10 @@ public class NuevaExportacion extends JFrame {
 		lblDNICliente.setBounds(67, 60, 36, 13);
 		contentPane.add(lblDNICliente);
 		
-		dniCiente = new JTextField();
-		dniCiente.setBounds(119, 59, 96, 19);
-		contentPane.add(dniCiente);
-		dniCiente.setColumns(10);
+		dniCliente = new JTextField();
+		dniCliente.setBounds(119, 59, 96, 19);
+		contentPane.add(dniCliente);
+		dniCliente.setColumns(10);
 		
 		JLabel lblError = new JLabel("");
 		lblError.setFont(new Font("Tahoma", Font.BOLD, 10));
@@ -82,11 +85,26 @@ public class NuevaExportacion extends JFrame {
 		JButton btnBuscarCliente = new JButton("Buscar");
 		btnBuscarCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Cliente cliente = Cliente.buscarClienteJframe(dniCiente.getText());
-				if (cliente != null) {
-					lblClienteEncontrado.setText(cliente.toString());;
+				lblError.setText("");
+				Cliente cliente = null;
+				boolean flag = Validaciones.validarVacioJframe(dniCliente.getText());
+				
+				if (flag != false) {
+					lblError.setText("No puede dejar el campo Vacio!!");
 				} else {
-					lblError.setText("Error al ingresar los Datos");
+					flag = Validaciones.validarDniJframe(dniCliente.getText());
+					if (flag != false) {
+						lblError.setText("número de dni invalido!!");
+						dniCliente.setText("");
+					} else {
+						cliente = Cliente.buscarClienteJframe(dniCliente.getText());
+						
+						if (cliente != null) {
+							lblClienteEncontrado.setText(cliente.toString());
+						} else {
+							lblError.setText("Cliente No Registrado!!");
+						}						
+					}
 				}
 			}
 		});

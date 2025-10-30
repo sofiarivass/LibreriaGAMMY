@@ -102,7 +102,7 @@ public class Cliente {
 	}
 	
 	public static Cliente buscarClienteJframe(String dni) {
-		int documento = Integer.parseInt(Validaciones.validarVacioJframe(dni));
+		int documento = Integer.parseInt(dni);
 		Cliente encontrado = ClienteDTO.buscarCliente(documento);
 		return encontrado;
 	}
