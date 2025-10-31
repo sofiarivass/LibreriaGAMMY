@@ -322,8 +322,9 @@ public class Venta {
 		String []estados = {"completada", "modificada", "anulada"};
 		String []menu = {"Modificar Datos de Venta", "Volver"};
 		String []menuVentas = {"Metodo-Pago", "Moneda","Guardar-Cambios", "volver"};
-		String seleccion, detallesVenta = "";
+		String seleccion, detallesVenta = "", detallesVentaSinCambios = "";
 		int opcion, opcionDos;
+		boolean cambio, sinCambios = false;
 		LinkedList<Venta> listaVentas = new LinkedList<Venta>();
 		Venta ventaLocal = null;
 		Venta ventaElegida = null;
@@ -377,23 +378,32 @@ public class Venta {
 					eleccion = seleccion.split(" - ");
 					
 					do {
-						for (Venta venta : listaVentas) {
-							if (venta.getIdVenta() == Integer.parseInt(eleccion[0])) {
-								ventaElegida = venta;
-								detallesVenta = "Datos de la Venta:" 
-										+ "\n- Metodo de Pago: " + ventaElegida.getMetodoPago()
-										+ "\n- Tipo de Moneda: " + ventaElegida.getMoneda()
-										+ "\n- Estado: " + ventaElegida.getEstado();
-								break;
+						if (sinCambios != true) {
+							for (Venta venta : listaVentas) {
+								if (venta.getIdVenta() == Integer.parseInt(eleccion[0])) {
+									ventaElegida = venta;
+									detallesVenta = "Datos de la Venta:" 
+											+ "\n- Metodo de Pago: " + ventaElegida.getMetodoPago()
+											+ "\n- Tipo de Moneda: " + ventaElegida.getMoneda()
+											+ "\n- Estado: " + ventaElegida.getEstado();
+									break;
+								}
 							}
+							detallesVentaSinCambios = detallesVenta;
 						}
 						
-						opcionDos = JOptionPane.showOptionDialog(null, "Seleccione para modificar:\n\n" 
-								+ detallesVenta, "Modificacion de Ventas", 0, 1, null, menu, menu[0]);
+						if (sinCambios) {
+							opcionDos = JOptionPane.showOptionDialog(null, "Seleccione para modificar:\n\n" 
+									+ detallesVentaSinCambios, "Modificacion de Ventas", 0, 1, null, menu, menu[0]);
+						} else {
+							opcionDos = JOptionPane.showOptionDialog(null, "Seleccione para modificar:\n\n" 
+									+ detallesVenta, "Modificacion de Ventas", 0, 1, null, menu, menu[0]);							
+						}
 						
 						switch (opcionDos) {
 						case 0:
 							// modificar datos de la venta
+							cambio = false;
 							do {
 								detallesVenta = "Datos de la Venta:" + "\n[ Metodo de Pago: " + ventaElegida.getMetodoPago()
 								+ " - Tipo de Moneda: " + ventaElegida.getMoneda()
@@ -405,12 +415,14 @@ public class Venta {
 									// metodo de pago
 									String metodo = ((MetodoPago) JOptionPane.showInputDialog(null, "¿Método de pago?", "Modificando Venta", 1, null, 
 											MetodoPago.values(), MetodoPago.values())).name();
+									cambio = true;
 									ventaElegida.setMetodoPago(metodo);
 									break;
 								case 1:
 									// moneda
 									String moneda = ((TipoMoneda) JOptionPane.showInputDialog(null, "¿tipo de Moneda?", "Modificando Venta", 1, null, 
 											TipoMoneda.values(), TipoMoneda.values())).name();
+									cambio = true;
 									ventaElegida.setMoneda(moneda);
 									break;
 								case 2: 
@@ -423,6 +435,21 @@ public class Venta {
 												+ "\n- Tipo de Moneda: " + ventaElegida.getMoneda()
 												+ "\n- Estado: " + ventaElegida.getEstado();
 										VentasLocalDTO.actualizarVentaLocal(ventaElegida, detallesVenta);
+										cambio = false;
+										sinCambios = false;
+									}
+									break;
+								case 3:
+									// volver
+									if (cambio) {
+										String pregunta = Validaciones.menuSiNo("¿Esta seguro que desea Volver sin guardar los cambios?", "Salir", null);
+										if (pregunta.equalsIgnoreCase("Sí")) {
+											sinCambios = true;
+											break;
+										} else {
+											sinCambios = false;
+											opcion = 3;
+										}										
 									}
 									break;
 								}
@@ -483,7 +510,7 @@ public class Venta {
 			if (listaCarrito != null) {
 				for (int i = 0; i < listaCarrito.size(); i++) {
 					ventaLocal = VentasLocalDTO.verVentasLocales(listaCarrito.get(i).getIdCarrito(),fkTipoVenta);
-					if (ventaLocal != null) {
+					if (ventaLocal != null && !(ventaLocal.getEstado().equalsIgnoreCase("anulada"))) {
 						listaVentas.add(ventaLocal);						
 					}
 				}
@@ -524,7 +551,8 @@ public class Venta {
 									JOptionPane.showMessageDialog(null, "La venta con fecha: " + ventaElegida.getFechaVenta() + "\nYa se encuentra Anulada!!");															
 								} else {
 									ventaElegida.setEstado(estados[2]);
-									VentasLocalDTO.anularVentaLocal(ventaElegida, null);								
+									VentasLocalDTO.anularVentaLocal(ventaElegida, null);	
+									opcion = 1;
 								}
 							}
 							break;
