@@ -37,8 +37,8 @@ public class Cliente {
 	// Métodos
 	@Override
 	public String toString() {
-		return "Cliente [idCliente=" + idCliente + ", dni=" + dni + ", nombre=" + nombre + ", telefono=" + telefono
-				+ ", mail=" + mail + ", listaProductos=" + listaProductos + "]";
+		return "[id: " + idCliente + ", dni: " + dni + ", nombre: " + nombre + ", telefono: " + telefono
+				+ ", mail: " + mail + "]";
 	}
 
 	public int getIdCliente() {

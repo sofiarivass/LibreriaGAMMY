@@ -28,37 +28,33 @@ public class NuevaExportacion extends JFrame {
 	 */
 	public NuevaExportacion(Usuario user) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 317, 189);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTitulo = new JLabel("Cargar los Datos");
+		JLabel lblTitulo = new JLabel("Buscar Cliente");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblTitulo.setBounds(119, 10, 177, 31);
+		lblTitulo.setBounds(75, 10, 152, 31);
 		contentPane.add(lblTitulo);
 		
 		JLabel lblDNICliente = new JLabel("DNI:");
 		lblDNICliente.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblDNICliente.setBounds(67, 60, 36, 13);
+		lblDNICliente.setBounds(32, 64, 36, 13);
 		contentPane.add(lblDNICliente);
 		
 		dniCliente = new JTextField();
-		dniCliente.setBounds(119, 59, 96, 19);
+		dniCliente.setBounds(78, 63, 96, 19);
 		contentPane.add(dniCliente);
 		dniCliente.setColumns(10);
 		
 		JLabel lblError = new JLabel("");
 		lblError.setFont(new Font("Tahoma", Font.BOLD, 10));
 		lblError.setForeground(new Color(255, 0, 0));
-		lblError.setBounds(119, 88, 191, 13);
+		lblError.setBounds(75, 92, 124, 13);
 		contentPane.add(lblError);
-		
-		JLabel lblClienteEncontrado = new JLabel("");
-		lblClienteEncontrado.setBounds(10, 111, 416, 19);
-		contentPane.add(lblClienteEncontrado);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
@@ -68,7 +64,7 @@ public class NuevaExportacion extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(10, 232, 85, 21);
+		btnVolver.setBounds(32, 124, 85, 21);
 		contentPane.add(btnVolver);
 		
 		JButton btnSalir = new JButton("Salir");
@@ -79,7 +75,7 @@ public class NuevaExportacion extends JFrame {
 				dispose();
 			}
 		});
-		btnSalir.setBounds(341, 232, 85, 21);
+		btnSalir.setBounds(184, 124, 85, 21);
 		contentPane.add(btnSalir);
 		
 		JButton btnBuscarCliente = new JButton("Buscar");
@@ -98,9 +94,12 @@ public class NuevaExportacion extends JFrame {
 						dniCliente.setText("");
 					} else {
 						cliente = Cliente.buscarClienteJframe(dniCliente.getText());
+						ElegirLibros libros = new ElegirLibros(user,cliente);
+						libros.setVisible(true);
+						dispose();
 						
 						if (cliente != null) {
-							lblClienteEncontrado.setText(cliente.toString());
+							// funcion para registrar al cliente
 						} else {
 							lblError.setText("Cliente No Registrado!!");
 						}						
@@ -108,7 +107,7 @@ public class NuevaExportacion extends JFrame {
 				}
 			}
 		});
-		btnBuscarCliente.setBounds(225, 58, 85, 21);
+		btnBuscarCliente.setBounds(184, 62, 85, 21);
 		contentPane.add(btnBuscarCliente);
 		
 		
