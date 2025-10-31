@@ -1,5 +1,7 @@
 package UI;
 import javax.swing.JOptionPane;
+
+import BLL.Cliente;
 import BLL.Usuario;
 import BLL.Venta;
 import Enums.*;
@@ -20,10 +22,10 @@ public class MenuVendedor {
 							GestionarClientes.values(), GestionarClientes.values());
 					switch (opcionVenta1) {
 					case 0: // Modificar o eliminar datos de un cliente
-						JOptionPane.showMessageDialog(null, "Modificar o eliminar datos de un cliente");
+						Cliente.eliminarCliente(user);
 						break;
 					case 1: // Mostrar Clientes
-						JOptionPane.showMessageDialog(null, "mostrando clientes");
+						Cliente.mostrarClientes();
 						break;
 					}
 				} while (opcionVenta1 != 2);

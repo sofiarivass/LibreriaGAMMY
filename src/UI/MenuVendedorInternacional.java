@@ -27,10 +27,11 @@ public class MenuVendedorInternacional {
 					case 0: // Modificar o eliminar datos de un cliente
 						
 						Cliente.eliminarCliente(user);
-						JOptionPane.showMessageDialog(null, "Modificar o eliminar datos de un cliente");
 						break;
 					case 1: // Mostrar Clientes
-						JOptionPane.showMessageDialog(null, "mostrando clientes");
+						
+						Cliente.mostrarClientes();
+						
 						break;
 					}
 				} while (opcionVI1 != 2);

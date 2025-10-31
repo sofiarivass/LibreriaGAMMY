@@ -179,4 +179,15 @@ public class Cliente {
 		}
 	}
 	
+	public static LinkedList<Cliente> mostrarClientes() {
+		LinkedList<Cliente> cliente = ClienteDTO.mostrarClientes();
+		
+		if (cliente == null || cliente.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No hay clientes para mostrar.");
+		}else {
+			JOptionPane.showMessageDialog(null, ClienteDTO.clientePorID(cliente));
+		}
+		return cliente;
+	}
+	
 }
