@@ -283,8 +283,9 @@ public class Exportacion extends Venta {
 		String []estados = {"completada", "modificada", "anulada"};
 		String []menu = {"Modificar Datos de Venta", "Volver"};
 		String []menuVentas = {"Metodo-Pago", "Moneda", "Origen", "Destino", "Guardar-Cambios", "volver"};
-		String seleccion, detallesVenta = "";
+		String seleccion, detallesVenta = "", detallesVentaSinCambios = "";
 		int opcion, opcionDos;
+		boolean cambio, sinCambios = false;
 		LinkedList<Exportacion> listaVentas = new LinkedList<Exportacion>();
 		Exportacion ventaExport = null;
 		Exportacion ventaElegida = null;
@@ -338,26 +339,36 @@ public class Exportacion extends Venta {
 					eleccion = seleccion.split(" - ");
 					
 					do {
-						for (Exportacion venta : listaVentas) {
-							if (venta.getIdVenta() == Integer.parseInt(eleccion[0])) {
-								ventaElegida = venta;
-								detallesVenta = "Datos de la Venta:" 
-										+ "\n- Metodo de Pago: " + ventaElegida.getMetodoPago()
-										+ "\n- Tipo de Moneda: " + ventaElegida.getMoneda()
-										+ "\n- Estado: " + ventaElegida.getEstado()
-										+ "\n- Origen: " + ventaElegida.getOrigen()
-										+ "\n- Destino: " + ventaElegida.getDestino();
-								break;
+						if (sinCambios != true) {
+							for (Exportacion venta : listaVentas) {
+								if (venta.getIdVenta() == Integer.parseInt(eleccion[0])) {
+									ventaElegida = venta;
+									detallesVenta = "Datos de la Venta:" 
+											+ "\n- Metodo de Pago: " + ventaElegida.getMetodoPago()
+											+ "\n- Tipo de Moneda: " + ventaElegida.getMoneda()
+											+ "\n- Estado: " + ventaElegida.getEstado()
+											+ "\n- Origen: " + ventaElegida.getOrigen()
+											+ "\n- Destino: " + ventaElegida.getDestino();
+									break;
+								}
 							}
+							detallesVentaSinCambios = detallesVenta;
 						}
 						
-						opcionDos = JOptionPane.showOptionDialog(null, "Seleccione para modificar:\n\n" 
-								+ detallesVenta, "Modificacion de Ventas", 0, 1, null, menu, menu[0]);
+						if (sinCambios) {
+							opcionDos = JOptionPane.showOptionDialog(null, "Seleccione para modificar:\n\n" 
+									+ detallesVentaSinCambios, "Modificacion de Ventas", 0, 1, null, menu, menu[0]);
+						} else {
+							opcionDos = JOptionPane.showOptionDialog(null, "Seleccione para modificar:\n\n" 
+									+ detallesVenta, "Modificacion de Ventas", 0, 1, null, menu, menu[0]);							
+						}
 						
 						switch (opcionDos) {
 						case 0:
 							// modificar datos de la venta
+							cambio = false;
 							do {
+								
 								detallesVenta = "Datos de la Venta:" + "\n[ Metodo de Pago: " + ventaElegida.getMetodoPago()
 								+ " - Tipo de Moneda: " + ventaElegida.getMoneda()
 								+ " - Estado: " + ventaElegida.getEstado()
@@ -370,12 +381,14 @@ public class Exportacion extends Venta {
 									// metodo de pago
 									String metodo = ((MetodoPago) JOptionPane.showInputDialog(null, "¿Método de pago?", "Modificando Venta", 1, null, 
 											MetodoPago.values(), MetodoPago.values())).name();
+									cambio = true;
 									ventaElegida.setMetodoPago(metodo);
 									break;
 								case 1:
 									// moneda
 									String moneda = ((TipoMoneda) JOptionPane.showInputDialog(null, "¿tipo de Moneda?", "Modificando Venta", 1, null, 
 											TipoMoneda.values(), TipoMoneda.values())).name();
+									cambio = true;
 									ventaElegida.setMoneda(moneda);
 									break;
 								case 2:
@@ -391,6 +404,7 @@ public class Exportacion extends Venta {
 											flag2 = true;
 										}
 									} while (flag2);
+									cambio = true;
 									ventaElegida.setOrigen(origen);
 									break;
 								case 3:
@@ -406,20 +420,41 @@ public class Exportacion extends Venta {
 											flag = true;						
 										}
 									} while (flag);
+									cambio = true;
 									ventaElegida.setDestino(destino);
 									break;
 								case 4: 
 									// guardar los cambios
-									String preguntar = Validaciones.menuSiNo("¿Esta seguro que desea guardar los cambios?", "Guardar Cambios de la Venta", null);
-									if (preguntar.equalsIgnoreCase("Sí")) {
-										ventaElegida.setEstado(estados[1]);
-										detallesVenta = "Datos de la Venta:" 
-												+ "\n- Metodo de Pago: " + ventaElegida.getMetodoPago()
-												+ "\n- Tipo de Moneda: " + ventaElegida.getMoneda()
-												+ "\n- Estado: " + ventaElegida.getEstado()
-												+ "\n- Origen: " + ventaElegida.getOrigen()
-												+ "\n- Destino: " + ventaElegida.getDestino();
-										VentasExportDTO.actualizarVentaExport(ventaElegida, detallesVenta);
+									String preguntar;
+									if (cambio) {
+										preguntar = Validaciones.menuSiNo("¿Esta seguro que desea guardar los cambios?", "Guardar Cambios de la Venta", null);
+										if (preguntar.equalsIgnoreCase("Sí")) {
+											ventaElegida.setEstado(estados[1]);
+											detallesVenta = "Datos de la Venta:" 
+													+ "\n- Metodo de Pago: " + ventaElegida.getMetodoPago()
+													+ "\n- Tipo de Moneda: " + ventaElegida.getMoneda()
+													+ "\n- Estado: " + ventaElegida.getEstado()
+													+ "\n- Origen: " + ventaElegida.getOrigen()
+													+ "\n- Destino: " + ventaElegida.getDestino();
+											VentasExportDTO.actualizarVentaExport(ventaElegida, detallesVenta);
+											cambio = false;
+											sinCambios = false;
+										}
+									} else {
+										JOptionPane.showMessageDialog(null, "No realizo ningun cambio!!");
+									}
+									break;
+								case 5:
+									// volver
+									if (cambio) {
+										String pregunta = Validaciones.menuSiNo("¿Esta seguro que desea Volver sin guardar los cambios?", "Salir", null);
+										if (pregunta.equalsIgnoreCase("Sí")) {
+											sinCambios = true;
+											break;
+										} else {
+											sinCambios = false;
+											opcion = 6;
+										}										
 									}
 									break;
 								}
@@ -482,7 +517,7 @@ public class Exportacion extends Venta {
 			if (listaCarrito != null) {
 				for (int i = 0; i < listaCarrito.size(); i++) {
 					ventaExport = VentasExportDTO.verVentas(listaCarrito.get(i).getIdCarrito(),fkTipoVenta);
-					if (ventaExport != null) {
+					if (ventaExport != null && !(ventaExport.getEstado().equalsIgnoreCase("anulada"))) {
 						listaVentas.add(ventaExport);						
 					}
 				}
@@ -525,7 +560,8 @@ public class Exportacion extends Venta {
 									JOptionPane.showMessageDialog(null, "La venta con fecha: " + ventaElegida.getFechaVenta() + "\nYa se encuentra Anulada!!");															
 								} else {
 									ventaElegida.setEstado(estados[2]);
-									VentasExportDTO.anularVentaExport(ventaElegida, null);								
+									VentasExportDTO.anularVentaExport(ventaElegida, null);
+									opcion = 1;
 								}
 							}
 							break;
