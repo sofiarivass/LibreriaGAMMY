@@ -108,11 +108,10 @@ public class Usuario {
 	 * 
 	 * @return Usuario
 	 */
-<<<<<<< HEAD
+
 	public static Usuario login(String usuario,String contrasenia) {		
 
 		Usuario user = UsuarioDTO.login(usuario, Encriptador.encriptar(contrasenia));
-		
 		
 //		if (user == null) {
 //			JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
@@ -124,24 +123,7 @@ public class Usuario {
 //				JOptionPane.showMessageDialog(null, "Bienvenido " + user.getNombre() + "!");
 //			}
 //		}
-=======
-	public static Usuario login(String usuario, String contrasenia) {
-//		String usuario = Repository.Validaciones.validarVacio("Ingrese nombre de usuario:", "Login", null);
-//		String contrasenia = Repository.Validaciones.validarVacio("Ingrese contraseña:", "Login", null);
-
-		Usuario user = UsuarioDTO.login(usuario, Encriptador.encriptar(contrasenia));
-		
-		if (user == null) {
-			JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
-		} else {
-			if (user.getEstado() == false) {
-				JOptionPane.showMessageDialog(null, "El usuario ingresado, esta dado de baja");
-				user = null;
-			}
-		}
->>>>>>> aldeir
 		return user;
-
 	}
 
 

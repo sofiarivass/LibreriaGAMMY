@@ -50,24 +50,12 @@ public class Main extends JFrame {
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
-				dispose();
-
-				if (user == null) {
-					Login login = new Login();
-					login.setVisible(true);
-							
-				}
-
-				
-=======
 
 				if (user == null) {
 					Login frame = new Login();
 					frame.setVisible(true);
 					dispose();
 				}
->>>>>>> aldeir
 			}
 		});
 		btnLogin.setBounds(177, 323, 157, 35);
@@ -128,14 +116,10 @@ public class Main extends JFrame {
 				break;
 			// MENU VENDEDOR INTERNACIONAL
 			case 3:
-<<<<<<< HEAD
-				MenuVendedorInternacional.Menu(user);
-=======
 				PanelVendedorInternacional vendedorInt = new PanelVendedorInternacional(user);
 				vendedorInt.setVisible(true);
 				dispose();
 //				MenuVendedorInternacional.Menu(user);
->>>>>>> aldeir
 				break;
 			}
 		}
