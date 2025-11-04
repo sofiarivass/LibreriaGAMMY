@@ -51,7 +51,7 @@ public class MenuVendedor {
 				break;
 			case 2:
 				JOptionPane.showMessageDialog(null, "Hasta pronto, " + user.getNombre() + " (" + user.getUsuario() +")!");
-				Main frame = new Main();
+				Main frame = new Main(null);
 				frame.setVisible(true);
 				// opcion salir
 				break;

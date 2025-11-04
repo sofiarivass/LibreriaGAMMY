@@ -108,26 +108,21 @@ public class Usuario {
 	 * 
 	 * @return Usuario
 	 */
-	public static Usuario login(String usuario,String contrasenia) {
-
-		boolean usuario = Repository.Validaciones.validarVacioJframe(usuario);
-		boolean contrasenia = Repository.Validaciones.validarVacio(contrasenia);
-		
-		
+	public static Usuario login(String usuario,String contrasenia) {		
 
 		Usuario user = UsuarioDTO.login(usuario, Encriptador.encriptar(contrasenia));
 		
 		
-		if (user == null) {
-			JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
-		} else {
-			if (user.getEstado() == false) {
-				JOptionPane.showMessageDialog(null, "El usuario ingresado, esta dado de baja");
-				user = null;
-			}else {
-				JOptionPane.showMessageDialog(null, "Bienvenido " + user.getNombre() + "!");
-			}
-		}
+//		if (user == null) {
+//			JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+//		} else {
+//			if (user.getEstado() == false) {
+//				JOptionPane.showMessageDialog(null, "El usuario ingresado, esta dado de baja");
+//				user = null;
+//			}else {
+//				JOptionPane.showMessageDialog(null, "Bienvenido " + user.getNombre() + "!");
+//			}
+//		}
 		return user;
 
 	}

@@ -55,8 +55,6 @@ public class Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 
-//				Usuario user = null;
-
 				if (user == null) {
 					Login login = new Login();
 					login.setVisible(true);
