@@ -431,6 +431,62 @@ public interface Validaciones {
 			}
 		}
 		return input;
+
 	}
 
+	// VALIDACIONES PARA LOS PANELES DEL JFRAME
+
+		/**
+		 * funcion para validar los paneles del Jframe(no se permite campo Vacio)
+		 * 
+		 * @param input
+		 * @return flag
+		 */
+		public static boolean validarVacioJframe(String texto) {
+			boolean flag;
+
+			if (texto.isEmpty()) {
+				flag = true;
+			} else {
+				flag = false;
+			}
+			return flag;
+		}
+
+		/**
+		 * funcion que no permite campos vacios ni letras solo numeros
+		 * 
+		 * @param dni
+		 * @return
+		 */
+		public static boolean validarDniJframe(String numero) {
+			boolean num;
+			int contL = 0;
+
+			for (int i = 0; i < numero.length(); i++) {
+				if (Character.isAlphabetic(numero.charAt(i))) {
+					contL++;
+				}
+			}
+
+			if (contL == 0) {
+				if (numero.length() == 8) {
+					if (Integer.parseInt(numero) > 0) {
+						num = false;
+					} else {
+						System.out.println("numero no es mayor a 0");
+						num = true;
+					}
+				} else {
+					System.out.println("numero no es menor o = a 8");
+					num = true;
+				}
+			} else {
+				System.out.println("contL es mayor a 0");
+				num = true;
+			}
+
+			return num;
+		}
+	
 }

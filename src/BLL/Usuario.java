@@ -108,10 +108,12 @@ public class Usuario {
 	 * 
 	 * @return Usuario
 	 */
-	public static Usuario login() {
+	public static Usuario login(String usuario,String contrasenia) {
 
-		String usuario = Repository.Validaciones.validarVacio("Ingrese nombre de usuario:", "Login", null);
-		String contrasenia = Repository.Validaciones.validarVacio("Ingrese contraseña:", "Login", null);
+		boolean usuario = Repository.Validaciones.validarVacioJframe(usuario);
+		boolean contrasenia = Repository.Validaciones.validarVacio(contrasenia);
+		
+		
 
 		Usuario user = UsuarioDTO.login(usuario, Encriptador.encriptar(contrasenia));
 		
