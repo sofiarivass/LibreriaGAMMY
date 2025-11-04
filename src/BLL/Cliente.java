@@ -1,8 +1,6 @@
 package BLL;
 import java.util.LinkedList;
-
 import javax.swing.JOptionPane;
-
 import DLL.ClienteDTO;
 import Repository.Validaciones;
 
@@ -39,8 +37,8 @@ public class Cliente {
 	// Métodos
 	@Override
 	public String toString() {
-		return "Cliente [idCliente=" + idCliente + ", dni=" + dni + ", nombre=" + nombre + ", telefono=" + telefono
-				+ ", mail=" + mail + ", listaProductos=" + listaProductos + "]";
+		return "[id: " + idCliente + ", dni: " + dni + ", nombre: " + nombre + ", telefono: " + telefono
+				+ ", mail: " + mail + "]";
 	}
 
 	public int getIdCliente() {
@@ -100,6 +98,12 @@ public class Cliente {
 	public static Cliente buscarCliente() {
 		int dni = Integer.parseInt(Validaciones.validarInt("ingrese el número de DNI del Cliente", null, null));
 		Cliente encontrado = ClienteDTO.buscarCliente(dni);
+		return encontrado;
+	}
+	
+	public static Cliente buscarClienteJframe(String dni) {
+		int documento = Integer.parseInt(dni);
+		Cliente encontrado = ClienteDTO.buscarCliente(documento);
 		return encontrado;
 	}
 	

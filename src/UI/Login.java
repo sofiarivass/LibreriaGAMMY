@@ -1,14 +1,18 @@
 package UI;
 
+<<<<<<< HEAD
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import BLL.Cliente;
+=======
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+>>>>>>> aldeir
 import BLL.Usuario;
-import Repository.Validaciones;
-
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -25,7 +29,11 @@ public class Login extends JFrame {
 	private JPanel contentPane;
 	private JTextField usuariotxt;
 	private JButton btnIngresar;
+<<<<<<< HEAD
 	private JPasswordField contraseniatxt;
+=======
+	private JLabel lblError;
+>>>>>>> aldeir
 
 	/**
 	 * Create the frame.
@@ -68,6 +76,7 @@ public class Login extends JFrame {
 		btnIngresar = new JButton("Ingresar");
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+<<<<<<< HEAD
 				Usuario user = null;
 
 				boolean usuario = Validaciones.validarVacioJframe(usuariotxt.getText());
@@ -90,6 +99,16 @@ public class Login extends JFrame {
 					}
 				}
 
+=======
+				Usuario user = Usuario.login(txtUsuario.getText(),txtContrasenia.getText());
+				if (user != null) {
+					Main frame = new Main(user);
+					frame.setVisible(false);
+					dispose();					
+				} else {
+					lblError.setText("Error al ingresar los Datos");
+				}
+>>>>>>> aldeir
 			}
 		});
 
