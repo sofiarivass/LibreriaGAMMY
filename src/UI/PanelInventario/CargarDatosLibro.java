@@ -9,7 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-import UI.Main;
+import BLL.Usuario;
 import Enums.*;
 
 import javax.swing.JLabel;
@@ -36,26 +36,26 @@ public class CargarDatosLibro extends JFrame {
 	private JTextField txtStock;
 
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CargarDatosLibro frame = new CargarDatosLibro();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					CargarDatosLibro frame = new CargarDatosLibro();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 	
 	/**
 	 * Create the frame.
 	 */
-	public CargarDatosLibro() {
+	public CargarDatosLibro(Usuario user) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 581, 632);
 		contentPane = new JPanel();
@@ -214,6 +214,14 @@ public class CargarDatosLibro extends JFrame {
         contentPane.add(btnGuardar);
         
         JButton btnSalir = new JButton("Cancelar");
+        btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelGestionarInv frame = new PanelGestionarInv(user);
+				frame.setVisible(true);
+				dispose();
+			}
+		});
+      
         btnSalir.setForeground(new Color(153, 17, 20));
         btnSalir.setFont(new Font("Tahoma", Font.BOLD, 14));
         btnSalir.setBounds(444, 545, 109, 27);

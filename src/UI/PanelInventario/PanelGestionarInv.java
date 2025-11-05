@@ -13,7 +13,6 @@ import javax.swing.border.EmptyBorder;
 
 import BLL.Usuario;
 import UI.PanelVendedorInternacional;
-import UI.PanelExportacion.NuevaExportacion;
 import javax.swing.SwingConstants;
 
 public class PanelGestionarInv extends JFrame {
@@ -42,8 +41,8 @@ public class PanelGestionarInv extends JFrame {
 		JButton btnCargarLibros = new JButton("Cargar Libros");
 		btnCargarLibros.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				NuevaExportacion nuevaVenta = new NuevaExportacion(user);
-				nuevaVenta.setVisible(true);
+				CargarDatosLibro frame = new CargarDatosLibro(user);
+				frame.setVisible(true);
 				dispose();
 			}
 		});
@@ -77,8 +76,8 @@ public class PanelGestionarInv extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PanelVendedorInternacional vendedorInter = new PanelVendedorInternacional(user);
-				vendedorInter.setVisible(true);
+				PanelVendedorInternacional vendedorInt = new PanelVendedorInternacional(user);
+				vendedorInt.setVisible(true);
 				dispose();
 			}
 		});
