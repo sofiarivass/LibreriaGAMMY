@@ -1,6 +1,5 @@
 package UI;
 
-
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,27 +24,26 @@ public class Login extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField usuariotxt;
+	private JTextField txtUsuario;
 	private JButton btnIngresar;
-	private JPasswordField contraseniatxt;
-
+	private JPasswordField txtContrasenia;
 
 	/**
 	 * Create the frame.
 	 */
 	public Login() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 337);
+		setBounds(100, 100, 450, 346);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		usuariotxt = new JTextField();
-		usuariotxt.setBounds(108, 93, 217, 30);
-		contentPane.add(usuariotxt);
-		usuariotxt.setColumns(10);
+		txtUsuario = new JTextField();
+		txtUsuario.setBounds(109, 93, 217, 30);
+		contentPane.add(txtUsuario);
+		txtUsuario.setColumns(10);
 
 		JLabel lblUsuario = new JLabel("Usuario");
 		lblUsuario.setBounds(109, 77, 46, 14);
@@ -61,48 +59,58 @@ public class Login extends JFrame {
 		lblContrasenia.setBounds(108, 143, 79, 14);
 		contentPane.add(lblContrasenia);
 
+		txtContrasenia = new JPasswordField();
+		txtContrasenia.setBounds(109, 158, 217, 30);
+		contentPane.add(txtContrasenia);
+
 		JLabel lblError = new JLabel("");
-		lblError.setForeground(new Color(255, 0, 0));
+		lblError.setForeground(new Color(159, 0, 0));
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
-		lblError.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
-		lblError.setBounds(79, 209, 275, 32);
+		lblError.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
+		lblError.setBounds(80, 205, 275, 32);
 		contentPane.add(lblError);
-		
+
 		btnIngresar = new JButton("Ingresar");
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				lblError.setText("");
 				Usuario user = null;
 
-				boolean usuario = Validaciones.validarVacioJframe(usuariotxt.getText());
-				boolean contrasenia = Validaciones.validarVacioJframe(contraseniatxt.getText());
+				boolean usuario = Repository.Validaciones.validarVacioJframe(txtUsuario.getText());
+				boolean contrasenia = Repository.Validaciones.validarVacioJframe(txtContrasenia.getText());
 
-				if (usuario != false || contrasenia != false) {
+				if (usuario == true || contrasenia == true) {
 					lblError.setText("Por favor complete los campos");
 				} else {
-					user = Usuario.login(usuariotxt.getText(), contraseniatxt.getText());
-					if (user != null) {
-						if (user.getEstado() == false) {
-							lblError.setText("El usuario fue dado de baja.");
-						} else {
-							Main main = new Main(user);
-							main.setVisible(false);
-							dispose();
-						}
+					user = Usuario.login(txtUsuario.getText(), txtContrasenia.getText());
+
+					if (user == null) {
+						lblError.setText("Usuario o contraseña incorrectos");
+					} else if (user.getEstado() == false) {
+						lblError.setText("El usuario fue dado de baja");
 					} else {
-						lblError.setText("El usuario no existe.");
+						Main frame = new Main(user);
+						frame.setVisible(false);
+						dispose();
 					}
 				}
 			}
 		});
 
 		btnIngresar.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnIngresar.setBounds(162, 252, 109, 27);
+		btnIngresar.setBounds(163, 252, 109, 27);
 		contentPane.add(btnIngresar);
-		
-		contraseniatxt = new JPasswordField();
-		contraseniatxt.setBounds(108, 158, 217, 30);
-		contentPane.add(contraseniatxt);
-		
+
+		JButton btnRegresar = new JButton("Regresar");
+		btnRegresar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Main frame = new Main(null);
+				frame.setVisible(true);
+				dispose();
+			}
+		});
+		btnRegresar.setBounds(337, 267, 89, 23);
+		contentPane.add(btnRegresar);
 
 	}
 }

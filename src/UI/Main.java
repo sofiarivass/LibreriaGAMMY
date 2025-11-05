@@ -1,4 +1,5 @@
 package UI;
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -101,7 +102,7 @@ public class Main extends JFrame {
 		lblLogo.setIcon(new ImageIcon(Main.class.getResource("/img/logo.png")));
 		lblLogo.setBounds(0, 6, 510, 220);
 		contentPane.add(lblLogo);
-		
+
 		if (user != null) {
 			int tipo_empleado = user.getFkTipoEmpleado().getIdTipoEmpleado();
 			System.out.println(tipo_empleado);
@@ -124,5 +125,5 @@ public class Main extends JFrame {
 			}
 		}
 	}
-	
+
 }
