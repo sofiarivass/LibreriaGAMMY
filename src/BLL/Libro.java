@@ -466,7 +466,7 @@ public class Libro {
 		Generos generoElegido;
 		Idiomas idiomaElegido;
 		Publico publicoObjetivoElegido;
-		Tapa tapaElegida;
+		Tapas tapaElegida;
 
 		titulo = Repository.Validaciones.validarVacio("Ingrese titulo del libro:", "Cargar libro", null);
 		autor = Repository.Validaciones.validarString("Ingrese nombre del autor:", "Cargar libro", null);
@@ -495,8 +495,8 @@ public class Libro {
 		edicionEspecial = Repository.Validaciones.menuSiNo("¿El libro es edición especial?", "Cargar libro", null)
 				.equals("Sí") ? true : false;
 		do {
-			tapaElegida = (Tapa) JOptionPane.showInputDialog(null, "Seleccione el tipo de tapa del libro:",
-					"Cargar libro", 1, null, Tapa.values(), Tapa.values()[0]);
+			tapaElegida = (Tapas) JOptionPane.showInputDialog(null, "Seleccione el tipo de tapa del libro:",
+					"Cargar libro", 1, null, Tapas.values(), Tapas.values()[0]);
 		} while (tapaElegida == null);
 		tapa = tapaElegida.name();
 		saga = Repository.Validaciones.menuSiNo("¿El libro pertenece a una saga?", "Cargar libro", null).equals("Sí")
@@ -539,7 +539,7 @@ public class Libro {
 			Generos genero;
 			Idiomas idioma;
 			Publico publicoObjetivo;
-			Tapa tapa;
+			Tapas tapa;
 
 			Libro encontrado = LibroDTO.libroPorID(null);
 			EditarLibro opcion;
@@ -612,8 +612,8 @@ public class Libro {
 					break;
 				case Tapa:
 					do {
-						tapa = (Tapa) JOptionPane.showInputDialog(null, "Seleccione el tipo de tapa del libro:",
-								"Editar libro", 1, null, Tapa.values(), Tapa.values()[0]);
+						tapa = (Tapas) JOptionPane.showInputDialog(null, "Seleccione el tipo de tapa del libro:",
+								"Editar libro", 1, null, Tapas.values(), Tapas.values()[0]);
 					} while (tapa == null);
 					encontrado.setTapa(tapa.name());
 					break;
