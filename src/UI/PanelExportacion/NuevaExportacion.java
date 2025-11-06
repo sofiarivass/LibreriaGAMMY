@@ -53,7 +53,7 @@ public class NuevaExportacion extends JFrame {
 		JLabel lblError = new JLabel("");
 		lblError.setFont(new Font("Tahoma", Font.BOLD, 10));
 		lblError.setForeground(new Color(255, 0, 0));
-		lblError.setBounds(75, 92, 124, 13);
+		lblError.setBounds(75, 92, 194, 13);
 		contentPane.add(lblError);
 		
 		JButton btnVolver = new JButton("Volver");
