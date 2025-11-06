@@ -10,6 +10,8 @@ import BLL.Cliente;
 import BLL.Libro;
 import BLL.Usuario;
 import DLL.LibroDTO;
+import Repository.Validaciones;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.util.Comparator;
@@ -53,7 +55,7 @@ public class ElegirLibros extends JFrame {
 		contentPane.add(lblTitulo);
 		
 		JLabel lblCliente = new JLabel("Cliente: " + cliente.toString());
-		lblCliente.setBounds(19, 57, 647, 13);
+		lblCliente.setBounds(19, 52, 647, 13);
 		lblCliente.setFont(new Font("Tahoma", Font.BOLD, 12));
 		contentPane.add(lblCliente);
 		
@@ -101,75 +103,17 @@ public class ElegirLibros extends JFrame {
 		textCantidad.setColumns(10);
 		
 		JLabel lblError = new JLabel("");
-		lblError.setBackground(new Color(255, 0, 0));
+		lblError.setForeground(Color.RED);
+		lblError.setBackground(new Color(255, 255, 255));
 		lblError.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
-		lblError.setBounds(10, 254, 265, 13);
+		lblError.setBounds(10, 254, 360, 13);
 		panel.add(lblError);
 		
 		JButton btnAceptar = new JButton("Agregar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean encontrado = true, sinStock = false;
-				String nombreLibro = (String)selector.getSelectedItem();
-				
-				if (nombreLibro.isEmpty() || textCantidad.getText().isEmpty()) {
-					lblError.setText("No puede dejar los campos Vacio!!");
-				} else {
-					lblError.setText("");
-					if (librosCarrito.isEmpty()) {
-						for (Libro libro : listaLibros) {
-							if (nombreLibro.equalsIgnoreCase(libro.getTitulo())) {
-								if (libro.getStock() >= Integer.parseInt(textCantidad.getText())) {
-									librosCarrito.add(new CarritoDetalle(Integer.parseInt(textCantidad.getText()),libro));
-									libro.setStock(libro.getStock()-Integer.parseInt(textCantidad.getText()));
-									sinStock = false;									
-									break;
-								} else {
-									sinStock = true;									
-								}
-							}
-						}
-						textCantidad.setText("");
-						selector.setSelectedItem("Selección");
-					} else {
-						for (Libro libro : listaLibros) {
-							if (nombreLibro.equalsIgnoreCase(libro.getTitulo())) {
-								if (libro.getStock() >= Integer.parseInt(textCantidad.getText())) {
-									libro.setStock(libro.getStock()-Integer.parseInt(textCantidad.getText()));
-									sinStock = false;
-									break;									
-								} else {
-									sinStock = true;
-								}
-							}
-						}
-						
-						if (sinStock != true) {
-							for (CarritoDetalle carrito : librosCarrito) {
-								if (carrito.getFkLibro().getTitulo().equalsIgnoreCase(nombreLibro)) {
-									carrito.setCantidad(carrito.getCantidad() + Integer.parseInt(textCantidad.getText()));
-									encontrado = false;
-									break;
-								} 
-							}							
-						}
-						
-						if (encontrado) {
-							for (Libro libro : listaLibros) {
-								if (nombreLibro.equalsIgnoreCase(libro.getTitulo())) {
-									librosCarrito.add(new CarritoDetalle(Integer.parseInt(textCantidad.getText()),libro));
-									libro.setStock(libro.getStock()-Integer.parseInt(textCantidad.getText()));
-									break;
-								}
-							}
-						}
-						textCantidad.setText("");
-						selector.setSelectedItem("Selección");
-					}
-					librosElegidos(librosCarrito);
-				}
-				
-				
+				// ejecutamos la funcion para cargar el libro seleccionado (tiene validaciones)
+				cargarLibro(selector,lblError,librosCarrito,listaLibros);
 			}
 		});
 		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -178,8 +122,13 @@ public class ElegirLibros extends JFrame {
 		
 		table = new JTable(model);
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(10, 10, 635, 141);
+		scrollPane.setBounds(10, 37, 635, 141);
 		panel.add(scrollPane);
+		
+		JLabel lblNewLabel = new JLabel("Libros en el Carrito:");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblNewLabel.setBounds(10, 14, 129, 13);
+		panel.add(lblNewLabel);
 		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("New tab", null, panel_1, null);
@@ -201,8 +150,90 @@ public class ElegirLibros extends JFrame {
 					L.getFkLibro().getTitulo(),
 					L.getFkLibro().getPrecio(),
 					L.getCantidad()
-					
 			});
 		}
 	}
+	
+	public void cargarLibro(JComboBox selector, JLabel lblError, LinkedList<CarritoDetalle> librosCarrito, LinkedList<Libro> listaLibros) {
+		String nombreLibro = (String)selector.getSelectedItem();
+		boolean texto = Validaciones.validarVacioJframe(nombreLibro);
+		boolean texto2 = Validaciones.validarVacioJframe(textCantidad.getText());
+		boolean cantidad;
+		
+		if (texto != true && texto2 != true) {
+			cantidad = Validaciones.validarIntJframe(textCantidad.getText());
+			if (cantidad != true) {
+				if (nombreLibro.equalsIgnoreCase("selección")) {
+					lblError.setText("Elijá un Libro!!");
+				} else {
+					boolean encontrado = true, sinStock = false;
+					
+					lblError.setText("");
+					
+					if (librosCarrito.isEmpty()) {
+						for (Libro libro : listaLibros) {
+							if (nombreLibro.equalsIgnoreCase(libro.getTitulo()) && libro.getStock() >= Integer.parseInt(textCantidad.getText())) {
+								librosCarrito.add(new CarritoDetalle(Integer.parseInt(textCantidad.getText()),libro));
+								libro.setStock(libro.getStock()-Integer.parseInt(textCantidad.getText()));
+								sinStock = false;									
+								break;
+							} else {
+								sinStock = true;
+							}
+						}
+						
+						if (sinStock) {
+							lblError.setText("No tenemos Stock sufiente de " + nombreLibro);
+						}
+						textCantidad.setText("");
+						selector.setSelectedItem("Selección");
+					} else {
+						// descontamos de la lista principal de libros la cantidad de libros que estan comprando
+						for (Libro libro : listaLibros) {
+							if (nombreLibro.equalsIgnoreCase(libro.getTitulo()) && libro.getStock() >= Integer.parseInt(textCantidad.getText())) {
+								libro.setStock(libro.getStock()-Integer.parseInt(textCantidad.getText()));
+								sinStock = false;
+								break;									
+							} else {
+								sinStock = true;
+							}
+						}
+						
+						// buscamos en el carrito que ya tiene los otro libros que selecciono y le agregamos el stock
+						if (sinStock != true) {
+							for (CarritoDetalle carrito : librosCarrito) {
+								if (carrito.getFkLibro().getTitulo().equalsIgnoreCase(nombreLibro)) {
+									carrito.setCantidad(carrito.getCantidad() + Integer.parseInt(textCantidad.getText()));
+									encontrado = false;
+									break;
+								} 
+							}
+							
+							// si no encuentra un libro previamente seleccionado es un libro nuevo y lo carga al carrito
+							if (encontrado) {
+								for (Libro libro : listaLibros) {
+									if (nombreLibro.equalsIgnoreCase(libro.getTitulo())) {
+										librosCarrito.add(new CarritoDetalle(Integer.parseInt(textCantidad.getText()),libro));
+										libro.setStock(libro.getStock()-Integer.parseInt(textCantidad.getText()));
+										break;
+									}
+								}
+							}		
+							textCantidad.setText("");
+							selector.setSelectedItem("Selección");
+						} else {
+							lblError.setText("No tenemos Stock sufiente de " + nombreLibro);
+						}
+					}
+					librosElegidos(librosCarrito);
+				}
+			} else {
+				lblError.setText("Ingrese una Cantidad Valida!!");
+			}
+		} else {
+			lblError.setText("No puede dejar los campos Vacio!!");			
+		}
+	}
+	
+	
 }

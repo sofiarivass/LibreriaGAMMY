@@ -487,5 +487,33 @@ public interface Validaciones {
 
 			return num;
 		}
+		
+		/**
+		 * funcion para validar que sea un numero valido, no letras, no números muy grandes, no números negativos
+		 * @param numero
+		 * @return
+		 */
+		public static boolean validarIntJframe(String numero) {
+			boolean flag;
+			int contL = 0;
+			
+			for (int i = 0; i < numero.length(); i++) {
+				if (Character.isAlphabetic(numero.charAt(i))) {
+					contL++;
+				}
+			}
+
+			if (contL > 0) {
+				flag = true;
+			} else if (numero.length() >= 10) {
+				flag = true;
+			} else if (Integer.parseInt(numero) < 0) {
+				flag = true;
+			} else {
+				flag = false;
+			}
+				
+			return flag;
+		}
 	
 }
