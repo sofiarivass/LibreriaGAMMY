@@ -210,6 +210,13 @@ public class CargarDatosLibro extends JFrame {
 		lblStock.setBounds(289, 456, 46, 14);
 		contentPane.add(lblStock);
 
+		JLabel lblError = new JLabel("");
+		lblError.setHorizontalAlignment(SwingConstants.CENTER);
+		lblError.setForeground(new Color(159, 0, 0));
+		lblError.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
+		lblError.setBounds(34, 545, 499, 32);
+		contentPane.add(lblError);
+
 		JButton btnCargarPortada = new JButton("Cargar portada (opcional)");
 		btnCargarPortada.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -228,31 +235,24 @@ public class CargarDatosLibro extends JFrame {
 					String nombreArchivo = selectedFile.getName().toLowerCase();
 					if (!(nombreArchivo.endsWith(".jpg") || nombreArchivo.endsWith(".jpeg")
 							|| nombreArchivo.endsWith(".png"))) {
-						JOptionPane.showMessageDialog(null, "Solo se permiten archivos JPG, JPEG o PNG");
+						lblError.setText("Solo se permiten archivos JPG, JPEG o PNG");
 						return;
 					}
-
+					//FALTA VALIDACION TAMAÑO DE IMAGEN (MAX 64KB)
 					try {
 						portada = Files.readAllBytes(selectedFile.toPath());
-						JOptionPane.showMessageDialog(null, "Imagen cargada correctamente");
+						lblError.setText("");
 					} catch (IOException ex) {
 						ex.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Error al leer la imagen");
+						lblError.setText("Error al leer la imagen");
 					}
 				}
 			}
 		});
 		btnCargarPortada.setForeground(new Color(0, 0, 0));
 		btnCargarPortada.setBackground(new Color(192, 192, 192));
-		btnCargarPortada.setBounds(58, 380, 178, 25);
+		btnCargarPortada.setBounds(49, 380, 197, 25);
 		contentPane.add(btnCargarPortada);
-
-		JLabel lblError = new JLabel("");
-		lblError.setHorizontalAlignment(SwingConstants.CENTER);
-		lblError.setForeground(new Color(159, 0, 0));
-		lblError.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
-		lblError.setBounds(34, 545, 499, 32);
-		contentPane.add(lblError);
 
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
@@ -288,11 +288,9 @@ public class CargarDatosLibro extends JFrame {
 						if (numPaginasV.equals("vacio")) {
 							lblError.setText("Por favor complete los campos obligatorios");
 						} else if (numPaginasV.equals("letra")) {
-							lblError.setText("La cantidad de páginas debe ser un número entero");
+							lblError.setText("La cantidad de páginas debe ser un número entero y positivo");
 						} else if (numPaginasV.equals("tamaño")) {
 							lblError.setText("La cantidad de páginas debe ser un número más pequeño");
-						} else if (numPaginasV.equals("negativo")) {
-							lblError.setText("La cantidad de páginas debe ser un número positivo");
 						} else {
 							numPaginas = Integer.parseInt(txtPaginas.getText());
 							lblError.setText("");
@@ -312,11 +310,9 @@ public class CargarDatosLibro extends JFrame {
 								if (stockV.equals("vacio")) {
 									lblError.setText("Por favor complete los campos obligatorios");
 								} else if (stockV.equals("letra")) {
-									lblError.setText("El stock debe ser un número entero");
+									lblError.setText("El stock debe ser un número entero y positivo");
 								} else if (stockV.equals("tamaño")) {
 									lblError.setText("El stock debe ser un número más pequeño");
-								} else if (stockV.equals("negativo")) {
-									lblError.setText("El stock debe ser un número positivo");
 								} else {
 									stock = Integer.parseInt(txtStock.getText());
 									lblError.setText("");
@@ -341,10 +337,11 @@ public class CargarDatosLibro extends JFrame {
 
 									Libro.nuevoLibro(libro);
 
-									JOptionPane.showMessageDialog(null, "todo bien");
-									PanelGestionarInv frame = new PanelGestionarInv(user);
+									System.out.println("todo ok");
+									InfoLibro frame = new InfoLibro(user, libro);
 									frame.setVisible(true);
 									dispose();
+									
 								}
 							}
 						}

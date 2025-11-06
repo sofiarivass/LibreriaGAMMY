@@ -538,7 +538,7 @@ public interface Validaciones {
 			int contL = 0;
 
 			for (int i = 0; i < input.length(); i++) {
-				if (Character.isAlphabetic(input.charAt(i))) {
+				if (!Character.isDigit(input.charAt(i))) {
 					contL++;
 				}
 			}
@@ -547,8 +547,6 @@ public interface Validaciones {
 				return "letra";
 			} else if (input.length() >= 10) {
 				return "tamaño";
-			} else if (Integer.parseInt(input) < 0) {
-				return "negativo";
 			} else {
 				return "ok";
 			}
@@ -556,28 +554,25 @@ public interface Validaciones {
 	}
 
 	public static String validarDoubleJframe(String input) {
-
 		boolean flag = validarVacioJframe(input);
 
-		if (flag == true) {
+		if (flag) {
 			return "vacio";
 		} else {
-			int contL = 0;
+			try {
+				// Intentamos convertir el texto a número
+				double valor = Double.parseDouble(input);
 
-			for (int i = 0; i < input.length(); i++) {
-				if (Character.isAlphabetic(input.charAt(i))) {
-					contL++;
+				if (valor < 0) {
+					return "negativo";
+				} else if (input.length() >= 10) {
+					return "tamaño";
+				} else {
+					return "ok";
 				}
-			}
 
-			if (contL > 0) {
+			} catch (NumberFormatException e) {
 				return "letra";
-			} else if (input.length() >= 10) {
-				return "tamaño";
-			} else if (Double.parseDouble(input) < 0) {
-				return "negativo";
-			} else {
-				return "ok";
 			}
 		}
 
