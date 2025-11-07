@@ -2,6 +2,7 @@ package UI.PanelInventario;
 
 import java.awt.EventQueue;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,6 +13,7 @@ import com.toedter.calendar.JDateChooser;
 
 import BLL.Libro;
 import BLL.Usuario;
+import DLL.LibroDTO;
 import Enums.*;
 
 import javax.swing.JLabel;
@@ -214,7 +216,7 @@ public class CargarDatosLibro extends JFrame {
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
 		lblError.setForeground(new Color(159, 0, 0));
 		lblError.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
-		lblError.setBounds(34, 545, 499, 32);
+		lblError.setBounds(34, 545, 499, 43);
 		contentPane.add(lblError);
 
 		JButton btnCargarPortada = new JButton("Cargar portada (opcional)");
@@ -238,7 +240,7 @@ public class CargarDatosLibro extends JFrame {
 						lblError.setText("Solo se permiten archivos JPG, JPEG o PNG");
 						return;
 					}
-					//FALTA VALIDACION TAMAÑO DE IMAGEN (MAX 64KB)
+
 					try {
 						portada = Files.readAllBytes(selectedFile.toPath());
 						lblError.setText("");
@@ -335,13 +337,16 @@ public class CargarDatosLibro extends JFrame {
 											publicoObjetivo, numPaginas, firmado, edicionEspecial, tapa, saga, precio,
 											stock, true, portada);
 
-									Libro.nuevoLibro(libro);
+									boolean coincidencia = LibroDTO.agregarLibro(libro);
+									if (coincidencia == false) {
+										lblError.setText("Ese libro ya está cargado en el sistema");
+									} else {
+										System.out.println("todo ok");
+										InfoLibro frame = new InfoLibro(user, libro);
+										frame.setVisible(true);
+										dispose();
+									}
 
-									System.out.println("todo ok");
-									InfoLibro frame = new InfoLibro(user, libro);
-									frame.setVisible(true);
-									dispose();
-									
 								}
 							}
 						}

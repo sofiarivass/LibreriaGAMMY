@@ -31,7 +31,8 @@ public class LibroDTO {
 		for (Libro elemento : LibroDTO.mostrarLibros()) {
 			if (elemento.getTitulo().equals(libro.getTitulo()) && elemento.getAutor().equals(libro.getAutor())
 					&& elemento.getEditorial().equals(libro.getEditorial())
-					&& elemento.getIdioma().equals(libro.getIdioma())) {
+					&& elemento.getIdioma().equals(libro.getIdioma()) && elemento.getTapa().equals(libro.getTapa())
+					&& elemento.getFirmado() == libro.getFirmado()) {
 				flag = false;
 				coincidencia = elemento;
 				break;
@@ -39,9 +40,17 @@ public class LibroDTO {
 		}
 		if (flag) {
 			try {
-				PreparedStatement statement = con.prepareStatement(
-						"INSERT INTO libro (titulo, autor, editorial, fecha_publicacion, genero, idioma, publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado, portada) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-						Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement statement;
+				if (libro.getPortada() == null) {
+					statement = con.prepareStatement(
+							"INSERT INTO libro (titulo, autor, editorial, fecha_publicacion, genero, idioma, publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+							Statement.RETURN_GENERATED_KEYS);
+				} else {
+					statement = con.prepareStatement(
+							"INSERT INTO libro (titulo, autor, editorial, fecha_publicacion, genero, idioma, publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado, portada) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+							Statement.RETURN_GENERATED_KEYS);
+				}
+
 				statement.setString(1, libro.getTitulo());
 				statement.setString(2, libro.getAutor());
 				statement.setString(3, libro.getEditorial());
@@ -57,7 +66,9 @@ public class LibroDTO {
 				statement.setDouble(13, libro.getPrecio());
 				statement.setInt(14, libro.getStock());
 				statement.setBoolean(15, true);
-				statement.setBytes(16, libro.getPortada());
+				if (libro.getPortada() != null) {
+					statement.setBytes(16, libro.getPortada());
+				}
 
 				int filas = statement.executeUpdate();
 				ResultSet rs = statement.getGeneratedKeys();
@@ -68,7 +79,6 @@ public class LibroDTO {
 				}
 
 				if (filas > 0) {
-					JOptionPane.showMessageDialog(null, "Libro agregado correctamente\n" + libro.toString());
 					return true;
 				} else {
 					return false;
@@ -80,9 +90,9 @@ public class LibroDTO {
 			}
 
 		} else {
-			JOptionPane.showMessageDialog(null,
-					"ERROR! Ya hay un libro con las mismas carácteristicas cargado en el sistema:\n"
-							+ coincidencia.toString());
+//			JOptionPane.showMessageDialog(null,
+//					"ERROR! Ya hay un libro con las mismas carácteristicas cargado en el sistema:\n"
+//							+ coincidencia.toString());
 			return false;
 		}
 	}

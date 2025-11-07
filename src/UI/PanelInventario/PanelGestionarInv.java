@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 import BLL.Usuario;
 import UI.PanelVendedorInternacional;
 import javax.swing.SwingConstants;
+import java.awt.Color;
 
 public class PanelGestionarInv extends JFrame {
 
@@ -25,7 +26,7 @@ public class PanelGestionarInv extends JFrame {
 	 */
 	public PanelGestionarInv(Usuario user) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 239);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -47,31 +48,20 @@ public class PanelGestionarInv extends JFrame {
 			}
 		});
 		btnCargarLibros.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnCargarLibros.setBounds(24, 79, 165, 32);
+		btnCargarLibros.setBounds(20, 79, 165, 32);
 		contentPane.add(btnCargarLibros);
 
-		JButton btnModificarLibros = new JButton("Modificar Libros");
-		btnModificarLibros.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnModificarLibros.setBounds(247, 79, 165, 32);
-		contentPane.add(btnModificarLibros);
-
-		JButton btnMostrarLibros = new JButton("Mostrar Libros");
-		btnMostrarLibros.addActionListener(new ActionListener() {
+		JButton btnModificarLibros = new JButton("Gestionar Libros");
+		btnCargarLibros.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				GestionarLibros frame = new GestionarLibros(user);
+				frame.setVisible(true);
+				dispose();
 			}
 		});
-		btnMostrarLibros.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnMostrarLibros.setBounds(247, 136, 165, 32);
-		contentPane.add(btnMostrarLibros);
-
-		JButton btnEliminarLibros = new JButton("Eliminar Libros");
-		btnEliminarLibros.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnEliminarLibros.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnEliminarLibros.setBounds(24, 136, 165, 32);
-		contentPane.add(btnEliminarLibros);
+		btnModificarLibros.setFont(new Font("Tahoma", Font.BOLD, 10));
+		btnModificarLibros.setBounds(243, 79, 165, 32);
+		contentPane.add(btnModificarLibros);
 
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
@@ -82,8 +72,7 @@ public class PanelGestionarInv extends JFrame {
 			}
 		});
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnVolver.setBounds(148, 205, 141, 32);
+		btnVolver.setBounds(146, 144, 141, 32);
 		contentPane.add(btnVolver);
 	}
-
 }

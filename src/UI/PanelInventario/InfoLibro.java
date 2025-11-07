@@ -1,25 +1,21 @@
 package UI.PanelInventario;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.LinkedList;
+import java.io.File;
+import java.nio.file.Files;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import BLL.Libro;
 import BLL.Usuario;
-import DLL.LibroDTO;
-import UI.Main;
 import java.awt.Font;
 import java.awt.Color;
 
@@ -39,9 +35,10 @@ public class InfoLibro extends JFrame {
 		setContentPane(contentPane);
 
 		lblPortada = new JLabel();
-		lblPortada.setBounds(113, 55, 419, 233);
+		lblPortada.setBounds(243, 55, 157, 250);
 		lblPortada.setHorizontalAlignment(SwingConstants.CENTER);
-//		lblPortada.setIcon(new ImageIcon(Main.class.getResource("/img/logo.png")));
+		// lblPortada.setIcon(new
+		// ImageIcon(InfoLibro.class.getResource("/img/portada.jpg")));
 //		lblPortada.setBounds(0, 6, 510, 220);
 
 		mostrarImagen(libro.getPortada());
@@ -59,70 +56,71 @@ public class InfoLibro extends JFrame {
 		JLabel lblID = new JLabel();
 		lblID.setHorizontalAlignment(SwingConstants.CENTER);
 		lblID.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblID.setBounds(143, 310, 71, 32);
+		lblID.setBounds(128, 320, 101, 32);
 		lblID.setText("ID: " + libro.getId_libro());
 		contentPane.add(lblID);
 
 		JLabel lblTitulo = new JLabel();
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblTitulo.setBounds(25, 340, 306, 32);
+		lblTitulo.setBounds(25, 350, 306, 32);
 		lblTitulo.setText("Título: " + libro.getTitulo());
 		contentPane.add(lblTitulo);
 
 		JLabel lblAutor = new JLabel();
 		lblAutor.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAutor.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblAutor.setBounds(23, 371, 310, 32);
+		lblAutor.setBounds(23, 381, 310, 32);
 		lblAutor.setText("Autor: " + libro.getAutor());
 		contentPane.add(lblAutor);
 
 		JLabel lblEditorial = new JLabel();
 		lblEditorial.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEditorial.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblEditorial.setBounds(2, 400, 353, 32);
+		lblEditorial.setBounds(2, 410, 353, 32);
 		lblEditorial.setText("Editorial: " + libro.getEditorial());
 		contentPane.add(lblEditorial);
 
 		JLabel lblFecha = new JLabel();
 		lblFecha.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFecha.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblFecha.setBounds(3, 430, 351, 32);
-		lblFecha.setText("Fecha de publicación: " + (libro.getFechaPublicacion() == null ? "No especificada" : libro.getFechaPublicacion()));
+		lblFecha.setBounds(3, 440, 351, 32);
+		lblFecha.setText("Fecha de publicación: "
+				+ (libro.getFechaPublicacion() == null ? "No especificada" : libro.getFechaPublicacion()));
 		contentPane.add(lblFecha);
 
 		JLabel lblGenero = new JLabel();
 		lblGenero.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGenero.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblGenero.setBounds(291, 310, 336, 32);
+		lblGenero.setBounds(291, 320, 336, 32);
 		lblGenero.setText("Género: " + libro.getGenero());
 		contentPane.add(lblGenero);
 
 		JLabel lblIdioma = new JLabel();
 		lblIdioma.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIdioma.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblIdioma.setBounds(301, 340, 316, 32);
+		lblIdioma.setBounds(301, 350, 316, 32);
 		lblIdioma.setText("Idioma: " + libro.getIdioma());
 		contentPane.add(lblIdioma);
 
 		JLabel lblPublico = new JLabel();
 		lblPublico.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPublico.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblPublico.setBounds(276, 371, 366, 32);
+		lblPublico.setBounds(276, 381, 366, 32);
 		lblPublico.setText("Público Objetivo: " + libro.getPublicoObjetivo());
 		contentPane.add(lblPublico);
 
 		JLabel lblPaginas = new JLabel();
 		lblPaginas.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPaginas.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblPaginas.setBounds(323, 400, 272, 32);
+		lblPaginas.setBounds(323, 410, 272, 32);
 		lblPaginas.setText("Cantidad de páginas: " + libro.getNumPaginas());
 		contentPane.add(lblPaginas);
 
 		JLabel lblTapa = new JLabel();
 		lblTapa.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTapa.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblTapa.setBounds(328, 430, 262, 32);
+		lblTapa.setBounds(328, 440, 262, 32);
 		lblTapa.setText("Tapa: " + libro.getTapa());
 		contentPane.add(lblTapa);
 
@@ -154,7 +152,7 @@ public class InfoLibro extends JFrame {
 		lblPrecio.setBounds(341, 496, 237, 32);
 		lblPrecio.setText("Precio: $" + libro.getPrecio());
 		contentPane.add(lblPrecio);
-		
+
 		JLabel lblStock = new JLabel();
 		lblStock.setForeground(new Color(0, 0, 128));
 		lblStock.setHorizontalAlignment(SwingConstants.CENTER);
@@ -162,7 +160,7 @@ public class InfoLibro extends JFrame {
 		lblStock.setBounds(341, 527, 237, 32);
 		lblStock.setText("Stock: " + libro.getStock() + " unidades");
 		contentPane.add(lblStock);
-		
+
 		JLabel lblEstado = new JLabel();
 		lblEstado.setForeground(new Color(0, 0, 128));
 		lblEstado.setHorizontalAlignment(SwingConstants.CENTER);
@@ -191,11 +189,14 @@ public class InfoLibro extends JFrame {
 		lblPortada.setText("");
 		if (imagenBytes != null && imagenBytes.length > 0) {
 			ImageIcon icon = new ImageIcon(imagenBytes);
-			Image img = icon.getImage().getScaledInstance(170, 200, Image.SCALE_SMOOTH);
-			lblPortada.setIcon(new ImageIcon(img));
+			Image portada = icon.getImage().getScaledInstance(157, 250, Image.SCALE_SMOOTH);
+			lblPortada.setIcon(new ImageIcon(portada));
 		} else {
-			lblPortada.setIcon(null);
-			lblPortada.setText("Sin imagen");
+//			File placeholder = InfoLibro.class.getResource("img/placeholder.jpg");
+//			byte[] placeholderByte = Files.readAllBytes(placeholder.toPath());
+			lblPortada.setIcon(new ImageIcon(InfoLibro.class.getResource("/img/placeholder.jpg")));
+//			lblImagen.setIcon(null);
+//          lblImagen.setText("Sin imagen");
 		}
 	}
 }

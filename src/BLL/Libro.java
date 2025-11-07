@@ -531,9 +531,9 @@ public class Libro {
 	 * 
 	 * @return boolean
 	 */
-	public static boolean nuevoLibro(Libro libro) {
-		return LibroDTO.agregarLibro(libro);
-	}
+//	public static boolean nuevoLibro(Libro libro) {
+//		return LibroDTO.agregarLibro(libro);
+//	}
 
 	/**
 	 * Método para editar libros de la base de datos.
