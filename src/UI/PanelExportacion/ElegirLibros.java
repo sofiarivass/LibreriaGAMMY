@@ -130,6 +130,21 @@ public class ElegirLibros extends JFrame {
 		lblNewLabel.setBounds(10, 14, 129, 13);
 		panel.add(lblNewLabel);
 		
+		JButton btnEliminar = new JButton("Eliminar Libro");
+		btnEliminar.setBounds(516, 223, 129, 21);
+		panel.add(btnEliminar);
+		
+		JButton btnCancelarVenta = new JButton("Cancelar Venta");
+		btnCancelarVenta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelGestionarExport gestionExport = new PanelGestionarExport(user);
+				gestionExport.setVisible(true);
+				dispose();
+			}
+		});
+		btnCancelarVenta.setBounds(10, 516, 129, 21);
+		panel.add(btnCancelarVenta);
+		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("New tab", null, panel_1, null);
 		panel_1.setLayout(null);
