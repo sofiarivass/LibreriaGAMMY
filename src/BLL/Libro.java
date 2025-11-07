@@ -1,5 +1,6 @@
 package BLL;
 
+import java.sql.Date;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import DLL.LibroDTO;
@@ -11,7 +12,7 @@ public class Libro {
 	private String titulo;
 	private String autor;
 	private String editorial;
-	private String anioPublicacion;
+	private Date fechaPublicacion;
 	private String genero;
 	private String idioma;
 	private String publicoObjetivo;
@@ -23,15 +24,16 @@ public class Libro {
 	private double precio;
 	private int stock;
 	private boolean estado;
+	private byte[] portada;
 
-	public Libro(int id_libro, String titulo, String autor, String editorial, String anioPublicacion, String genero,
+	public Libro(int id_libro, String titulo, String autor, String editorial, Date fechaPublicacion, String genero,
 			String idioma, String publicoObjetivo, int numPaginas, boolean firmado, boolean edicionEspecial,
-			String materialTapa, boolean saga, double precio, int stock, boolean estado) {
+			String materialTapa, boolean saga, double precio, int stock, boolean estado, byte[] portada) {
 		this.id_libro = id_libro;
 		this.titulo = titulo;
 		this.autor = autor;
 		this.editorial = editorial;
-		this.anioPublicacion = anioPublicacion;
+		this.fechaPublicacion = fechaPublicacion;
 		this.genero = genero;
 		this.idioma = idioma;
 		this.publicoObjetivo = publicoObjetivo;
@@ -43,15 +45,16 @@ public class Libro {
 		this.precio = precio;
 		this.stock = stock;
 		this.estado = estado;
+		this.portada = portada;
 	}
 
-	public Libro(String titulo, String autor, String editorial, String anioPublicacion, String genero, String idioma,
+	public Libro(String titulo, String autor, String editorial, Date fechaPublicacion, String genero, String idioma,
 			String publicoObjetivo, int numPaginas, boolean firmado, boolean edicionEspecial, String materialTapa,
-			boolean saga, double precio, int stock, boolean estado) {
+			boolean saga, double precio, int stock, boolean estado, byte[] portada) {
 		this.titulo = titulo;
 		this.autor = autor;
 		this.editorial = editorial;
-		this.anioPublicacion = anioPublicacion;
+		this.fechaPublicacion = fechaPublicacion;
 		this.genero = genero;
 		this.idioma = idioma;
 		this.publicoObjetivo = publicoObjetivo;
@@ -63,6 +66,7 @@ public class Libro {
 		this.precio = precio;
 		this.stock = stock;
 		this.estado = estado;
+		this.portada = portada;
 	}
 
 	// Getters y Setters
@@ -98,12 +102,12 @@ public class Libro {
 		this.editorial = editorial;
 	}
 
-	public String getAnioPublicacion() {
-		return anioPublicacion;
+	public Date getFechaPublicacion() {
+		return fechaPublicacion;
 	}
 
-	public void setAnioPublicacion(String anioPublicacion) {
-		this.anioPublicacion = anioPublicacion;
+	public void setFechaPublicacion(Date fechaPublicacion) {
+		this.fechaPublicacion = fechaPublicacion;
 	}
 
 	public String getGenero() {
@@ -194,16 +198,24 @@ public class Libro {
 		this.estado = estado;
 	}
 
+	public byte[] getPortada() {
+		return portada;
+	}
+
+	public void setPortada(byte[] portada) {
+		this.portada = portada;
+	}
+
 	// Métodos
 	@Override
 	public String toString() {
 		return "\nID: " + id_libro + "\nTitulo: " + titulo + "\nAutor: " + autor + "\nEditorial: " + editorial
-				+ "\nAño de publicación: " + anioPublicacion + "\nGénero: " + genero + "\nIdioma: " + idioma
+				+ "\nAño de publicación: " + fechaPublicacion + "\nGénero: " + genero + "\nIdioma: " + idioma
 				+ "\nPúblico objetivo: " + publicoObjetivo + "\nNúmero de páginas: " + numPaginas + "\n¿Firmado?: "
 				+ (firmado == true ? "Sí" : "No") + "\n¿Edición especial?: " + (edicionEspecial == true ? "Sí" : "No")
 				+ "\nTipo de tapa: " + tapa + "\n¿Pertenece a una saga?: " + (saga == true ? "Sí" : "No")
-				+ "\nPrecio: $" + precio + "\nStock: " + stock + "\nEstado: "
-				+ (estado == true ? "Activo" : "Inactivo") + "\n";
+				+ "\nPrecio: $" + precio + "\nStock: " + stock + "\nEstado: " + (estado == true ? "Activo" : "Inactivo")
+				+ "\n";
 	}
 
 	/**
@@ -458,67 +470,66 @@ public class Libro {
 	 * 
 	 * @return Libro
 	 */
-	public static Libro cargarDatosLibro() {
-		String titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, tapa;
-		int numPaginas, stock;
-		boolean firmado, edicionEspecial, saga, estado;
-		double precio;
-		Generos generoElegido;
-		Idiomas idiomaElegido;
-		Publico publicoObjetivoElegido;
-		Tapa tapaElegida;
-
-		titulo = Repository.Validaciones.validarVacio("Ingrese titulo del libro:", "Cargar libro", null);
-		autor = Repository.Validaciones.validarString("Ingrese nombre del autor:", "Cargar libro", null);
-		editorial = Repository.Validaciones.validarVacio("Ingrese nombre de la editorial:", "Cargar libro", null);
-		anioPublicacion = Repository.Validaciones.validarAnio("Ingrese año de publicación del libro:", "Cargar libro");
-		do {
-			generoElegido = (Generos) JOptionPane.showInputDialog(null, "Seleccione el género literario del libro:",
-					"Cargar libro", 1, null, Generos.values(), Generos.values()[0]);
-		} while (generoElegido == null);
-		genero = generoElegido.name();
-		do {
-			idiomaElegido = (Idiomas) JOptionPane.showInputDialog(null, "Seleccione el idioma del libro:",
-					"Cargar libro", 1, null, Idiomas.values(), Idiomas.values()[0]);
-		} while (idiomaElegido == null);
-		idioma = idiomaElegido.name();
-		do {
-			publicoObjetivoElegido = (Publico) JOptionPane.showInputDialog(null,
-					"Seleccione el público objetivo del libro:", "Cargar libro", 1, null, Publico.values(),
-					Publico.values()[0]);
-		} while (publicoObjetivoElegido == null);
-		publicoObjetivo = publicoObjetivoElegido.name();
-		numPaginas = Integer.parseInt(
-				Repository.Validaciones.validarInt("Ingrese número de páginas del libro:", "Cargar libro", null));
-		firmado = Repository.Validaciones.menuSiNo("¿El libro está firmado por su autor/a?", "Cargar libro", null)
-				.equals("Sí") ? true : false;
-		edicionEspecial = Repository.Validaciones.menuSiNo("¿El libro es edición especial?", "Cargar libro", null)
-				.equals("Sí") ? true : false;
-		do {
-			tapaElegida = (Tapa) JOptionPane.showInputDialog(null, "Seleccione el tipo de tapa del libro:",
-					"Cargar libro", 1, null, Tapa.values(), Tapa.values()[0]);
-		} while (tapaElegida == null);
-		tapa = tapaElegida.name();
-		saga = Repository.Validaciones.menuSiNo("¿El libro pertenece a una saga?", "Cargar libro", null).equals("Sí")
-				? true
-				: false;
-		do {
-			precio = Repository.Validaciones.validarDouble("Ingrese precio del libro:", "Cargar libro", null);
-		} while (precio <= 0);
-		stock = Integer.parseInt(Repository.Validaciones.validarInt("Ingrese stock del libro:", "Cargar libro", null));
-
-		return new Libro(titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, numPaginas,
-				firmado, edicionEspecial, tapa, saga, precio, stock, true);
-	}
+//	public static Libro cargarDatosLibro() {
+//		String titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, tapa;
+//		int numPaginas, stock;
+//		boolean firmado, edicionEspecial, saga, estado;
+//		double precio;
+//		Generos generoElegido;
+//		Idiomas idiomaElegido;
+//		Publico publicoObjetivoElegido;
+//		Tapas tapaElegida;
+//
+//		titulo = Repository.Validaciones.validarVacio("Ingrese titulo del libro:", "Cargar libro", null);
+//		autor = Repository.Validaciones.validarString("Ingrese nombre del autor:", "Cargar libro", null);
+//		editorial = Repository.Validaciones.validarVacio("Ingrese nombre de la editorial:", "Cargar libro", null);
+//		anioPublicacion = Repository.Validaciones.validarAnio("Ingrese año de publicación del libro:", "Cargar libro");
+//		do {
+//			generoElegido = (Generos) JOptionPane.showInputDialog(null, "Seleccione el género literario del libro:",
+//					"Cargar libro", 1, null, Generos.values(), Generos.values()[0]);
+//		} while (generoElegido == null);
+//		genero = generoElegido.name();
+//		do {
+//			idiomaElegido = (Idiomas) JOptionPane.showInputDialog(null, "Seleccione el idioma del libro:",
+//					"Cargar libro", 1, null, Idiomas.values(), Idiomas.values()[0]);
+//		} while (idiomaElegido == null);
+//		idioma = idiomaElegido.name();
+//		do {
+//			publicoObjetivoElegido = (Publico) JOptionPane.showInputDialog(null,
+//					"Seleccione el público objetivo del libro:", "Cargar libro", 1, null, Publico.values(),
+//					Publico.values()[0]);
+//		} while (publicoObjetivoElegido == null);
+//		publicoObjetivo = publicoObjetivoElegido.name();
+//		numPaginas = Integer.parseInt(
+//				Repository.Validaciones.validarInt("Ingrese número de páginas del libro:", "Cargar libro", null));
+//		firmado = Repository.Validaciones.menuSiNo("¿El libro está firmado por su autor/a?", "Cargar libro", null)
+//				.equals("Sí") ? true : false;
+//		edicionEspecial = Repository.Validaciones.menuSiNo("¿El libro es edición especial?", "Cargar libro", null)
+//				.equals("Sí") ? true : false;
+//		do {
+//			tapaElegida = (Tapas) JOptionPane.showInputDialog(null, "Seleccione el tipo de tapa del libro:",
+//					"Cargar libro", 1, null, Tapas.values(), Tapas.values()[0]);
+//		} while (tapaElegida == null);
+//		tapa = tapaElegida.name();
+//		saga = Repository.Validaciones.menuSiNo("¿El libro pertenece a una saga?", "Cargar libro", null).equals("Sí")
+//				? true
+//				: false;
+//		do {
+//			precio = Repository.Validaciones.validarDouble("Ingrese precio del libro:", "Cargar libro", null);
+//		} while (precio <= 0);
+//		stock = Integer.parseInt(Repository.Validaciones.validarInt("Ingrese stock del libro:", "Cargar libro", null));
+//
+//		return new Libro(titulo, autor, editorial, anioPublicacion, genero, idioma, publicoObjetivo, numPaginas,
+//				firmado, edicionEspecial, tapa, saga, precio, stock, true);
+//	}
 
 	/**
 	 * Método para agregar libros a la base de datos.
 	 * 
 	 * @return boolean
 	 */
-	public static boolean nuevoLibro() {
-		Libro nuevo = cargarDatosLibro();
-		return LibroDTO.agregarLibro(nuevo);
+	public static boolean nuevoLibro(Libro libro) {
+		return LibroDTO.agregarLibro(libro);
 	}
 
 	/**
@@ -539,7 +550,7 @@ public class Libro {
 			Generos genero;
 			Idiomas idioma;
 			Publico publicoObjetivo;
-			Tapa tapa;
+			Tapas tapa;
 
 			Libro encontrado = LibroDTO.libroPorID(null);
 			EditarLibro opcion;
@@ -567,7 +578,8 @@ public class Libro {
 				case Año_Publicación:
 					anioPublicacion = Repository.Validaciones.validarAnio("Ingrese año de publicación del libro:",
 							"Editar libro");
-					encontrado.setAnioPublicacion(anioPublicacion);
+					// provisional para evitar error
+					encontrado.setFechaPublicacion(Date.valueOf(anioPublicacion));
 					break;
 				case Género:
 					do {
@@ -612,8 +624,8 @@ public class Libro {
 					break;
 				case Tapa:
 					do {
-						tapa = (Tapa) JOptionPane.showInputDialog(null, "Seleccione el tipo de tapa del libro:",
-								"Editar libro", 1, null, Tapa.values(), Tapa.values()[0]);
+						tapa = (Tapas) JOptionPane.showInputDialog(null, "Seleccione el tipo de tapa del libro:",
+								"Editar libro", 1, null, Tapas.values(), Tapas.values()[0]);
 					} while (tapa == null);
 					encontrado.setTapa(tapa.name());
 					break;
@@ -668,9 +680,9 @@ public class Libro {
 		if (libros == null || libros.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "No hay libros disponibles para mostrar.");
 		} else {
-			int mostrar = JOptionPane.showOptionDialog(null, "Elija qué libros desea ver:", "Mostrar libros",
-					0, 1, null, Enums.MenuMostrar.values(), Enums.MenuMostrar.values());
-			
+			int mostrar = JOptionPane.showOptionDialog(null, "Elija qué libros desea ver:", "Mostrar libros", 0, 1,
+					null, Enums.MenuMostrar.values(), Enums.MenuMostrar.values());
+
 			switch (mostrar) {
 			// ACTIVOS
 			case 0:

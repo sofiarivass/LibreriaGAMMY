@@ -1,5 +1,7 @@
 package DLL;
+
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
@@ -38,12 +40,12 @@ public class LibroDTO {
 		if (flag) {
 			try {
 				PreparedStatement statement = con.prepareStatement(
-						"INSERT INTO libro (titulo, autor, editorial, anio_publicacion, genero, idioma, publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-						, Statement.RETURN_GENERATED_KEYS);
+						"INSERT INTO libro (titulo, autor, editorial, fecha_publicacion, genero, idioma, publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado, portada) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+						Statement.RETURN_GENERATED_KEYS);
 				statement.setString(1, libro.getTitulo());
 				statement.setString(2, libro.getAutor());
 				statement.setString(3, libro.getEditorial());
-				statement.setString(4, libro.getAnioPublicacion());
+				statement.setDate(4, libro.getFechaPublicacion());
 				statement.setString(5, libro.getGenero());
 				statement.setString(6, libro.getIdioma());
 				statement.setString(7, libro.getPublicoObjetivo());
@@ -55,15 +57,16 @@ public class LibroDTO {
 				statement.setDouble(13, libro.getPrecio());
 				statement.setInt(14, libro.getStock());
 				statement.setBoolean(15, true);
+				statement.setBytes(16, libro.getPortada());
 
 				int filas = statement.executeUpdate();
 				ResultSet rs = statement.getGeneratedKeys();
-	            
+
 				if (rs.next()) {
 					int idGenerado = rs.getInt(1);
 					libro.setId_libro(idGenerado);
 				}
-				
+
 				if (filas > 0) {
 					JOptionPane.showMessageDialog(null, "Libro agregado correctamente\n" + libro.toString());
 					return true;
@@ -97,7 +100,8 @@ public class LibroDTO {
 		for (Libro elemento : LibroDTO.mostrarLibros()) {
 			if (elemento.getTitulo().equals(libro.getTitulo()) && elemento.getAutor().equals(libro.getAutor())
 					&& elemento.getEditorial().equals(libro.getEditorial())
-					&& elemento.getIdioma().equals(libro.getIdioma()) && elemento.getId_libro() != libro.getId_libro()) {
+					&& elemento.getIdioma().equals(libro.getIdioma())
+					&& elemento.getId_libro() != libro.getId_libro()) {
 				flag = false;
 				coincidencia = elemento;
 				break;
@@ -106,11 +110,11 @@ public class LibroDTO {
 		if (flag) {
 			try {
 				PreparedStatement statement = con.prepareStatement(
-						"UPDATE libro SET titulo=?, autor=?, editorial=?, anio_publicacion=?, genero=?, idioma=?, publico_objetivo=?, num_paginas=?, firmado=?, edicion_especial=?, tapa=?, saga=?, precio=?, stock=?, estado=? WHERE id_libro=?");
+						"UPDATE libro SET titulo=?, autor=?, editorial=?, fecha_publicacion=?, genero=?, idioma=?, publico_objetivo=?, num_paginas=?, firmado=?, edicion_especial=?, tapa=?, saga=?, precio=?, stock=?, estado=?, portada=? WHERE id_libro=?");
 				statement.setString(1, libro.getTitulo());
 				statement.setString(2, libro.getAutor());
 				statement.setString(3, libro.getEditorial());
-				statement.setString(4, libro.getAnioPublicacion());
+				statement.setDate(4, libro.getFechaPublicacion());
 				statement.setString(5, libro.getGenero());
 				statement.setString(6, libro.getIdioma());
 				statement.setString(7, libro.getPublicoObjetivo());
@@ -122,7 +126,8 @@ public class LibroDTO {
 				statement.setDouble(13, libro.getPrecio());
 				statement.setInt(14, libro.getStock());
 				statement.setBoolean(15, libro.getEstado());
-				statement.setInt(16, libro.getId_libro());
+				statement.setBytes(16, libro.getPortada());
+				statement.setInt(17, libro.getId_libro());
 
 				int filas = statement.executeUpdate();
 				if (filas > 0) {
@@ -159,7 +164,7 @@ public class LibroDTO {
 				String titulo = rs.getString("titulo");
 				String autor = rs.getString("autor");
 				String editorial = rs.getString("editorial");
-				String anio_publicacion = rs.getString("anio_publicacion");
+				Date fecha_publicacion = rs.getDate("fecha_publicacion");
 				String genero = rs.getString("genero");
 				String idioma = rs.getString("idioma");
 				String publico_objetivo = rs.getString("publico_objetivo");
@@ -171,9 +176,11 @@ public class LibroDTO {
 				double precio = rs.getDouble("precio");
 				int stock = rs.getInt("stock");
 				boolean estado = rs.getBoolean("estado");
+				byte[] portada = rs.getBytes("portada");
 
-				libros.add(new Libro(id_libro, titulo, autor, editorial, anio_publicacion, genero, idioma,
-						publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado));
+				libros.add(new Libro(id_libro, titulo, autor, editorial, fecha_publicacion, genero, idioma,
+						publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado,
+						portada));
 			}
 
 		} catch (Exception e) {
@@ -195,7 +202,8 @@ public class LibroDTO {
 		if (librosDisp == null) {
 			String[] librosArray = new String[libros.size()];
 			for (int i = 0; i < librosArray.length; i++) {
-				librosArray[i] = libros.get(i).getId_libro() + " - " + libros.get(i).getTitulo() + " (" + (libros.get(i).getEstado() == true ? "Activo" : "Inactivo") +")";
+				librosArray[i] = libros.get(i).getId_libro() + " - " + libros.get(i).getTitulo() + " ("
+						+ (libros.get(i).getEstado() == true ? "Activo" : "Inactivo") + ")";
 			}
 			String elegido = (String) JOptionPane.showInputDialog(null, "Elija un libro:", null, 0, null, librosArray,
 					librosArray[0]);
@@ -212,7 +220,7 @@ public class LibroDTO {
 					String titulo = rs.getString("titulo");
 					String autor = rs.getString("autor");
 					String editorial = rs.getString("editorial");
-					String anio_publicacion = rs.getString("anio_publicacion");
+					Date fecha_publicacion = rs.getDate("fecha_publicacion");
 					String genero = rs.getString("genero");
 					String idioma = rs.getString("idioma");
 					String publico_objetivo = rs.getString("publico_objetivo");
@@ -224,9 +232,11 @@ public class LibroDTO {
 					double precio = rs.getDouble("precio");
 					int stock = rs.getInt("stock");
 					boolean estado = rs.getBoolean("estado");
-					
-					libro = new Libro(id_libro, titulo, autor, editorial, anio_publicacion, genero, idioma,
-							publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado);
+					byte[] portada = rs.getBytes("portada");
+
+					libro = new Libro(id_libro, titulo, autor, editorial, fecha_publicacion, genero, idioma,
+							publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado,
+							portada);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -252,7 +262,7 @@ public class LibroDTO {
 					String titulo = rs.getString("titulo");
 					String autor = rs.getString("autor");
 					String editorial = rs.getString("editorial");
-					String anio_publicacion = rs.getString("anio_publicacion");
+					Date fecha_publicacion = rs.getDate("fecha_publicacion");
 					String genero = rs.getString("genero");
 					String idioma = rs.getString("idioma");
 					String publico_objetivo = rs.getString("publico_objetivo");
@@ -264,17 +274,18 @@ public class LibroDTO {
 					double precio = rs.getDouble("precio");
 					int stock = rs.getInt("stock");
 					boolean estado = rs.getBoolean("estado");
-					
-					libro = new Libro(id_libro, titulo, autor, editorial, anio_publicacion, genero, idioma,
-							publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado);
+					byte[] portada = rs.getBytes("portada");
+
+					libro = new Libro(id_libro, titulo, autor, editorial, fecha_publicacion, genero, idioma,
+							publico_objetivo, num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado,
+							portada);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return libro;
 		}
-		
-		
+
 	}
 
 //	/**
@@ -305,9 +316,10 @@ public class LibroDTO {
 //			}
 //		}
 //	}
-	
+
 	/**
-	 * Función para eliminar un libro de la base de datos (no elimina, edita el estado).
+	 * Función para eliminar un libro de la base de datos (no elimina, edita el
+	 * estado).
 	 */
 	public static void eliminarLibro() {
 		LinkedList<Libro> libros = mostrarLibros();
@@ -320,21 +332,22 @@ public class LibroDTO {
 					librosDisp.add(libro);
 				}
 			}
-			
+
 			if (librosDisp.isEmpty()) {
 				JOptionPane.showMessageDialog(null, "No hay libros disponibles para eliminar.");
 			} else {
-				
-				Libro seleccionado = LibroDTO.libroPorID(librosDisp);				
-				
+
+				Libro seleccionado = LibroDTO.libroPorID(librosDisp);
+
 				String confirmacion = Validaciones.menuSiNo("Seguro que desea eliminar el libro?\n"
 						+ seleccionado.toString() + "\nEsta acción es reversible", "Eliminar Libro", null);
 				if (confirmacion.equals("Sí")) {
 					try {
-						PreparedStatement statement = con.prepareStatement("UPDATE libro SET estado = ? WHERE id_libro = ?");
+						PreparedStatement statement = con
+								.prepareStatement("UPDATE libro SET estado = ? WHERE id_libro = ?");
 						statement.setBoolean(1, false);
 						statement.setInt(2, seleccionado.getId_libro());
-						
+
 						int filas = statement.executeUpdate();
 						if (filas > 0) {
 							JOptionPane.showMessageDialog(null, "Libro eliminado correctamente.");
@@ -348,93 +361,95 @@ public class LibroDTO {
 			}
 		}
 	}
-		
+
 	/**
 	 * funcion para traer todos los libros de la BD.
+	 * 
 	 * @return
 	 */
 	public static LinkedList<Libro> elegirLibros() {
 		boolean flag = false;
 		LinkedList<Libro> listaLibros = mostrarLibros();
 		LinkedList<Libro> listaLibrosDisponibles = new LinkedList<Libro>();
-		
+
 		for (Libro libro : listaLibros) {
 			if (libro.getEstado() != false && libro.getStock() > 0) {
 				flag = true;
 				listaLibrosDisponibles.add(libro);
 			}
 		}
-     
+
 		if (listaLibros.isEmpty()) {
 			return listaLibrosDisponibles;
 		} else if (flag) {
-			return listaLibrosDisponibles;				
+			return listaLibrosDisponibles;
 		} else {
-			return null;			
-		} 
+			return null;
+		}
 	}
-	
+
 	/**
 	 * funcion para traer un libro en especifico de la BD.
+	 * 
 	 * @param fkLibro
 	 * @return
 	 */
 	public static Libro verLibro(int fkLibro) {
 		Libro libro = null;
-		
-		try {
-	          PreparedStatement stmt = con.prepareStatement("SELECT * FROM libro WHERE id_libro=?");
-	          stmt.setInt(1, fkLibro);
-	          
-	          ResultSet rs = stmt.executeQuery();
 
-	          if (rs.next()) {
-	              int id_libro = rs.getInt("id_libro");
-	              String titulo = rs.getString("titulo");
-	              String autor = rs.getString("autor");
-	              String editorial = rs.getString("editorial");
-	              String anio = rs.getString("anio_publicacion");
-	              String genero = rs.getString("genero");
-	              String idioma = rs.getString("idioma");
-	              String publico_objetivo = rs.getString("publico_objetivo");
-	              int numPaginas = rs.getInt("num_paginas");
-	              boolean firmado = rs.getBoolean("firmado");
-	              boolean edicionEspecial = rs.getBoolean("edicion_especial");
-	              String materialTapa = rs.getString("tapa");
-	              boolean saga = rs.getBoolean("saga");
-	              double precio = rs.getDouble("precio");
-	              int stock = rs.getInt("stock");
-	              boolean estado = rs.getBoolean("estado");
-	              
-	              libro = new Libro(id_libro,titulo,autor,editorial,anio,genero,idioma,publico_objetivo,numPaginas,firmado,edicionEspecial,materialTapa,saga,precio,stock,estado);
-	          }
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM libro WHERE id_libro=?");
+			stmt.setInt(1, fkLibro);
+
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				int id_libro = rs.getInt("id_libro");
+				String titulo = rs.getString("titulo");
+				String autor = rs.getString("autor");
+				String editorial = rs.getString("editorial");
+				Date fecha_publicacion = rs.getDate("fecha_publicacion");
+				String genero = rs.getString("genero");
+				String idioma = rs.getString("idioma");
+				String publico_objetivo = rs.getString("publico_objetivo");
+				int numPaginas = rs.getInt("num_paginas");
+				boolean firmado = rs.getBoolean("firmado");
+				boolean edicionEspecial = rs.getBoolean("edicion_especial");
+				String materialTapa = rs.getString("tapa");
+				boolean saga = rs.getBoolean("saga");
+				double precio = rs.getDouble("precio");
+				int stock = rs.getInt("stock");
+				boolean estado = rs.getBoolean("estado");
+				byte[] portada = rs.getBytes("portada");
+
+				libro = new Libro(id_libro, titulo, autor, editorial, fecha_publicacion, genero, idioma,
+						publico_objetivo, numPaginas, firmado, edicionEspecial, materialTapa, saga, precio, stock,
+						estado, portada);
+			}
 		} catch (Exception e) {
 		}
-		
+
 		return libro;
 	}
-	
+
 	/**
 	 * funcion para actualizar el Stock de la BD.
+	 * 
 	 * @param carritoDetalle
 	 */
 	public static void actualizarStock(CarritoDetalle carritoDetalle) {
 		try {
-            PreparedStatement statement = con.prepareStatement(
-                "UPDATE Libro SET stock=? WHERE id_libro=?"
-            );
-            statement.setInt(1, carritoDetalle.getFkLibro().getStock());
-            statement.setInt(2, carritoDetalle.getFkLibro().getId_libro());
+			PreparedStatement statement = con.prepareStatement("UPDATE Libro SET stock=? WHERE id_libro=?");
+			statement.setInt(1, carritoDetalle.getFkLibro().getStock());
+			statement.setInt(2, carritoDetalle.getFkLibro().getId_libro());
 
-            int filas = statement.executeUpdate();
-            if (filas > 0) {
-                System.out.println("Libro editado correctamente.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			int filas = statement.executeUpdate();
+			if (filas > 0) {
+				System.out.println("Libro editado correctamente.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
-
-

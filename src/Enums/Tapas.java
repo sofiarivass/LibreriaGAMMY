@@ -1,5 +1,5 @@
 package Enums;
 
-public enum Tapa {
+public enum Tapas {
 	Dura, Blanda
 }

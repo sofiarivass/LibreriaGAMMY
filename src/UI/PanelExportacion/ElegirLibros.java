@@ -10,7 +10,11 @@ import BLL.Cliente;
 import BLL.Libro;
 import BLL.Usuario;
 import DLL.LibroDTO;
+import Enums.MetodoPago;
+import Enums.Sucursales;
+import Enums.TipoMoneda;
 import Repository.Validaciones;
+import UI.Main;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -27,6 +31,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import java.awt.Color;
+import java.awt.EventQueue;
 
 public class ElegirLibros extends JFrame {
 
@@ -36,9 +41,23 @@ public class ElegirLibros extends JFrame {
     private DefaultTableModel model;
     private JTextField textCantidad;
 
+    public static void main(String[] args) {
+    	EventQueue.invokeLater(new Runnable() {
+    		public void run() {
+    			try {
+    				ElegirLibros frame = new ElegirLibros(null,new Cliente(1,1,"","",""));
+    				frame.setVisible(true);
+    			} catch (Exception e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	});
+    }
+    
 	/**
 	 * Create the frame.
 	 */
+    
 	public ElegirLibros(Usuario user,Cliente cliente) {
 		LinkedList<CarritoDetalle> librosCarrito = new LinkedList<CarritoDetalle>();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -87,13 +106,13 @@ public class ElegirLibros extends JFrame {
 			selector.addItem("Libros No disponibles");
 		}
 		
-		JLabel lblselector = new JLabel("Seleccione los libros:");
-		lblselector.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		JLabel lblselector = new JLabel("Seleccionar Libro:");
+		lblselector.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblselector.setBounds(10, 200, 129, 13);
 		panel.add(lblselector);
 		
 		JLabel lblCantidad = new JLabel("Cantidad:");
-		lblCantidad.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblCantidad.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblCantidad.setBounds(213, 200, 62, 13);
 		panel.add(lblCantidad);
 		
@@ -106,8 +125,14 @@ public class ElegirLibros extends JFrame {
 		lblError.setForeground(Color.RED);
 		lblError.setBackground(new Color(255, 255, 255));
 		lblError.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
-		lblError.setBounds(10, 254, 360, 13);
+		lblError.setBounds(10, 249, 360, 13);
 		panel.add(lblError);
+		
+		JLabel lblErrorDestino = new JLabel("");
+		lblErrorDestino.setBackground(Color.RED);
+		lblErrorDestino.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+		lblErrorDestino.setBounds(499, 361, 146, 14);
+		panel.add(lblErrorDestino);
 		
 		JButton btnAceptar = new JButton("Agregar");
 		btnAceptar.addActionListener(new ActionListener() {
@@ -131,7 +156,7 @@ public class ElegirLibros extends JFrame {
 		panel.add(lblNewLabel);
 		
 		JButton btnEliminar = new JButton("Eliminar Libro");
-		btnEliminar.setBounds(516, 223, 129, 21);
+		btnEliminar.setBounds(516, 222, 129, 21);
 		panel.add(btnEliminar);
 		
 		JButton btnCancelarVenta = new JButton("Cancelar Venta");
@@ -145,11 +170,75 @@ public class ElegirLibros extends JFrame {
 		btnCancelarVenta.setBounds(10, 516, 129, 21);
 		panel.add(btnCancelarVenta);
 		
+		JLabel lblSubtitulo = new JLabel("Cargar Datos:");
+		lblSubtitulo.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblSubtitulo.setBounds(255, 264, 144, 25);
+		panel.add(lblSubtitulo);
+		
+		JLabel lblMetodoPago = new JLabel("Metodo de Pago:");
+		lblMetodoPago.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblMetodoPago.setBounds(10, 312, 118, 21);
+		panel.add(lblMetodoPago);
+		
+		JComboBox selectorPago = new JComboBox();
+		selectorPago.setBounds(10, 335, 103, 22);
+		selectorPago.addItem("Seleccionar");
+		for (MetodoPago pago : MetodoPago.values()) {
+			selectorPago.addItem(pago.name());
+		}
+		panel.add(selectorPago);
+		
+		JLabel lblTipoMoneda = new JLabel("Tipo de Moneda:");
+		lblTipoMoneda.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblTipoMoneda.setBounds(170, 312, 118, 21);
+		panel.add(lblTipoMoneda);
+		
+		JComboBox selectorMoneda = new JComboBox();
+		selectorMoneda.setBounds(170, 335, 103, 22);
+		selectorMoneda.addItem("Seleccionar");
+		for (TipoMoneda tipo : TipoMoneda.values()) {
+			selectorMoneda.addItem(tipo.name());
+		}
+		panel.add(selectorMoneda);
+		
+		JComboBox selectorOrigen = new JComboBox();
+		selectorOrigen.setBounds(334, 335, 103, 22);
+		selectorOrigen.addItem("Seleccionar");
+		for (Sucursales origen : Sucursales.values()) {
+			selectorOrigen.addItem(origen.name());
+		}
+		panel.add(selectorOrigen);
+		
+		JLabel lblOrigen = new JLabel("Origen:");
+		lblOrigen.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblOrigen.setBounds(334, 312, 62, 21);
+		panel.add(lblOrigen);
+		
+		JLabel lblDestino = new JLabel("Destino:");
+		lblDestino.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblDestino.setBounds(499, 312, 62, 21);
+		panel.add(lblDestino);
+		
+		JComboBox selectorDestino = new JComboBox();
+		selectorDestino.setBounds(499, 335, 103, 22);
+		selectorDestino.addItem("Seleccionar");
+		for (Sucursales destino : Sucursales.values()) {
+			selectorDestino.addItem(destino.name());
+		}
+		panel.add(selectorDestino);
+		
+		JButton btnRealizarVenta = new JButton("Realizar Venta");
+		btnRealizarVenta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnRealizarVenta.setBounds(527, 515, 118, 23);
+		panel.add(btnRealizarVenta);
+		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("New tab", null, panel_1, null);
 		panel_1.setLayout(null);
-		
-		
 		
 	}
 	// funciones
@@ -198,7 +287,7 @@ public class ElegirLibros extends JFrame {
 						}
 						
 						if (sinStock) {
-							lblError.setText("No tenemos Stock sufiente de " + nombreLibro);
+							lblError.setText("No tenemos Stock del libro: \"" + nombreLibro + "\"");
 						}
 						textCantidad.setText("");
 						selector.setSelectedItem("Selección");
@@ -237,7 +326,8 @@ public class ElegirLibros extends JFrame {
 							textCantidad.setText("");
 							selector.setSelectedItem("Selección");
 						} else {
-							lblError.setText("No tenemos Stock sufiente de " + nombreLibro);
+							lblError.setText("No tenemos Stock del libro: \"" + nombreLibro + "\"");
+//							lblError.setText("No tenemos Stock sufiente de " + nombreLibro);
 						}
 					}
 					librosElegidos(librosCarrito);
@@ -249,6 +339,4 @@ public class ElegirLibros extends JFrame {
 			lblError.setText("No puede dejar los campos Vacio!!");			
 		}
 	}
-	
-	
 }
