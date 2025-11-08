@@ -42,7 +42,7 @@ public class PanelGestionarInv extends JFrame {
 		JButton btnCargarLibros = new JButton("Cargar Libros");
 		btnCargarLibros.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CargarDatosLibro frame = new CargarDatosLibro(user);
+				CargarDatosLibro frame = new CargarDatosLibro(user, "crear", null);
 				frame.setVisible(true);
 				dispose();
 			}
@@ -51,7 +51,7 @@ public class PanelGestionarInv extends JFrame {
 		btnCargarLibros.setBounds(20, 79, 165, 32);
 		contentPane.add(btnCargarLibros);
 
-		JButton btnModificarLibros = new JButton("Gestionar Libros");
+		JButton btnGestionarLibros = new JButton("Gestionar Libros");
 		btnCargarLibros.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GestionarLibros frame = new GestionarLibros(user);
@@ -59,9 +59,9 @@ public class PanelGestionarInv extends JFrame {
 				dispose();
 			}
 		});
-		btnModificarLibros.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnModificarLibros.setBounds(243, 79, 165, 32);
-		contentPane.add(btnModificarLibros);
+		btnGestionarLibros.setFont(new Font("Tahoma", Font.BOLD, 10));
+		btnGestionarLibros.setBounds(243, 79, 165, 32);
+		contentPane.add(btnGestionarLibros);
 
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {

@@ -64,8 +64,8 @@ public class MenuVendedorInternacional {
 							GestionarInventario.values(), GestionarInventario.values());
 					switch (opcionVI3) {
 					case 0: // cargar productos
-						CargarDatosLibro frame = new CargarDatosLibro(user);
-						frame.setVisible(true);
+//						CargarDatosLibro frame = new CargarDatosLibro(user);
+//						frame.setVisible(true);
 						break;
 					case 1: // modificar productos
 						Libro.editarLibro();

@@ -1,8 +1,5 @@
 package UI.PanelInventario;
 
-import java.awt.EventQueue;
-
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,7 +14,6 @@ import DLL.LibroDTO;
 import Enums.*;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -25,7 +21,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.sql.Blob;
 import java.sql.Date;
 import java.util.Calendar;
 
@@ -43,26 +38,10 @@ public class CargarDatosLibro extends JFrame {
 	private JTextField txtTitulo, txtAutor, txtEditorial, txtPaginas, txtPrecio, txtStock;
 	private byte[] portada;
 
-//	/**
-//	 * Launch the application.
-//	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					CargarDatosLibro frame = new CargarDatosLibro();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
 	/**
 	 * Create the frame.
 	 */
-	public CargarDatosLibro(Usuario user) {
+	public CargarDatosLibro(Usuario user, String funcion, Libro libro) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 581, 705);
 		contentPane = new JPanel();
@@ -70,72 +49,36 @@ public class CargarDatosLibro extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblCargarNuevoLibro = new JLabel("Cargar Nuevo Libro al Sistema");
-		lblCargarNuevoLibro.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCargarNuevoLibro.setBounds(118, 28, 355, 25);
-		lblCargarNuevoLibro.setFont(new Font("Tahoma", Font.BOLD, 20));
-		contentPane.add(lblCargarNuevoLibro);
+		JLabel lblCargarDatos = new JLabel();
+		lblCargarDatos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCargarDatos.setBounds(118, 28, 355, 25);
+		lblCargarDatos.setFont(new Font("Tahoma", Font.BOLD, 20));
+		contentPane.add(lblCargarDatos);
+		if (funcion.equals("crear")) {
+			lblCargarDatos.setText("Cargar Nuevo Libro al Sistema");
+		} else {
+			lblCargarDatos.setText("Editar Datos de un Libro");
+		}
 
-		txtTitulo = new JTextField();
-		txtTitulo.setColumns(10);
-		txtTitulo.setBounds(39, 108, 217, 30);
-		contentPane.add(txtTitulo);
-
-		JLabel lblTtulo = new JLabel("Título");
-		lblTtulo.setBounds(39, 92, 46, 14);
-		contentPane.add(lblTtulo);
-
-		JLabel lblAutor = new JLabel("Autor");
-		lblAutor.setBounds(39, 150, 46, 14);
-		contentPane.add(lblAutor);
-
-		txtAutor = new JTextField();
-		txtAutor.setColumns(10);
-		txtAutor.setBounds(39, 166, 217, 30);
-		contentPane.add(txtAutor);
+		JLabel lblTitulo = new JLabel("Título");
+		lblTitulo.setBounds(39, 92, 46, 14);
+		contentPane.add(lblTitulo);
 
 		JLabel lblEditorial = new JLabel("Editorial");
-		lblEditorial.setBounds(39, 206, 46, 14);
+		lblEditorial.setBounds(39, 151, 46, 14);
 		contentPane.add(lblEditorial);
-
-		txtEditorial = new JTextField();
-		txtEditorial.setColumns(10);
-		txtEditorial.setBounds(39, 222, 217, 30);
-		contentPane.add(txtEditorial);
+		
+		JLabel lblAutor = new JLabel("Autor");
+		lblAutor.setBounds(39, 207, 46, 14);
+		contentPane.add(lblAutor);
 
 		JLabel lblFecha = new JLabel("Fecha de publicación (opcional)");
 		lblFecha.setBounds(39, 262, 191, 14);
 		contentPane.add(lblFecha);
 
-		JDateChooser txtFecha = new JDateChooser();
-		txtFecha.setDateFormatString("dd/MM/yyyy");
-		txtFecha.setBounds(39, 279, 217, 30);
-
-		Calendar hoy = Calendar.getInstance();
-		txtFecha.setMaxSelectableDate(hoy.getTime());
-//		txtFecha.getCalendarButton().addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//			}
-//		});
-		contentPane.add(txtFecha);
-
-		JComboBox comboBoxGenero = new JComboBox();
-		comboBoxGenero.setBounds(308, 107, 217, 30);
-		for (Generos genero : Generos.values()) {
-			comboBoxGenero.addItem(genero.name());
-		}
-		contentPane.add(comboBoxGenero);
-
 		JLabel lblGenero = new JLabel("Género");
 		lblGenero.setBounds(309, 92, 41, 14);
 		contentPane.add(lblGenero);
-
-		JComboBox comboBoxIdioma = new JComboBox();
-		comboBoxIdioma.setBounds(308, 166, 217, 30);
-		for (Idiomas idioma : Idiomas.values()) {
-			comboBoxIdioma.addItem(idioma.name());
-		}
-		contentPane.add(comboBoxIdioma);
 
 		JLabel lblIdioma = new JLabel("Idioma");
 		lblIdioma.setBounds(310, 151, 41, 14);
@@ -145,63 +88,22 @@ public class CargarDatosLibro extends JFrame {
 		lblPublico.setBounds(310, 207, 144, 14);
 		contentPane.add(lblPublico);
 
-		JComboBox comboBoxPublico = new JComboBox();
-		comboBoxPublico.setBounds(308, 222, 217, 30);
-		for (Publico publico : Publico.values()) {
-			comboBoxPublico.addItem(publico.name());
-		}
-		contentPane.add(comboBoxPublico);
-
 		JLabel lblPaginas = new JLabel("Cantidad de páginas");
 		lblPaginas.setBounds(39, 319, 172, 14);
 		contentPane.add(lblPaginas);
 
-		txtPaginas = new JTextField();
-		txtPaginas.setColumns(10);
-		txtPaginas.setBounds(39, 335, 217, 30);
-		contentPane.add(txtPaginas);
-
-		JCheckBox chckbxFirmado = new JCheckBox("¿Libro firmado?");
-		chckbxFirmado.setBounds(311, 334, 162, 20);
-		contentPane.add(chckbxFirmado);
-
-		JCheckBox chckbxEdicion = new JCheckBox("¿Edición especial?");
-		chckbxEdicion.setBounds(311, 385, 162, 20);
-		contentPane.add(chckbxEdicion);
-
 		JLabel lblTapa = new JLabel("Tipo de tapa");
-		lblTapa.setBounds(310, 264, 87, 14);
+		lblTapa.setBounds(310, 262, 87, 14);
 		contentPane.add(lblTapa);
-
-		JComboBox comboBoxTapa = new JComboBox();
-		comboBoxTapa.setBounds(308, 279, 217, 30);
-		for (Tapas tapa : Tapas.values()) {
-			comboBoxTapa.addItem(tapa.name());
-		}
-		contentPane.add(comboBoxTapa);
-
-		JCheckBox chckbxSaga = new JCheckBox("¿Pertenece a una saga?");
-		chckbxSaga.setBounds(311, 360, 200, 20);
-		contentPane.add(chckbxSaga);
 
 		JLabel lblPrecio = new JLabel("Precio");
 		lblPrecio.setBounds(143, 456, 46, 14);
 		contentPane.add(lblPrecio);
 
-		txtPrecio = new JTextField();
-		txtPrecio.setColumns(10);
-		txtPrecio.setBounds(143, 472, 87, 30);
-		contentPane.add(txtPrecio);
-
 		JLabel lblPrecio_1 = new JLabel("$");
 		lblPrecio_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblPrecio_1.setBounds(129, 473, 14, 29);
 		contentPane.add(lblPrecio_1);
-
-		txtStock = new JTextField();
-		txtStock.setColumns(10);
-		txtStock.setBounds(289, 472, 87, 30);
-		contentPane.add(txtStock);
 
 		JLabel lblStock_1 = new JLabel("unidades");
 		lblStock_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -218,6 +120,80 @@ public class CargarDatosLibro extends JFrame {
 		lblError.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
 		lblError.setBounds(34, 545, 499, 43);
 		contentPane.add(lblError);
+
+		txtTitulo = new JTextField();
+		txtTitulo.setColumns(10);
+		txtTitulo.setBounds(39, 107, 217, 30);
+		contentPane.add(txtTitulo);
+
+		txtEditorial = new JTextField();
+		txtEditorial.setColumns(10);
+		txtEditorial.setBounds(39, 166, 217, 30);
+		contentPane.add(txtEditorial);
+		
+		txtAutor = new JTextField();
+		txtAutor.setColumns(10);
+		txtAutor.setBounds(39, 222, 217, 30);
+		contentPane.add(txtAutor);
+
+		JDateChooser txtFecha = new JDateChooser();
+		txtFecha.setDateFormatString("dd/MM/yyyy");
+		txtFecha.setBounds(39, 279, 217, 30);
+
+		txtPaginas = new JTextField();
+		txtPaginas.setColumns(10);
+		txtPaginas.setBounds(39, 335, 217, 30);
+		contentPane.add(txtPaginas);
+
+		JComboBox comboBoxGenero = new JComboBox();
+		comboBoxGenero.setBounds(308, 107, 217, 30);
+		for (Generos genero : Generos.values()) {
+			comboBoxGenero.addItem(genero.name());
+		}
+		contentPane.add(comboBoxGenero);
+
+		JComboBox comboBoxIdioma = new JComboBox();
+		comboBoxIdioma.setBounds(308, 166, 217, 30);
+		for (Idiomas idioma : Idiomas.values()) {
+			comboBoxIdioma.addItem(idioma.name());
+		}
+		contentPane.add(comboBoxIdioma);
+
+		JComboBox comboBoxPublico = new JComboBox();
+		comboBoxPublico.setBounds(308, 222, 217, 30);
+		for (Publico publico : Publico.values()) {
+			comboBoxPublico.addItem(publico.name());
+		}
+		contentPane.add(comboBoxPublico);
+
+		JComboBox comboBoxTapa = new JComboBox();
+		comboBoxTapa.setBounds(308, 279, 217, 30);
+		for (Tapas tapa : Tapas.values()) {
+			comboBoxTapa.addItem(tapa.name());
+		}
+		contentPane.add(comboBoxTapa);
+
+		JCheckBox chckbxFirmado = new JCheckBox("¿Libro firmado?");
+		chckbxFirmado.setBounds(311, 334, 162, 20);
+		contentPane.add(chckbxFirmado);
+
+		JCheckBox chckbxSaga = new JCheckBox("¿Pertenece a una saga?");
+		chckbxSaga.setBounds(311, 360, 200, 20);
+		contentPane.add(chckbxSaga);
+
+		JCheckBox chckbxEdicion = new JCheckBox("¿Edición especial?");
+		chckbxEdicion.setBounds(311, 385, 162, 20);
+		contentPane.add(chckbxEdicion);
+
+		txtPrecio = new JTextField();
+		txtPrecio.setColumns(10);
+		txtPrecio.setBounds(143, 472, 87, 30);
+		contentPane.add(txtPrecio);
+
+		txtStock = new JTextField();
+		txtStock.setColumns(10);
+		txtStock.setBounds(289, 472, 87, 30);
+		contentPane.add(txtStock);
 
 		JButton btnCargarPortada = new JButton("Cargar portada (opcional)");
 		btnCargarPortada.addActionListener(new ActionListener() {
@@ -255,6 +231,26 @@ public class CargarDatosLibro extends JFrame {
 		btnCargarPortada.setBackground(new Color(192, 192, 192));
 		btnCargarPortada.setBounds(49, 380, 197, 25);
 		contentPane.add(btnCargarPortada);
+
+		Calendar hoy = Calendar.getInstance();
+		txtFecha.setMaxSelectableDate(hoy.getTime());
+		contentPane.add(txtFecha);
+
+		if (funcion.equals("editar")) {
+			txtTitulo.setText(libro.getTitulo());
+			txtAutor.setText(libro.getAutor());
+			txtEditorial.setText(libro.getEditorial());
+			txtFecha.setDate(libro.getFechaPublicacion());
+			//txtPaginas.setText(libro.getNumPaginas());
+			//portada
+			comboBoxGenero.setSelectedItem(libro.getGenero());
+			comboBoxIdioma.setSelectedItem(libro.getIdioma());
+			comboBoxPublico.setSelectedItem(libro.getPublicoObjetivo());
+			comboBoxTapa.setSelectedItem(libro.getTapa());
+			chckbxFirmado.setSelected(libro.getFirmado());
+			chckbxSaga.setSelected(libro.getSaga());
+			chckbxEdicion.setSelected(libro.getEdicionEspecial());
+		}
 
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
