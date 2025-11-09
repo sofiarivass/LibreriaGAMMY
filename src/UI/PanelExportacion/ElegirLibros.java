@@ -4,33 +4,37 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
+import BLL.Carrito;
 import BLL.CarritoDetalle;
 import BLL.Cliente;
+import BLL.Exportacion;
 import BLL.Libro;
+import BLL.TipoVenta;
 import BLL.Usuario;
 import DLL.LibroDTO;
+import DLL.VentasExportDTO;
 import Enums.MetodoPago;
 import Enums.Sucursales;
 import Enums.TipoMoneda;
 import Repository.Validaciones;
 import UI.Main;
-
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
-
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 
 public class ElegirLibros extends JFrame {
@@ -40,6 +44,7 @@ public class ElegirLibros extends JFrame {
 	private JTable table;
     private DefaultTableModel model;
     private JTextField textCantidad;
+    private CarritoDetalle carritoSeleccionado;
 
     public static void main(String[] args) {
     	EventQueue.invokeLater(new Runnable() {
@@ -113,7 +118,7 @@ public class ElegirLibros extends JFrame {
 		
 		JLabel lblCantidad = new JLabel("Cantidad:");
 		lblCantidad.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblCantidad.setBounds(213, 200, 62, 13);
+		lblCantidad.setBounds(213, 200, 75, 13);
 		panel.add(lblCantidad);
 		
 		textCantidad = new JTextField();
@@ -123,21 +128,31 @@ public class ElegirLibros extends JFrame {
 		
 		JLabel lblError = new JLabel("");
 		lblError.setForeground(Color.RED);
-		lblError.setBackground(new Color(255, 255, 255));
 		lblError.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
 		lblError.setBounds(10, 249, 360, 13);
 		panel.add(lblError);
 		
+		JLabel lblErrorOrigen = new JLabel("");
+		lblErrorOrigen.setForeground(Color.RED);
+		lblErrorOrigen.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+		lblErrorOrigen.setBounds(334, 367, 151, 14);
+		panel.add(lblErrorOrigen);
+		
 		JLabel lblErrorDestino = new JLabel("");
-		lblErrorDestino.setBackground(Color.RED);
+		lblErrorDestino.setForeground(Color.RED);
 		lblErrorDestino.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
-		lblErrorDestino.setBounds(499, 361, 146, 14);
+		lblErrorDestino.setBounds(494, 367, 151, 14);
 		panel.add(lblErrorDestino);
+		
+		JLabel lblMensaje = new JLabel("");
+		lblMensaje.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+		lblMensaje.setForeground(Color.RED);
+		lblMensaje.setBounds(448, 184, 197, 13);
+		panel.add(lblMensaje);
 		
 		JButton btnAceptar = new JButton("Agregar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// ejecutamos la funcion para cargar el libro seleccionado (tiene validaciones)
 				cargarLibro(selector,lblError,librosCarrito,listaLibros);
 			}
 		});
@@ -150,12 +165,47 @@ public class ElegirLibros extends JFrame {
 		scrollPane.setBounds(10, 37, 635, 141);
 		panel.add(scrollPane);
 		
-		JLabel lblNewLabel = new JLabel("Libros en el Carrito:");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblNewLabel.setBounds(10, 14, 129, 13);
-		panel.add(lblNewLabel);
+		// evento al hacer click en algun libro cargado en la tabla
+		table.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+            	lblMensaje.setText("");
+                int row = table.getSelectedRow();
+                if (row != -1) {
+                	
+                	// buscar dentro del carrito el libro que tenga el mismo id que el de la tabla
+                	
+                	for (CarritoDetalle libro : librosCarrito) {    // esto es la fila del id
+						if (libro.getFkLibro().getId_libro() == (int)model.getValueAt(row, 0)) {
+							//cargamos el objeto carritoSeleccionado
+							carritoSeleccionado = libro; //carrito
+							break;
+						}
+					}
+                	
+                }
+            }
+        });
+		
+		JLabel lblSubtituloLibrosCarrito = new JLabel("Libros en el Carrito:");
+		lblSubtituloLibrosCarrito.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblSubtituloLibrosCarrito.setBounds(10, 14, 129, 13);
+		panel.add(lblSubtituloLibrosCarrito);
 		
 		JButton btnEliminar = new JButton("Eliminar Libro");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (carritoSeleccionado != null) {
+					librosCarrito.remove(carritoSeleccionado);
+					// actualizamos la lista
+					librosElegidos(librosCarrito);
+					lblMensaje.setText("Libro eliminado Correctamente!!");
+					lblMensaje.setForeground(new Color(20,122,5));
+				} else {
+					lblMensaje.setText("No selecciono un Libro!!");
+				}
+				
+			}
+		});
 		btnEliminar.setBounds(516, 222, 129, 21);
 		panel.add(btnEliminar);
 		
@@ -227,19 +277,102 @@ public class ElegirLibros extends JFrame {
 		}
 		panel.add(selectorDestino);
 		
+		// acciones que escuchan cuando se activan los selectores
+		selectorOrigen.addActionListener(e -> {
+			if (selectorDestino.getSelectedItem() != "Seleccionar") {
+				if (selectorDestino.getSelectedItem().equals(selectorOrigen.getSelectedItem())) {
+					lblErrorOrigen.setText("Error elija otra Sucursal!!");
+				} else {
+					lblErrorOrigen.setText("");					
+				}
+			}
+		});
+		
+		selectorDestino.addActionListener(e -> {
+			if (selectorOrigen.getSelectedItem() != "Seleccionar") {
+				if (selectorOrigen.getSelectedItem().equals(selectorDestino.getSelectedItem())) {
+					lblErrorDestino.setText("Error elija otra Sucursal!!");
+				} else {
+					lblErrorDestino.setText("");					
+				}
+			}
+		});
+		
 		JButton btnRealizarVenta = new JButton("Realizar Venta");
 		btnRealizarVenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				tabbedPane.setSelectedIndex(1);
 			}
 		});
 		btnRealizarVenta.setBounds(527, 515, 118, 23);
 		panel.add(btnRealizarVenta);
 		
-		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("New tab", null, panel_1, null);
-		panel_1.setLayout(null);
+		JPanel panel_2 = new JPanel();
+		tabbedPane.addTab("Detalles", null, panel_2, null);
+		panel_2.setLayout(null);
 		
+		JLabel lblTituloDetalles = new JLabel("Detalles de la Venta");
+		lblTituloDetalles.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblTituloDetalles.setBounds(248, 25, 159, 25);
+		panel_2.add(lblTituloDetalles);
+		
+		JLabel lblLibros = new JLabel();
+		lblLibros.setBounds(10, 57, 635, 247);
+		panel_2.add(lblLibros);
+		
+		btnRealizarVenta.addActionListener(e ->{
+			lblLibros.setText(mostrarDetalles(librosCarrito));
+			
+			JButton btnCancelar = new JButton("Cancelar Venta");
+			btnCancelar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					PanelGestionarExport gestionExport = new PanelGestionarExport(user);
+					gestionExport.setVisible(true);
+					dispose();
+				}
+			});
+			btnCancelar.setBounds(10, 516, 103, 21);
+			panel_2.add(btnCancelar);
+			
+			JLabel lblVentaMensaje = new JLabel("");
+			lblVentaMensaje.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
+			lblVentaMensaje.setBounds(76, 392, 503, 42);
+			panel_2.add(lblVentaMensaje);
+			
+			JButton btnConfirmarVenta = new JButton("Confirmar Venta");
+			btnConfirmarVenta.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					LocalDate fechaVenta = LocalDate.now();
+					TipoVenta fkTipoVenta = null;
+					Carrito fkCarrito = null;
+					Usuario fkUsuario = null;
+					double totalVenta = totalVentaLibros(librosCarrito);
+					String []estados = {"completada", "modificada", "anulada"};
+					String []estadoEnvios = {"en preparación", "en camino", "Entregado"};
+					if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
+						fkTipoVenta = new TipoVenta(2,"Mayorista");					
+					}
+					String estado = estados[0];
+					String estadoEnvio = estadoEnvios[0];
+					
+					fkCarrito = Carrito.cargarCarrito(fechaVenta, cliente);
+					CarritoDetalle.cargarDetalle(librosCarrito,fkCarrito);
+					fkUsuario = user;
+					
+					Exportacion venta = new Exportacion(totalVenta,fechaVenta,(String)selectorPago.getSelectedItem(),(String)selectorMoneda.getSelectedItem(),estado,fkTipoVenta,fkCarrito,fkUsuario,(String)selectorOrigen.getSelectedItem(),(String)selectorDestino.getSelectedItem(),estadoEnvio);
+					
+					Libro.actualizarStock(librosCarrito);
+					
+					if (VentasExportDTO.nuevaVentaExportJframe(venta, null)) {
+						lblVentaMensaje.setText("Venta Realizada con Exito!!");
+						lblVentaMensaje.setForeground(new Color(20,128,5));
+					}
+				}
+			});
+			btnConfirmarVenta.setBounds(524, 516, 121, 21);
+			panel_2.add(btnConfirmarVenta);
+			
+		});
 	}
 	// funciones
 	public void librosElegidos(LinkedList<CarritoDetalle> lista) {
@@ -250,10 +383,10 @@ public class ElegirLibros extends JFrame {
 		model.setRowCount(0);
 		for (CarritoDetalle L : libros) {
 			model.addRow(new Object[] {
-					L.getFkLibro().getId_libro(),
-					L.getFkLibro().getTitulo(),
-					L.getFkLibro().getPrecio(),
-					L.getCantidad()
+					L.getFkLibro().getId_libro(), //id
+					L.getFkLibro().getTitulo(),	  //titulo	
+					L.getFkLibro().getPrecio(),	  //precio
+					L.getCantidad()				  //cantidad
 			});
 		}
 	}
@@ -327,7 +460,6 @@ public class ElegirLibros extends JFrame {
 							selector.setSelectedItem("Selección");
 						} else {
 							lblError.setText("No tenemos Stock del libro: \"" + nombreLibro + "\"");
-//							lblError.setText("No tenemos Stock sufiente de " + nombreLibro);
 						}
 					}
 					librosElegidos(librosCarrito);
@@ -338,5 +470,30 @@ public class ElegirLibros extends JFrame {
 		} else {
 			lblError.setText("No puede dejar los campos Vacio!!");			
 		}
+	}
+	
+	public String mostrarDetalles(LinkedList<CarritoDetalle> lista) {
+		String detalles= "<html>Libros:<br>";
+		int totalPago = 0;
+		int cant = 0;
+		
+		for (CarritoDetalle carrito : lista) {
+			totalPago = (int) (totalPago + (carrito.getCantidad()*carrito.getFkLibro().getPrecio()));
+			cant = cant + carrito.getCantidad();
+			detalles = detalles + "- " + carrito.getFkLibro().getTitulo() 
+					+ ", cantidad: " + carrito.getCantidad()
+					+ " unidades, precio: $" + carrito.getFkLibro().getPrecio() + "<br>";
+		}
+		
+		detalles = detalles + "<br>Total de Libros: " + cant;
+		return detalles = detalles + "<br>Total a Pagar: $" + totalPago + "<br></html>";
+	}
+	
+	public double totalVentaLibros(LinkedList<CarritoDetalle> lista) {
+		double totalPago = 0;
+		for (CarritoDetalle carrito : lista) {
+			totalPago = totalPago + (carrito.getCantidad()*carrito.getFkLibro().getPrecio());
+		}
+		return totalPago;
 	}
 }
