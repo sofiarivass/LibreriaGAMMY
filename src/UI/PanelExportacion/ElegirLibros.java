@@ -398,7 +398,7 @@ public class ElegirLibros extends JFrame {
 		boolean cantidad;
 		
 		if (texto != true && texto2 != true) {
-			cantidad = Validaciones.validarIntJframe(textCantidad.getText());
+			cantidad = false; //VALIDACION
 			if (cantidad != true) {
 				if (nombreLibro.equalsIgnoreCase("selección")) {
 					lblError.setText("Elijá un Libro!!");
