@@ -27,7 +27,7 @@ public class InfoLibro extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public InfoLibro(Usuario user, Libro libro) {
+	public InfoLibro(Usuario user, Libro libro, String funcion) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 660, 725);
 		contentPane = new JPanel();
@@ -45,13 +45,15 @@ public class InfoLibro extends JFrame {
 		contentPane.setLayout(null);
 
 		contentPane.add(lblPortada);
-
-		JLabel lblExito = new JLabel("Libro creado exitosamente!");
-		lblExito.setHorizontalAlignment(SwingConstants.CENTER);
-		lblExito.setForeground(new Color(0, 128, 0));
-		lblExito.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
-		lblExito.setBounds(147, 13, 352, 32);
-		contentPane.add(lblExito);
+		
+		if(funcion.equals("crear")) {			
+			JLabel lblExito = new JLabel("Libro creado exitosamente!");
+			lblExito.setHorizontalAlignment(SwingConstants.CENTER);
+			lblExito.setForeground(new Color(0, 128, 0));
+			lblExito.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
+			lblExito.setBounds(147, 13, 352, 32);
+			contentPane.add(lblExito);
+		}
 
 		JLabel lblID = new JLabel();
 		lblID.setHorizontalAlignment(SwingConstants.CENTER);
@@ -172,7 +174,7 @@ public class InfoLibro extends JFrame {
 		JButton btnCancelar = new JButton("Volver");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PanelGestionarInv frame = new PanelGestionarInv(user);
+				GestionarLibros frame = new GestionarLibros(user);
 				frame.setVisible(true);
 				dispose();
 			}

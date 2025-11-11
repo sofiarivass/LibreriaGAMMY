@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import BLL.Usuario;
 import UI.PanelExportacion.PanelGestionarExport;
+import UI.PanelInventario.GestionarLibros;
 import UI.PanelInventario.PanelGestionarInv;
 
 import javax.swing.JLabel;
@@ -63,7 +64,7 @@ public class PanelVendedorInternacional extends JFrame {
 		JButton btnGestionarInventario = new JButton("Gestionar Inventario");
 		btnGestionarInventario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PanelGestionarInv frame = new PanelGestionarInv(user);
+				GestionarLibros frame = new GestionarLibros(user);
 				frame.setVisible(true);
 				dispose();
 			}

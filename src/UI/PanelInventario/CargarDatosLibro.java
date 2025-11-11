@@ -241,8 +241,8 @@ public class CargarDatosLibro extends JFrame {
 			txtAutor.setText(libro.getAutor());
 			txtEditorial.setText(libro.getEditorial());
 			txtFecha.setDate(libro.getFechaPublicacion());
-			//txtPaginas.setText(libro.getNumPaginas());
-			//portada
+//			txtPaginas.setText(libro.getNumPaginas());
+			// portada
 			comboBoxGenero.setSelectedItem(libro.getGenero());
 			comboBoxIdioma.setSelectedItem(libro.getIdioma());
 			comboBoxPublico.setSelectedItem(libro.getPublicoObjetivo());
@@ -250,6 +250,8 @@ public class CargarDatosLibro extends JFrame {
 			chckbxFirmado.setSelected(libro.getFirmado());
 			chckbxSaga.setSelected(libro.getSaga());
 			chckbxEdicion.setSelected(libro.getEdicionEspecial());
+//			txtPrecio.setText(libro.getPrecio());
+//			txtStock.setText(libro.getStock());
 		}
 
 		JButton btnGuardar = new JButton("Guardar");
@@ -265,7 +267,7 @@ public class CargarDatosLibro extends JFrame {
 				double precio;
 				boolean firmado, edicionEspecial, saga, estado;
 
-				Libro libro;
+
 
 				tituloV = Repository.Validaciones.validarVacioJframe(txtTitulo.getText());
 				editorialV = Repository.Validaciones.validarVacioJframe(txtEditorial.getText());
@@ -329,18 +331,31 @@ public class CargarDatosLibro extends JFrame {
 										fechaPublicacion = new Date(selectedDate.getTime());
 									}
 
-									libro = new Libro(titulo, autor, editorial, fechaPublicacion, genero, idioma,
+									Libro libroNuevo = new Libro(titulo, autor, editorial, fechaPublicacion, genero, idioma,
 											publicoObjetivo, numPaginas, firmado, edicionEspecial, tapa, saga, precio,
 											stock, true, portada);
-
-									boolean coincidencia = LibroDTO.agregarLibro(libro);
-									if (coincidencia == false) {
-										lblError.setText("Ese libro ya está cargado en el sistema");
+									
+									if (funcion.equals("crear")) {
+										boolean coincidencia = LibroDTO.agregarLibro(libroNuevo);
+										if (coincidencia == false) {
+											lblError.setText("Ese libro ya está cargado en el sistema");
+										} else {
+											System.out.println("todo ok");
+											InfoLibro frame = new InfoLibro(user, libroNuevo, "crear");
+											frame.setVisible(true);
+											dispose();
+										}
 									} else {
-										System.out.println("todo ok");
-										InfoLibro frame = new InfoLibro(user, libro);
-										frame.setVisible(true);
-										dispose();
+										libroNuevo.setId_libro(libro.getId_libro());
+										boolean coincidencia = LibroDTO.editarLibro(libroNuevo);
+										if (coincidencia == false) {
+											lblError.setText("Ese libro ya está cargado en el sistema");
+										} else {
+											System.out.println("todo ok");
+											InfoLibro frame = new InfoLibro(user, libroNuevo, "");
+											frame.setVisible(true);
+											dispose();
+										}
 									}
 
 								}
@@ -357,7 +372,7 @@ public class CargarDatosLibro extends JFrame {
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PanelGestionarInv frame = new PanelGestionarInv(user);
+				GestionarLibros frame = new GestionarLibros(user);
 				frame.setVisible(true);
 				dispose();
 			}

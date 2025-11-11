@@ -108,10 +108,11 @@ public class LibroDTO {
 		boolean flag = true;
 		Libro coincidencia = null;
 		for (Libro elemento : LibroDTO.mostrarLibros()) {
+			System.out.println("Comparando elemento.id=" + elemento.getId_libro() + " con libro.id=" + libro.getId_libro());
 			if (elemento.getTitulo().equals(libro.getTitulo()) && elemento.getAutor().equals(libro.getAutor())
 					&& elemento.getEditorial().equals(libro.getEditorial())
-					&& elemento.getIdioma().equals(libro.getIdioma())
-					&& elemento.getId_libro() != libro.getId_libro()) {
+					&& elemento.getIdioma().equals(libro.getIdioma()) && elemento.getTapa().equals(libro.getTapa())
+					&& elemento.getFirmado() == libro.getFirmado() && elemento.getId_libro() != libro.getId_libro()) {
 				flag = false;
 				coincidencia = elemento;
 				break;
@@ -141,19 +142,19 @@ public class LibroDTO {
 
 				int filas = statement.executeUpdate();
 				if (filas > 0) {
-					JOptionPane.showMessageDialog(null, "Libro editado correctamente:\n" + libro.toString());
+					System.out.println("Libro editado correctamente");
 					return true;
 				} else {
+					System.out.println("1");
 					return false;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				System.out.println("2");
 				return false;
 			}
 		} else {
-			JOptionPane.showMessageDialog(null,
-					"ERROR! Ya hay un libro con las mismas carácteristicas cargado en el sistema:\n"
-							+ coincidencia.toString());
+			System.out.println("Ya hay un libro con las mismas caracteristicas cargado en el sistema: " + coincidencia.toString());
 			return false;
 		}
 	}
@@ -197,6 +198,42 @@ public class LibroDTO {
 			e.printStackTrace();
 		}
 		return libros;
+	}
+
+	public static Libro libroPorID(int id) {
+		Libro libro = null;
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM libro WHERE id_libro = ?");
+			stmt.setInt(1, id);
+
+			// executequery se utiliza cuando no hay cambios en la bdd
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				String titulo = rs.getString("titulo");
+				String autor = rs.getString("autor");
+				String editorial = rs.getString("editorial");
+				Date fecha_publicacion = rs.getDate("fecha_publicacion");
+				String genero = rs.getString("genero");
+				String idioma = rs.getString("idioma");
+				String publico_objetivo = rs.getString("publico_objetivo");
+				int num_paginas = rs.getInt("num_paginas");
+				boolean firmado = rs.getBoolean("firmado");
+				boolean edicion_especial = rs.getBoolean("edicion_especial");
+				String tapa = rs.getString("tapa");
+				boolean saga = rs.getBoolean("saga");
+				double precio = rs.getDouble("precio");
+				int stock = rs.getInt("stock");
+				boolean estado = rs.getBoolean("estado");
+				byte[] portada = rs.getBytes("portada");
+
+				libro = new Libro(id, titulo, autor, editorial, fecha_publicacion, genero, idioma, publico_objetivo,
+						num_paginas, firmado, edicion_especial, tapa, saga, precio, stock, estado, portada);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return libro;
 	}
 
 	/**
@@ -370,6 +407,37 @@ public class LibroDTO {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Función para eliminar un libro de la base de datos (no elimina, edita el
+	 * estado). JFRAME
+	 */
+	public static String eliminarLibroJFrame(Libro libro) {
+		boolean nuevoEstado;
+		String texto;
+		if (libro.getEstado() == true) {
+			nuevoEstado = false;
+			texto = "El libro fue dado de baja correctamente";
+		} else {
+			nuevoEstado = true;
+			texto = "El libro fue dado de alta correctamente";
+		}
+
+		try {
+			PreparedStatement statement = con.prepareStatement("UPDATE libro SET estado = ? WHERE id_libro = ?");
+			statement.setBoolean(1, nuevoEstado);
+			statement.setInt(2, libro.getId_libro());
+
+			int filas = statement.executeUpdate();
+			if (filas > 0) {
+				System.out.println("se cambió el estado");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return texto;
 	}
 
 	/**
