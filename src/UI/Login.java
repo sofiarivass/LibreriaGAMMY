@@ -1,6 +1,5 @@
 package UI;
 
-
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -28,7 +27,6 @@ public class Login extends JFrame {
 	private JTextField txtUsuario;
 	private JButton btnIngresar;
 	private JPasswordField txtContrasenia;
-
 
 	/**
 	 * Create the frame.
@@ -65,13 +63,17 @@ public class Login extends JFrame {
 		txtContrasenia.setBounds(109, 158, 217, 30);
 		contentPane.add(txtContrasenia);
 
+		txtContrasenia = new JPasswordField();
+		txtContrasenia.setBounds(109, 158, 217, 30);
+		contentPane.add(txtContrasenia);
+
 		JLabel lblError = new JLabel("");
 		lblError.setForeground(new Color(159, 0, 0));
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
 		lblError.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
 		lblError.setBounds(80, 205, 275, 32);
 		contentPane.add(lblError);
-		
+
 		btnIngresar = new JButton("Ingresar");
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -83,9 +85,9 @@ public class Login extends JFrame {
 
 				if (usuario == true || contrasenia == true) {
 					lblError.setText("Por favor complete los campos");
-				} else {					
+				} else {
 					user = Usuario.login(txtUsuario.getText(), txtContrasenia.getText());
-					
+
 					if (user == null) {
 						lblError.setText("Usuario o contraseña incorrectos");
 					} else if (user.getEstado() == false) {
@@ -102,7 +104,6 @@ public class Login extends JFrame {
 		btnIngresar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnIngresar.setBounds(163, 252, 109, 27);
 		contentPane.add(btnIngresar);
-		
 		JButton btnRegresar = new JButton("Regresar");
 		btnRegresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -113,7 +114,6 @@ public class Login extends JFrame {
 		});
 		btnRegresar.setBounds(337, 267, 89, 23);
 		contentPane.add(btnRegresar);
-		
 
 	}
 }

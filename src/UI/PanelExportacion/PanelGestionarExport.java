@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import BLL.Usuario;
+import UI.PanelVendedorInternacional;
 
 import javax.swing.JLabel;
 import java.awt.Font;

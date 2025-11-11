@@ -69,7 +69,6 @@ public interface Validaciones {
 		return input;
 	}
 
-	
 	/**
 	 * Método para validar Strings. Evita que el usuario deje el campo vacío.
 	 * 
@@ -96,7 +95,7 @@ public interface Validaciones {
 			if (input.isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Por favor complete este campo");
 				flag = false;
-			} 
+			}
 		}
 		return input;
 	}
@@ -203,7 +202,6 @@ public interface Validaciones {
 		}
 		return input;
 	}
-	
 
 	/**
 	 * Método para validar double. Evita que el usuario deje el campo vacío y se
@@ -289,7 +287,6 @@ public interface Validaciones {
 		return inputAnio;
 	}
 
-	
 	public static String menuSiNo(String mensaje, String titulo, String img) {
 		String respuesta;
 		String[] opciones = { "Sí", "No" };
@@ -435,57 +432,150 @@ public interface Validaciones {
 
 	// VALIDACIONES PARA LOS PANELES DEL JFRAME
 
-		/**
-		 * funcion para validar los paneles del Jframe(no se permite campo Vacio)
-		 * 
-		 * @param input
-		 * @return flag
-		 */
-		public static boolean validarVacioJframe(String texto) {
-			boolean flag;
+	/**
+	 * funcion para validar los paneles del Jframe(no se permite campo Vacio)
+	 * 
+	 * @param input
+	 * @return flag
+	 */
+	public static boolean validarVacioJframe(String texto) {
+		boolean flag;
 
-			if (texto.isEmpty()) {
-				flag = true;
-			} else {
-				flag = false;
+		if (texto.isEmpty()) {
+			flag = true;
+		} else {
+			flag = false;
+		}
+		return flag;
+	}
+
+	/**
+	 * funcion que no permite campos vacios ni letras solo numeros
+	 * 
+	 * @param dni
+	 * @return
+	 */
+	public static boolean validarDniJframe(String numero) {
+		boolean num;
+		int contL = 0;
+
+		for (int i = 0; i < numero.length(); i++) {
+			if (Character.isAlphabetic(numero.charAt(i))) {
+				contL++;
 			}
-			return flag;
 		}
 
-		/**
-		 * funcion que no permite campos vacios ni letras solo numeros
-		 * 
-		 * @param dni
-		 * @return
-		 */
-		public static boolean validarDniJframe(String numero) {
-			boolean num;
+		if (contL == 0) {
+			if (numero.length() == 8) {
+				if (Integer.parseInt(numero) > 0) {
+					num = false;
+				} else {
+					System.out.println("numero no es mayor a 0");
+					num = true;
+				}
+			} else {
+				System.out.println("numero no es menor o = a 8");
+				num = true;
+			}
+		} else {
+			System.out.println("contL es mayor a 0");
+			num = true;
+		}
+
+		return num;
+	}
+
+//	public static String validarStringJframe(String input) {
+//		boolean flag;
+//
+//			int contN = 0;
+//
+//			for (int i = 0; i < input.length(); i++) {
+//				if (Character.isDigit(input.charAt(i))) {
+//					contN++;
+//				}
+//			}
+//
+//			if (contN > 0) {
+//				flag = false;
+//			} else {
+//				flag = true;
+//			}
+//
+//		return flag;
+//	}
+
+	public static String validarStringJframe(String input) {
+
+		boolean flag = validarVacioJframe(input);
+
+		if (flag == true) {
+			return "vacio";
+		} else {
+			int contN = 0;
+
+			for (int i = 0; i < input.length(); i++) {
+				if (Character.isDigit(input.charAt(i))) {
+					contN++;
+				}
+			}
+
+			if (contN > 0) {
+				return "numero";
+			} else {
+				return "ok";
+			}
+		}
+	}
+
+	public static String validarIntJframe(String input) {
+
+		boolean flag = validarVacioJframe(input);
+
+		if (flag == true) {
+			return "vacio";
+		} else {
 			int contL = 0;
 
-			for (int i = 0; i < numero.length(); i++) {
-				if (Character.isAlphabetic(numero.charAt(i))) {
+			for (int i = 0; i < input.length(); i++) {
+				if (!Character.isDigit(input.charAt(i))) {
 					contL++;
 				}
 			}
 
-			if (contL == 0) {
-				if (numero.length() == 8) {
-					if (Integer.parseInt(numero) > 0) {
-						num = false;
-					} else {
-						System.out.println("numero no es mayor a 0");
-						num = true;
-					}
-				} else {
-					System.out.println("numero no es menor o = a 8");
-					num = true;
-				}
+			if (contL > 0) {
+				return "letra";
+			} else if (input.length() >= 10) {
+				return "tamaño";
 			} else {
-				System.out.println("contL es mayor a 0");
-				num = true;
+				return "ok";
 			}
-
-			return num;
 		}
-	
+	}
+
+	public static String validarDoubleJframe(String input) {
+		boolean flag = validarVacioJframe(input);
+
+		if (flag) {
+			return "vacio";
+		} else {
+			try {
+				// Intentamos convertir el texto a número
+				double valor = Double.parseDouble(input);
+
+				if (valor < 0) {
+					return "negativo";
+				} else if (input.length() >= 10) {
+					return "tamaño";
+				} else {
+					return "ok";
+				}
+
+			} catch (NumberFormatException e) {
+				return "letra";
+			}
+		}
+
+	}
+
 }
