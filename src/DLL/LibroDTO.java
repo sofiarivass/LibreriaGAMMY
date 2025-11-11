@@ -108,7 +108,8 @@ public class LibroDTO {
 		boolean flag = true;
 		Libro coincidencia = null;
 		for (Libro elemento : LibroDTO.mostrarLibros()) {
-			System.out.println("Comparando elemento.id=" + elemento.getId_libro() + " con libro.id=" + libro.getId_libro());
+			System.out.println(
+					"Comparando elemento.id=" + elemento.getId_libro() + " con libro.id=" + libro.getId_libro());
 			if (elemento.getTitulo().equals(libro.getTitulo()) && elemento.getAutor().equals(libro.getAutor())
 					&& elemento.getEditorial().equals(libro.getEditorial())
 					&& elemento.getIdioma().equals(libro.getIdioma()) && elemento.getTapa().equals(libro.getTapa())
@@ -120,8 +121,15 @@ public class LibroDTO {
 		}
 		if (flag) {
 			try {
-				PreparedStatement statement = con.prepareStatement(
-						"UPDATE libro SET titulo=?, autor=?, editorial=?, fecha_publicacion=?, genero=?, idioma=?, publico_objetivo=?, num_paginas=?, firmado=?, edicion_especial=?, tapa=?, saga=?, precio=?, stock=?, estado=?, portada=? WHERE id_libro=?");
+				PreparedStatement statement;
+				if (libro.getPortada() == null) {
+					statement = con.prepareStatement(
+							"UPDATE libro SET titulo=?, autor=?, editorial=?, fecha_publicacion=?, genero=?, idioma=?, publico_objetivo=?, num_paginas=?, firmado=?, edicion_especial=?, tapa=?, saga=?, precio=?, stock=?, estado=? WHERE id_libro=?");
+				} else {
+					statement = con.prepareStatement(
+							"UPDATE libro SET titulo=?, autor=?, editorial=?, fecha_publicacion=?, genero=?, idioma=?, publico_objetivo=?, num_paginas=?, firmado=?, edicion_especial=?, tapa=?, saga=?, precio=?, stock=?, estado=?, portada=? WHERE id_libro=?");
+				}
+				
 				statement.setString(1, libro.getTitulo());
 				statement.setString(2, libro.getAutor());
 				statement.setString(3, libro.getEditorial());
@@ -137,24 +145,28 @@ public class LibroDTO {
 				statement.setDouble(13, libro.getPrecio());
 				statement.setInt(14, libro.getStock());
 				statement.setBoolean(15, libro.getEstado());
-				statement.setBytes(16, libro.getPortada());
-				statement.setInt(17, libro.getId_libro());
+				if (libro.getPortada() != null) {
+					statement.setBytes(16, libro.getPortada());
+					statement.setInt(17, libro.getId_libro());
+				} else {					
+					statement.setInt(16, libro.getId_libro());
+				}
+
 
 				int filas = statement.executeUpdate();
 				if (filas > 0) {
 					System.out.println("Libro editado correctamente");
 					return true;
 				} else {
-					System.out.println("1");
 					return false;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("2");
 				return false;
 			}
 		} else {
-			System.out.println("Ya hay un libro con las mismas caracteristicas cargado en el sistema: " + coincidencia.toString());
+			System.out.println(
+					"Ya hay un libro con las mismas caracteristicas cargado en el sistema: " + coincidencia.toString());
 			return false;
 		}
 	}

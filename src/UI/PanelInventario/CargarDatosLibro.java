@@ -48,7 +48,7 @@ public class CargarDatosLibro extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		portada = libro.getPortada();
 		JLabel lblCargarDatos = new JLabel();
 		lblCargarDatos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCargarDatos.setBounds(118, 28, 355, 25);
@@ -173,6 +173,7 @@ public class CargarDatosLibro extends JFrame {
 		}
 		contentPane.add(comboBoxTapa);
 
+		
 		JCheckBox chckbxFirmado = new JCheckBox("¿Libro firmado?");
 		chckbxFirmado.setBounds(311, 334, 162, 20);
 		contentPane.add(chckbxFirmado);
@@ -219,6 +220,7 @@ public class CargarDatosLibro extends JFrame {
 
 					try {
 						portada = Files.readAllBytes(selectedFile.toPath());
+						System.out.println(selectedFile.toPath());
 						lblError.setText("");
 					} catch (IOException ex) {
 						ex.printStackTrace();
@@ -241,7 +243,7 @@ public class CargarDatosLibro extends JFrame {
 			txtAutor.setText(libro.getAutor());
 			txtEditorial.setText(libro.getEditorial());
 			txtFecha.setDate(libro.getFechaPublicacion());
-//			txtPaginas.setText(libro.getNumPaginas());
+			txtPaginas.setText(""+libro.getNumPaginas());
 			// portada
 			comboBoxGenero.setSelectedItem(libro.getGenero());
 			comboBoxIdioma.setSelectedItem(libro.getIdioma());
@@ -250,8 +252,8 @@ public class CargarDatosLibro extends JFrame {
 			chckbxFirmado.setSelected(libro.getFirmado());
 			chckbxSaga.setSelected(libro.getSaga());
 			chckbxEdicion.setSelected(libro.getEdicionEspecial());
-//			txtPrecio.setText(libro.getPrecio());
-//			txtStock.setText(libro.getStock());
+			txtPrecio.setText(""+libro.getPrecio());
+			txtStock.setText(""+libro.getStock());
 		}
 
 		JButton btnGuardar = new JButton("Guardar");

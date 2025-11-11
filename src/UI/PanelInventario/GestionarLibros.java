@@ -139,10 +139,12 @@ public class GestionarLibros extends JFrame {
 		JButton btnDeshabilitar = new JButton("Dar de baja/alta");
 		btnDeshabilitar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				lblExito.setText("");
 				if (libroSeleccionado != null) {
 					lblError.setText("");
 					lblExito.setText(LibroDTO.eliminarLibroJFrame(libroSeleccionado));
 					cargarTabla();
+					libroSeleccionado = null;
 					// PROBLEMA: MENSAJES SE SUPERPONEN
 				} else {
 					lblError.setText("");
@@ -164,6 +166,7 @@ public class GestionarLibros extends JFrame {
 
 		// Acción al seleccionar fila
 		table.getSelectionModel().addListSelectionListener(e -> {
+			lblError.setText("");
 			if (!e.getValueIsAdjusting()) {
 				int row = table.getSelectedRow();
 				if (row != -1) {
