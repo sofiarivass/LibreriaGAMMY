@@ -17,7 +17,6 @@ import Enums.MetodoPago;
 import Enums.Sucursales;
 import Enums.TipoMoneda;
 import Repository.Validaciones;
-import UI.Main;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.util.Comparator;
@@ -30,11 +29,9 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.EventQueue;
 
 public class ElegirLibros extends JFrame {

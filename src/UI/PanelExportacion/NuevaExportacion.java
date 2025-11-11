@@ -6,7 +6,6 @@ import javax.swing.border.EmptyBorder;
 import BLL.Cliente;
 import BLL.Usuario;
 import Repository.Validaciones;
-import UI.Main;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;

@@ -1,15 +1,9 @@
 package UI;
 
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import BLL.Cliente;
-
 import BLL.Usuario;
-import Repository.Validaciones;
-
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -63,10 +57,6 @@ public class Login extends JFrame {
 		txtContrasenia.setBounds(109, 158, 217, 30);
 		contentPane.add(txtContrasenia);
 
-		txtContrasenia = new JPasswordField();
-		txtContrasenia.setBounds(109, 158, 217, 30);
-		contentPane.add(txtContrasenia);
-
 		JLabel lblError = new JLabel("");
 		lblError.setForeground(new Color(159, 0, 0));
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
@@ -82,7 +72,11 @@ public class Login extends JFrame {
 
 				boolean usuario = Repository.Validaciones.validarVacioJframe(txtUsuario.getText());
 				boolean contrasenia = Repository.Validaciones.validarVacioJframe(txtContrasenia.getText());
-
+				System.out.println("soy usuario: " + txtUsuario.getText());
+				System.out.println("soy contrasenia: " + txtContrasenia.getText());
+				System.out.println("soy usuario: " + usuario);
+				System.out.println("soy contrasenia: " + contrasenia);
+				
 				if (usuario == true || contrasenia == true) {
 					lblError.setText("Por favor complete los campos");
 				} else {
