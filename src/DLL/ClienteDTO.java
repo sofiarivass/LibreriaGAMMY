@@ -3,8 +3,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 import BLL.Cliente;
+import BLL.TipoEmpleado;
+import BLL.Usuario;
 
 public class ClienteDTO {
 	private static Connection con = Conexion.getInstance().getConnection();
@@ -28,8 +32,9 @@ public class ClienteDTO {
                 String nombre = rs.getString("nombre");
                 String telefono = rs.getString("telefono");
                 String email = rs.getString("mail");
+                boolean estado= rs.getBoolean("estado");
 
-                encontrado = new Cliente(id,dni_cliente,nombre,telefono,email);
+                encontrado = new Cliente(id,dni_cliente,nombre,telefono,email,estado);
                 }
         } catch (Exception e) {
         	
@@ -51,8 +56,9 @@ public class ClienteDTO {
                 String telefono = rs.getString("telefono");
                 String mail = rs.getString("mail");
                 int dni = rs.getInt("dni");
+                boolean estado= rs.getBoolean("estado");
                 
-                listaClientes.add(new Cliente(id_cliente,dni,nombre,telefono,mail));
+                listaClientes.add(new Cliente(id_cliente,dni,nombre,telefono,mail,estado));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,4 +104,140 @@ public class ClienteDTO {
 			return false;			
 		}
 	}
+	
+	
+	public static boolean eliminarClientePorID(int cliente) {
+		try {
+			PreparedStatement stmt = con.prepareStatement("UPDATE `cliente` SET `estado`=? WHERE `id_cliente` = ?");
+			stmt.setInt(1, 0);
+			stmt.setInt(2, cliente);
+			
+			int filas = stmt.executeUpdate();
+			if (filas > 0) {
+				JOptionPane.showMessageDialog(null, "cliente dio de baja correctamente.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return true;
+	}
+	
+	public static LinkedList<Cliente> mostrarClientes(){
+		LinkedList<Cliente> cliente = new LinkedList<Cliente>();
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente");
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				int id = rs.getInt("id_cliente");
+            	int dni_cliente = rs.getInt("dni");
+                String nombre = rs.getString("nombre");
+                String telefono = rs.getString("telefono");
+                String email = rs.getString("mail");
+                boolean estado= rs.getBoolean("estado");
+				
+				cliente.add( new Cliente(id,dni_cliente,nombre,telefono,email,estado));
+			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return cliente;
+		
+	}
+	
+	
+	public static Cliente clientePorID(LinkedList<Cliente> clienteDisp) {
+		int id_cliente = 0;
+		List<Cliente> clientes = ClienteDTO.mostrarClientes();
+		
+		if(clienteDisp == null) {
+			String[] clienteArray = new String[clientes.size()];
+			for (int i = 0; i < clienteArray.length; i++) {
+				clienteArray[i] = clientes.get(i).getIdCliente() + " - " + clientes.get(i).getNombre(); 
+			}
+			String elegido = (String) JOptionPane.showInputDialog(null, "Elija cliente:", null, 0, null, clienteArray, clienteArray[0]);
+			id_cliente = Integer.parseInt(elegido.split(" - ")[0]);
+			Cliente cliente = null;
+			
+			try {
+				PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE id_cliente = ?");
+				stmt.setInt(1, id_cliente);
+				
+				ResultSet rs = stmt.executeQuery();
+				
+				if (rs.next()) {
+					int id = rs.getInt("id_cliente");
+	            	int dni_cliente = rs.getInt("dni");
+	                String nombre = rs.getString("nombre");
+	                String telefono = rs.getString("telefono");
+	                String email = rs.getString("mail");
+	                boolean estado= rs.getBoolean("estado");
+					
+	                cliente = new Cliente(id,dni_cliente,nombre,telefono,email,estado);
+					
+				
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return cliente;
+		}else {
+			String [] clientesArray = new String[clienteDisp.size()];
+			for (int i = 0; i < clientesArray.length; i++) {
+				clientesArray[i] = clienteDisp.get(i).getIdCliente() + " - " + clienteDisp.get(i).getNombre();
+			}
+			String elegido = (String) JOptionPane.showInputDialog(null, "Elija cliente:", null, 0, null, clientesArray, clientesArray[0]);
+			id_cliente = Integer.parseInt(elegido.split(" - ")[0]);
+			Cliente cliente = null;
+			try {
+				PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE id_cliente = ?");
+				stmt.setInt(1, id_cliente);
+				
+				ResultSet rs = stmt.executeQuery();
+				
+				if (rs.next()) {
+					
+					int id = rs.getInt("id_cliente");
+	            	int dni_cliente = rs.getInt("dni");
+	                String nombre = rs.getString("nombre");
+	                String telefono = rs.getString("telefono");
+	                String email = rs.getString("mail");
+	                boolean estado= rs.getBoolean("estado");
+					
+	                cliente = new Cliente(id,dni_cliente,nombre,telefono,email,estado);	
+				
+				
+				} 
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return cliente;
+		}
+	}
+	
+//	public static Cliente buscarCliente() {
+//		Cliente cliente = null;
+//		
+//		try {
+//			PreparedStatement stmt = con.prepareStatement("SELECT * FROM Cliente WHERE id_tipo_empleado =?");
+//			stmt.setInt(1, fk_cliente);
+//			
+//			ResultSet rs = stmt.executeQuery();
+//			
+//			if (rs.next()) {
+//				int id_empleado = rs.getInt("id_tipo_empleado");
+//				String tipoEmpleado = rs.getString("tipo_empleado");
+//				
+//				empleado = new TipoEmpleado(id_empleado,tipoEmpleado);
+//			}
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return cliente;
+//	}
 }

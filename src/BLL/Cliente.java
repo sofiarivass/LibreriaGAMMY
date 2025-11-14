@@ -2,6 +2,7 @@ package BLL;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import DLL.ClienteDTO;
+import DLL.UsuarioDTO;
 import Repository.Validaciones;
 
 public class Cliente {
@@ -11,8 +12,9 @@ public class Cliente {
 	private String telefono;
 	private String mail;
 	private LinkedList<Libro> listaProductos = new LinkedList<>();
+	private boolean estado;
 	
-	public Cliente(int idCliente, int dni, String nombre, String telefono, String mail) {
+	public Cliente(int idCliente, int dni, String nombre, String telefono, String mail, boolean estado) {
 		super();
 		this.idCliente = idCliente;
 		this.dni = dni;
@@ -20,20 +22,20 @@ public class Cliente {
 		this.telefono = telefono;
 		this.mail = mail;
 		this.listaProductos = new LinkedList<Libro>();
+		this.estado= estado;
 	}
 	
-	public Cliente(int dni, String nombre, String telefono, String mail) {
+	public Cliente(int dni, String nombre, String telefono, String mail,boolean estado) {
 		this.dni = dni;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.mail = mail;
 		this.listaProductos = new LinkedList<Libro>();
+		this.estado= estado;
 	}
 
 	
-	// Getters y Setters
-	
-	
+
 	// Métodos
 	@Override
 	public String toString() {
@@ -80,7 +82,16 @@ public class Cliente {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-
+	
+	public boolean getEstado() {
+		return estado;
+	}
+	
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+	
+	
 	public LinkedList<Libro> getListaProductos() {
 		return listaProductos;
 	}
@@ -130,7 +141,7 @@ public class Cliente {
 				mail = Validaciones.validarString("Ingrese su mail", "Registrando un Cliente", null);
 			} while (!Validaciones.validarMail(mail));
 			
-			Cliente nuevo = new Cliente(dni,nombre,telefono,mail);
+			Cliente nuevo = new Cliente(dni,nombre,telefono,mail,true);
 			
 			if (ClienteDTO.registrarCliente(nuevo)) {
 				return ClienteDTO.buscarCliente(nuevo.getDni());
@@ -138,6 +149,49 @@ public class Cliente {
 				return null;
 			}
 		}
+	}
+	
+	
+	public static void eliminarCliente(Usuario admin) {
+		String elegido;
+		String []elegido2;
+		int clienteElegido;
+		LinkedList<Cliente> clientes = ClienteDTO.consultarClientes();
+		LinkedList<Cliente> clientesActivos = new LinkedList<Cliente>();
+		
+		for (Cliente cliente : clientes) {
+			if (cliente.getEstado() != false ) {
+				System.out.println("entre porque mi estado es true");
+				clientesActivos.add(cliente);					
+			}
+		}
+		
+		if (clientesActivos.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No hay más Clientes Activos!!");
+		} else {
+			String[] elegirCliente = new String[clientesActivos.size()];
+			
+			for (int i = 0; i < elegirCliente.length; i++) {
+				elegirCliente[i] = clientesActivos.get(i).getIdCliente() + "," + clientesActivos.get(i).getNombre();
+			}
+			
+			elegido = (String) JOptionPane.showInputDialog(null, "Elija el Cliente", "", 0, null, elegirCliente, elegirCliente[0]);
+			elegido2 = elegido.split(",");
+			
+			clienteElegido = Integer.parseInt(elegido2[0]);
+			ClienteDTO.eliminarClientePorID(clienteElegido);			
+		}
+	}
+	
+	public static LinkedList<Cliente> mostrarClientes() {
+		LinkedList<Cliente> cliente = ClienteDTO.mostrarClientes();
+		
+		if (cliente == null || cliente.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No hay clientes para mostrar.");
+		}else {
+			JOptionPane.showMessageDialog(null, ClienteDTO.clientePorID(cliente));
+		}
+		return cliente;
 	}
 	
 }
