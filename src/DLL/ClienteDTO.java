@@ -1,5 +1,6 @@
 package DLL;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
@@ -7,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 import BLL.Cliente;
+import BLL.Libro;
 import BLL.TipoEmpleado;
 import BLL.Usuario;
 
@@ -218,6 +220,34 @@ public class ClienteDTO {
 		}
 	}
 	
+	
+	public static String eliminarClienteJFrame(Cliente cliente) {
+		boolean nuevoEstado;
+		String texto;
+		if (cliente.getEstado() == true) {
+			nuevoEstado = false;
+			texto = "El cliente fue dado de baja correctamente";
+		} else {
+			nuevoEstado = true;
+			texto = "El cliente fue dado de alta correctamente";
+		}
+
+		try {
+			PreparedStatement statement = con.prepareStatement("UPDATE cliente SET estado = ? WHERE id_cliente = ?");
+			statement.setBoolean(1, nuevoEstado);
+			statement.setInt(2, cliente.getIdCliente());
+
+			int filas = statement.executeUpdate();
+			if (filas > 0) {
+				System.out.println("se cambió el estado");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return texto;
+	}
+	
 //	public static Cliente buscarCliente() {
 //		Cliente cliente = null;
 //		
@@ -240,4 +270,29 @@ public class ClienteDTO {
 //		
 //		return cliente;
 //	}
+	
+	public static Cliente clientePorID(int id) {
+		Cliente cliente = null;
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE id_cliente = ?");
+			stmt.setInt(1, id);
+
+			// executequery se utiliza cuando no hay cambios en la bdd
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+
+            	int dni_cliente = rs.getInt("dni");
+                String nombre = rs.getString("nombre");
+                String telefono = rs.getString("telefono");
+                String email = rs.getString("mail");
+                boolean estado= rs.getBoolean("estado");
+				
+                cliente = new Cliente(id,dni_cliente,nombre,telefono,email,estado);	
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cliente;
+	}
 }
