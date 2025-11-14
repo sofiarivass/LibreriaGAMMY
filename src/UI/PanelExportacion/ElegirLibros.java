@@ -280,7 +280,8 @@ public class ElegirLibros extends JFrame {
 				if (selectorDestino.getSelectedItem().equals(selectorOrigen.getSelectedItem())) {
 					lblErrorOrigen.setText("Error elija otra Sucursal!!");
 				} else {
-					lblErrorOrigen.setText("");					
+					lblErrorOrigen.setText("");
+					lblErrorDestino.setText("");
 				}
 			}
 		});
@@ -290,7 +291,8 @@ public class ElegirLibros extends JFrame {
 				if (selectorOrigen.getSelectedItem().equals(selectorDestino.getSelectedItem())) {
 					lblErrorDestino.setText("Error elija otra Sucursal!!");
 				} else {
-					lblErrorDestino.setText("");					
+					lblErrorDestino.setText("");
+					lblErrorOrigen.setText("");
 				}
 			}
 		});
