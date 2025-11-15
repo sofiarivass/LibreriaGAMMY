@@ -42,7 +42,7 @@ public class GestionarLibros extends JFrame {
 	public GestionarLibros(Usuario user) {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 20, 841, 571);
+		setBounds(100, 20, 841, 595);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -51,14 +51,14 @@ public class GestionarLibros extends JFrame {
 
 		JLabel lblTitulo = new JLabel("Gestionar Inventario");
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitulo.setBounds(286, 17, 254, 32);
+		lblTitulo.setBounds(286, 20, 254, 32);
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 20));
 		contentPane.add(lblTitulo);
 
 		JLabel lblSeleccionado = new JLabel("Seleccionado: ");
 		lblSeleccionado.setForeground(new Color(0, 0, 128));
 		lblSeleccionado.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
-		lblSeleccionado.setBounds(26, 336, 774, 20);
+		lblSeleccionado.setBounds(26, 348, 774, 20);
 		contentPane.add(lblSeleccionado);
 
 		model = new DefaultTableModel(
@@ -68,11 +68,11 @@ public class GestionarLibros extends JFrame {
 
 		table = new JTable(model);
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(26, 110, 774, 216);
+		scrollPane.setBounds(26, 122, 774, 216);
 		contentPane.add(scrollPane);
 
 		JLabel lblNewLabel = new JLabel("Libros cargados en el sistema:");
-		lblNewLabel.setBounds(25, 84, 233, 21);
+		lblNewLabel.setBounds(25, 96, 233, 21);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
 		contentPane.add(lblNewLabel);
 
@@ -80,16 +80,42 @@ public class GestionarLibros extends JFrame {
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
 		lblError.setForeground(new Color(159, 0, 0));
 		lblError.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
-		lblError.setBounds(113, 440, 601, 43);
+		lblError.setBounds(113, 452, 601, 43);
 		contentPane.add(lblError);
 
 		JLabel lblExito = new JLabel();
 		lblExito.setHorizontalAlignment(SwingConstants.CENTER);
 		lblExito.setForeground(new Color(0, 128, 0));
 		lblExito.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
-		lblExito.setBounds(113, 440, 601, 43);
+		lblExito.setBounds(113, 452, 601, 43);
 		contentPane.add(lblExito);
 
+		JLabel lblFiltrar = new JLabel("Filtrar por estado");
+		lblFiltrar.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFiltrar.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblFiltrar.setBounds(631, 58, 169, 21);
+		contentPane.add(lblFiltrar);
+
+		JButton btnActivo = new JButton("Activos");
+		btnActivo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargarTablaFiltrada(true);
+			}
+		});
+		btnActivo.setFont(new Font("Tahoma", Font.ITALIC, 12));
+		btnActivo.setBounds(631, 85, 83, 27);
+		contentPane.add(btnActivo);
+
+		JButton btnInactivo = new JButton("Inactivos");
+		btnInactivo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargarTablaFiltrada(false);
+			}
+		});
+		btnInactivo.setFont(new Font("Tahoma", Font.ITALIC, 12));
+		btnInactivo.setBounds(717, 85, 83, 27);
+		contentPane.add(btnInactivo);
+		
 		JButton btnCargarLibro = new JButton("Cargar libro");
 		btnCargarLibro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -99,7 +125,7 @@ public class GestionarLibros extends JFrame {
 			}
 		});
 		btnCargarLibro.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnCargarLibro.setBounds(678, 70, 123, 27);
+		btnCargarLibro.setBounds(24, 63, 123, 27);
 		contentPane.add(btnCargarLibro);
 
 		JButton btnVerDetalle = new JButton("Ver detalle");
@@ -110,12 +136,13 @@ public class GestionarLibros extends JFrame {
 					frame.setVisible(true);
 					dispose();
 				} else {
+					lblExito.setText("");
 					lblError.setText("Debe seleccionar un libro para ver su detalle");
 				}
 			}
 		});
 		btnVerDetalle.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnVerDetalle.setBounds(77, 380, 172, 35);
+		btnVerDetalle.setBounds(77, 392, 172, 35);
 		contentPane.add(btnVerDetalle);
 
 		JButton btnEditarDatos = new JButton("Modificar datos");
@@ -127,13 +154,14 @@ public class GestionarLibros extends JFrame {
 					frame.setVisible(true);
 					dispose();
 				} else {
+					lblExito.setText("");
 					lblError.setText("Debe seleccionar un libro para modificar sus datos");
 				}
 
 			}
 		});
 		btnEditarDatos.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnEditarDatos.setBounds(326, 380, 172, 35);
+		btnEditarDatos.setBounds(326, 392, 172, 35);
 		contentPane.add(btnEditarDatos);
 
 		JButton btnDeshabilitar = new JButton("Dar de baja/alta");
@@ -145,7 +173,6 @@ public class GestionarLibros extends JFrame {
 					lblExito.setText(LibroDTO.eliminarLibroJFrame(libroSeleccionado));
 					cargarTabla();
 					libroSeleccionado = null;
-					// PROBLEMA: MENSAJES SE SUPERPONEN
 				} else {
 					lblError.setText("");
 					lblError.setText("Debe seleccionar un libro para darlo de baja/alta");
@@ -154,15 +181,8 @@ public class GestionarLibros extends JFrame {
 			}
 		});
 		btnDeshabilitar.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnDeshabilitar.setBounds(575, 380, 172, 35);
+		btnDeshabilitar.setBounds(575, 392, 172, 35);
 		contentPane.add(btnDeshabilitar);
-
-		JLabel lblDasd = new JLabel("");
-		lblDasd.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDasd.setForeground(new Color(159, 0, 0));
-		lblDasd.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
-		lblDasd.setBounds(190, 319, 275, 32);
-		contentPane.add(lblDasd);
 
 		// Acción al seleccionar fila
 		table.getSelectionModel().addListSelectionListener(e -> {
@@ -170,30 +190,15 @@ public class GestionarLibros extends JFrame {
 			if (!e.getValueIsAdjusting()) {
 				int row = table.getSelectedRow();
 				if (row != -1) {
-//                	libroSeleccionado = new Libro(
-//                        (int) model.getValueAt(row, 0),
-//                        (String) model.getValueAt(row, 1),
-//                        (String) model.getValueAt(row, 2),
-//                        (String) model.getValueAt(row, 3),
-//                        (String) model.getValueAt(row, 4),
-//                        (String) model.getValueAt(row, 5)
-//                    );
-
+					
 					libroSeleccionado = LibroDTO.libroPorID((int) model.getValueAt(row, 0));
-
-//                	"ID", "TITULO", "AUTOR", "EDITORIAL", "IDIOMA", "ESTADO"
-
-//                	int id_libro, String titulo, String autor, String editorial, Date fechaPublicacion, String genero,
-//        			String idioma, String publicoObjetivo, int numPaginas, boolean firmado, boolean edicionEspecial,
-//        			String materialTapa, boolean saga, double precio, int stock, boolean estado, byte[] portada
-
+					
 					lblSeleccionado.setText("ID: " + libroSeleccionado.getId_libro() + ", TITULO: "
 							+ libroSeleccionado.getTitulo() + ", AUTOR: " + libroSeleccionado.getAutor()
 							+ ", EDITORIAL: " + libroSeleccionado.getEditorial() + ", IDIOMA: "
 							+ libroSeleccionado.getIdioma() + ", PRECIO: " + libroSeleccionado.getPrecio() + ", STOCK: "
 							+ libroSeleccionado.getStock() + ", ESTADO: "
 							+ (libroSeleccionado.getEstado() == true ? "Activo" : "Inactivo"));
-
 				}
 			}
 		});
@@ -211,8 +216,18 @@ public class GestionarLibros extends JFrame {
 		});
 		btnVolver.setForeground(new Color(153, 17, 20));
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnVolver.setBounds(705, 489, 109, 27);
+		btnVolver.setBounds(704, 512, 109, 27);
 		contentPane.add(btnVolver);
+		
+		JButton btnRecargar = new JButton("Recargar");
+		btnRecargar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargarTabla();
+			}
+		});
+		btnRecargar.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnRecargar.setBounds(571, 512, 123, 27);
+		contentPane.add(btnRecargar);
 
 	}
 
@@ -223,6 +238,18 @@ public class GestionarLibros extends JFrame {
 			model.addRow(new Object[] { libro.getId_libro(), libro.getTitulo(), libro.getAutor(), libro.getEditorial(),
 					libro.getIdioma(), "$" + libro.getPrecio(), libro.getStock(),
 					(libro.getEstado() == true ? "Activo" : "Inactivo") });
+		}
+	}
+
+	private void cargarTablaFiltrada(boolean filtro) {
+		model.setRowCount(0);
+		LinkedList<Libro> listaLibros = LibroDTO.mostrarLibros();
+		for (Libro libro : listaLibros) {
+			if (libro.getEstado() == filtro) {
+				model.addRow(new Object[] { libro.getId_libro(), libro.getTitulo(), libro.getAutor(),
+						libro.getEditorial(), libro.getIdioma(), "$" + libro.getPrecio(), libro.getStock(),
+						(libro.getEstado() == true ? "Activo" : "Inactivo") });
+			}
 		}
 	}
 }
