@@ -6,7 +6,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import BLL.TipoEmpleado;
 import BLL.Usuario;
+import DLL.UsuarioDTO;
+import Repository.Encriptador;
 import UI.Main;
 
 import javax.swing.JLabel;
@@ -123,6 +126,10 @@ public class NuevoUsuario extends JFrame {
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(10, 371, 259, 30);
+		comboBox.addItem("");
+		for(TipoEmpleado rol : UsuarioDTO.seleccionarTipoEmpleado()) {
+			comboBox.addItem(rol.getTipoEmpleado());
+		}
 		contentPane.add(comboBox);
 		
 		JButton btnNewButton = new JButton("Volver");
@@ -139,11 +146,12 @@ public class NuevoUsuario extends JFrame {
 		
 		JButton btnNewButton_1 = new JButton("Registrar");
 		btnNewButton_1.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				
 				boolean passV, passRepV;
 				String usuarioV, nombreV;
-				String usuario, nombre, pass, passRep;
+				String usuario, nombre, pass, passRep, rol;
 				
 				usuarioV = Repository.Validaciones.validarStringJframe(textField_Usuario.getText());
 				if (usuarioV.equals("vacio")) {
@@ -152,36 +160,56 @@ public class NuevoUsuario extends JFrame {
 					usuario = textField_Usuario.getText();
 					lblError_Usuario.setText("");
 				}
+				
 				nombreV = Repository.Validaciones.validarStringJframe(textField_Nombre.getText());
-				if (usuarioV.equals("vacio")) {
+				if(nombreV.equals("vacio")) {
 					lblError_Nombre.setText("Por favor complete los campos obligatorios");
-				}else if (usuarioV.equals("numero")) {
-					lblError_Usuario.setText("El nombre del autor no puede contener números");
+				}else if(nombreV.equals("numero")) {
+					lblError_Nombre.setText("El nombre no puede contener números");
 				}else {
-					usuario = textField_Usuario.getText();
-					lblError_Usuario.setText("");
+					nombre = textField_Nombre.getText();
+					lblError_Nombre.setText("");
 				}
 				
 				passV = Repository.Validaciones.validarVacioJframe(passwordField_Pass.getText());
-				if (passV == true) {
+				passRepV = Repository.Validaciones.validarVacioJframe(passwordField_PassRep.getText());
+				if(passV == true && passRepV == true) {
 					lblError_Pass.setText("Por favor complete los campos obligatorios");
 					lblError_PassRep.setText("Por favor complete los campos obligatorios");
-				} else {
-					lblError_Pass.setText("");
+				}else {
 					pass = passwordField_Pass.getText();
-					passRepV = Repository.Validaciones.validarVacioJframe(passwordField_PassRep.getText());
-					if(passRepV == true) {
-						lblError_PassRep.setText("Por favor complete los campos obligatorios");
-					}else{
-						passRep = passwordField_PassRep.getText();
-						if (passRep == pass) {
-							lblError_PassRep.setText("");
-							
-						}else {
-							lblError_PassRep.setText("Las Contraseñas no coinciden");
-						}
+					passRep = passwordField_PassRep.getText();
+					lblError_Pass.setText("");
+					if(pass != passRep) {
+						lblError_PassRep.setText("Las contraseñas no coinciden");
+					}else {
+						lblError_PassRep.setText("");
 					}
+					rol = comboBox.getSelectedItem().toString();
 				}
+				
+				/*
+				usuarioV = Repository.Validaciones.validarStringJframe(textField_Usuario.getText());
+				nombreV = Repository.Validaciones.validarStringJframe(textField_Nombre.getText());
+				passV = Repository.Validaciones.validarVacioJframe(passwordField_Pass.getText());
+				passRepV = Repository.Validaciones.validarVacioJframe(passwordField_PassRep.getText());
+				if (usuarioV.equals("vacio") && nombreV.equals("vacio") && passV == true && passRepV == true ) {
+					lblError_Usuario.setText("Por favor complete los campos obligatorios");
+					lblError_Nombre.setText("Por favor complete los campos obligatorios");
+					lblError_Pass.setText("Por favor complete los campos obligatorios");
+					lblError_PassRep.setText("Por favor complete los campos obligatorios");
+				}else if(nombreV.equals("vacio") && passV == true && passRepV == true ){
+					
+					usuario = textField_Usuario.getText();
+					lblError_Usuario.setText("");
+					if(nombreV.equals("numero")) {
+						lblError_Nombre.setText("El nombre no puede contener números");
+					}else {
+						nombre = textField_Nombre.getText();
+						lblError_Nombre.setText("");
+						
+					}
+				}*/
 					
 				}
 		});
