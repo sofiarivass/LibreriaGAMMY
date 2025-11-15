@@ -85,22 +85,27 @@ public class NuevoUsuario extends JFrame {
 		lblNewLabel_4.setBounds(10, 341, 136, 25);
 		contentPane.add(lblNewLabel_4);
 		
+		/*
 		JLabel lblNewLabel_5 = new JLabel("Repita la Contraseña:");
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblNewLabel_5.setBounds(10, 279, 184, 25);
 		contentPane.add(lblNewLabel_5);
+		*/
 		
 		JLabel lblError_Usuario = new JLabel("");
 		lblError_Usuario.setForeground(new Color(255, 0, 0));
 		lblError_Usuario.setBounds(148, 114, 286, 14);
 		contentPane.add(lblError_Usuario);
 		
+		/*
 		JLabel lblError_PassRep = new JLabel("");
 		lblError_PassRep.setForeground(new Color(255, 0, 0));
 		lblError_PassRep.setBounds(150, 315, 286, 14);
 		contentPane.add(lblError_PassRep);
+		*/
 		
 		JLabel lblError_Rol = new JLabel("");
+		lblError_Rol.setForeground(new Color(255, 0, 0));
 		lblError_Rol.setBounds(10, 412, 286, 14);
 		contentPane.add(lblError_Rol);
 		
@@ -151,7 +156,8 @@ public class NuevoUsuario extends JFrame {
 				
 				boolean passV, passRepV;
 				String usuarioV, nombreV;
-				String usuario, nombre, pass, passRep, rol;
+				String usuario, nombre, pass, rol;
+				//String passCheck1 = null, passCheck2 = null;
 				
 				usuarioV = Repository.Validaciones.validarStringJframe(textField_Usuario.getText());
 				if (usuarioV.equals("vacio")) {
@@ -172,21 +178,39 @@ public class NuevoUsuario extends JFrame {
 				}
 				
 				passV = Repository.Validaciones.validarVacioJframe(passwordField_Pass.getText());
-				passRepV = Repository.Validaciones.validarVacioJframe(passwordField_PassRep.getText());
-				if(passV == true && passRepV == true) {
+				if(passV == true) {
 					lblError_Pass.setText("Por favor complete los campos obligatorios");
-					lblError_PassRep.setText("Por favor complete los campos obligatorios");
 				}else {
 					pass = passwordField_Pass.getText();
-					passRep = passwordField_PassRep.getText();
 					lblError_Pass.setText("");
-					if(pass != passRep) {
-						lblError_PassRep.setText("Las contraseñas no coinciden");
+				}
+				/*
+				passCheck1 = pass;
+				
+				passRepV = Repository.Validaciones.validarVacioJframe(passwordField_PassRep.getText());
+				if(passRepV == true) {
+					lblError_PassRep.setText("Por favor complete los campos obligatorios");				
 					}else {
+						passRep = passwordField_PassRep.getText();
 						lblError_PassRep.setText("");
 					}
-					rol = comboBox.getSelectedItem().toString();
+				passCheck2 = passRep;
+				if (passCheck1 != passCheck2) {
+					lblError_PassRep.setText("Las contraseñas no coinciden");
+				}else {
+					lblError_PassRep.setText("");
 				}
+				*/
+				
+				rol = comboBox.getSelectedItem().toString();
+				if(rol == "") {
+					lblError_Rol.setText("Por favor complete los campos obligatorios");
+				}else {
+					lblError_Rol.setText("");
+				}
+				
+				
+			}
 				
 				/*
 				usuarioV = Repository.Validaciones.validarStringJframe(textField_Usuario.getText());
@@ -211,7 +235,7 @@ public class NuevoUsuario extends JFrame {
 					}
 				}*/
 					
-				}
+				
 		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnNewButton_1.setBounds(333, 456, 118, 50);
@@ -221,8 +245,10 @@ public class NuevoUsuario extends JFrame {
 		passwordField_Pass.setBounds(191, 196, 243, 30);
 		contentPane.add(passwordField_Pass);
 		
+		/*
 		passwordField_PassRep = new JPasswordField();
 		passwordField_PassRep.setBounds(191, 278, 243, 30);
 		contentPane.add(passwordField_PassRep);
+		*/
 	}
 }
