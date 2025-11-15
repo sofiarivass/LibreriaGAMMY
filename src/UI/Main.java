@@ -108,7 +108,9 @@ public class Main extends JFrame {
 			switch (tipo_empleado) {
 			// MENU ADMIN
 			case 1:
-				MenuAdmin.Menu(user);
+				PanelAdmin admin = new PanelAdmin(user);
+				admin.setVisible(true);
+				dispose();
 				break;
 			// MENU VENDEDOR
 			case 2:
