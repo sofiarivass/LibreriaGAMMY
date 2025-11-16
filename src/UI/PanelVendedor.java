@@ -1,29 +1,31 @@
 package UI;
 
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import BLL.Usuario;
-import UI.PanelExportacion.PanelGestionarExport;
-import UI.PanelInventario.GestionarLibros;
 import UI.PanelVentas.GestionarCliente;
 
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
-public class PanelVendedorInternacional extends JFrame {
+public class PanelVendedor extends JFrame {
+
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	/**
 	 * Create the frame.
 	 */
-	public PanelVendedorInternacional(Usuario user) {
+	public PanelVendedor(Usuario user) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 521, 330);
+		setBounds(100, 100, 521, 292);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -31,8 +33,9 @@ public class PanelVendedorInternacional extends JFrame {
 		contentPane.setLayout(null);
 
 		JLabel lblTitulo = new JLabel("Bienvenido " + user.getNombre());
+		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblTitulo.setBounds(139, 11, 250, 32);
+		lblTitulo.setBounds(82, 25, 340, 32);
 		contentPane.add(lblTitulo);
 
 		JButton btnGestionarClientes = new JButton("Gestionar Clientes");
@@ -44,37 +47,20 @@ public class PanelVendedorInternacional extends JFrame {
 			}
 		});
 		btnGestionarClientes.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnGestionarClientes.setBounds(58, 105, 165, 32);
+		btnGestionarClientes.setBounds(59, 109, 165, 32);
 		contentPane.add(btnGestionarClientes);
 
-		JButton btnGestionarExportaciones = new JButton("Gestionar Exportaciones");
+		JButton btnGestionarExportaciones = new JButton("Gestionar Ventas");
 		btnGestionarExportaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PanelGestionarExport gestionExport = new PanelGestionarExport(user);
-				gestionExport.setVisible(true);
-				dispose();
+//				PanelGestionarVentas gestionVentas = new PanelGestionarVentas(user);
+//				gestionVentas.setVisible(true);
+//				dispose();
 			}
 		});
 		btnGestionarExportaciones.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnGestionarExportaciones.setBounds(58, 162, 165, 32);
+		btnGestionarExportaciones.setBounds(272, 109, 165, 32);
 		contentPane.add(btnGestionarExportaciones);
-
-		JButton btnSeguimientoDeEnvios = new JButton("Seguimiento de Envios");
-		btnSeguimientoDeEnvios.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnSeguimientoDeEnvios.setBounds(281, 162, 165, 32);
-		contentPane.add(btnSeguimientoDeEnvios);
-
-		JButton btnGestionarInventario = new JButton("Gestionar Inventario");
-		btnGestionarInventario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GestionarLibros frame = new GestionarLibros(user);
-				frame.setVisible(true);
-				dispose();
-			}
-		});
-		btnGestionarInventario.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnGestionarInventario.setBounds(281, 105, 165, 32);
-		contentPane.add(btnGestionarInventario);
 
 		JButton btnCerrarSesion = new JButton("Cerrar Sesión");
 		btnCerrarSesion.addActionListener(new ActionListener() {
@@ -85,7 +71,8 @@ public class PanelVendedorInternacional extends JFrame {
 			}
 		});
 		btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnCerrarSesion.setBounds(182, 228, 141, 32);
+		btnCerrarSesion.setBounds(182, 178, 141, 32);
 		contentPane.add(btnCerrarSesion);
 	}
+
 }

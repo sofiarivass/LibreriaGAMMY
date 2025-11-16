@@ -13,11 +13,9 @@ import UI.PanelVendedorInternacional;
 
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.Image;
 import java.util.LinkedList;
 
 import javax.swing.JTable;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
@@ -301,5 +299,5 @@ public class GestionarLibros extends JFrame {
 			}
 		}
 	}
-	
+
 }
