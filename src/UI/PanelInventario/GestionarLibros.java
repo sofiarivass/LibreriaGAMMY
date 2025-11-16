@@ -9,7 +9,6 @@ import BLL.Libro;
 import BLL.Usuario;
 import DLL.LibroDTO;
 import Repository.Validaciones;
-import UI.Main;
 import UI.PanelVendedorInternacional;
 
 import javax.swing.JLabel;
@@ -29,7 +28,6 @@ import java.awt.Color;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 
 public class GestionarLibros extends JFrame {
 
@@ -96,13 +94,13 @@ public class GestionarLibros extends JFrame {
 		contentPane.add(lblExito);
 
 		txtBusqueda = new JTextField();
-		txtBusqueda.setBounds(26, 515, 183, 21);
+		txtBusqueda.setBounds(26, 515, 189, 21);
 		contentPane.add(txtBusqueda);
 		txtBusqueda.setColumns(10);
 
 //		JButton btnBuscar = new JButton("Buscar");
 		JButton btnBuscar = new JButton("");
-		btnBuscar.setIcon(getScaledImageIcon("/img/lupa.png", 15, 15));
+		btnBuscar.setIcon(Validaciones.getScaledImageIcon("/img/lupa.png", 15, 15));
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean flag = Validaciones.validarVacioJframe(txtBusqueda.getText());
@@ -115,7 +113,7 @@ public class GestionarLibros extends JFrame {
 			}
 		});
 		btnBuscar.setFont(new Font("Tahoma", Font.ITALIC, 12));
-		btnBuscar.setBounds(215, 512, 34, 27);
+		btnBuscar.setBounds(219, 512, 34, 27);
 		contentPane.add(btnBuscar);
 
 		JLabel lblBuscar = new JLabel("Buscar título, autor o editorial");
@@ -240,7 +238,9 @@ public class GestionarLibros extends JFrame {
 		// Cargar datos
 		cargarTabla();
 
-		JButton btnVolver = new JButton("Volver");
+//		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("");
+		btnVolver.setIcon(Validaciones.getScaledImageIcon("/img/volver.png", 22, 22));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelVendedorInternacional frame = new PanelVendedorInternacional(user);
@@ -248,19 +248,20 @@ public class GestionarLibros extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setForeground(new Color(153, 17, 20));
+//		btnVolver.setForeground(new Color(153, 17, 20));
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnVolver.setBounds(704, 512, 109, 27);
+		btnVolver.setBounds(777, 512, 36, 27);
 		contentPane.add(btnVolver);
 
-		JButton btnRecargar = new JButton("Recargar");
+		JButton btnRecargar = new JButton("");
+		btnRecargar.setIcon(Validaciones.getScaledImageIcon("/img/recargar.png", 20, 20));
 		btnRecargar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cargarTabla();
 			}
 		});
 		btnRecargar.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnRecargar.setBounds(571, 512, 123, 27);
+		btnRecargar.setBounds(595, 85, 27, 27);
 		contentPane.add(btnRecargar);
 
 	}
@@ -300,22 +301,5 @@ public class GestionarLibros extends JFrame {
 			}
 		}
 	}
-
-	public static ImageIcon getScaledImageIcon(String imagePath, int newWidth, int newHeight) {
-		// Create an ImageIcon from the original image path
-		ImageIcon originalImageIcon = new ImageIcon(GestionarLibros.class.getResource(imagePath));
-
-		// Get the Image object from the ImageIcon
-		Image originalImage = originalImageIcon.getImage();
-
-		// Scale the image to the desired dimensions
-		// Image.SCALE_SMOOTH is recommended for better quality
-		Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-
-		// JOptionPane.showMessageDialog(null, "","",JOptionPane.DEFAULT_OPTION, new
-		// ImageIcon(scaledImage));
-
-		// Create a new ImageIcon from the scaled Image
-		return new ImageIcon(scaledImage);
-	}
+	
 }

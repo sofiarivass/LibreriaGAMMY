@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 import BLL.Cliente;
-import BLL.TipoEmpleado;
-import BLL.Usuario;
 
 public class ClienteDTO {
 	private static Connection con = Conexion.getInstance().getConnection();

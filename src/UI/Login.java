@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import BLL.Usuario;
+import Repository.Validaciones;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -94,11 +96,12 @@ public class Login extends JFrame {
 				}
 			}
 		});
-
 		btnIngresar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnIngresar.setBounds(163, 252, 109, 27);
 		contentPane.add(btnIngresar);
-		JButton btnRegresar = new JButton("Regresar");
+		
+		JButton btnRegresar = new JButton("");
+		btnRegresar.setIcon(Validaciones.getScaledImageIcon("/img/volver.png", 22, 22));
 		btnRegresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Main frame = new Main(null);
@@ -106,7 +109,7 @@ public class Login extends JFrame {
 				dispose();
 			}
 		});
-		btnRegresar.setBounds(337, 267, 89, 23);
+		btnRegresar.setBounds(389, 262, 35, 29);
 		contentPane.add(btnRegresar);
 
 	}

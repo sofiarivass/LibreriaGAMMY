@@ -4,8 +4,6 @@ import java.sql.Date;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
-import com.mysql.jdbc.Blob;
-
 import DLL.LibroDTO;
 import Repository.Validaciones;
 import Enums.*;

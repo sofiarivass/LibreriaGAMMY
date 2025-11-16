@@ -90,9 +90,8 @@ public class LibroDTO {
 			}
 
 		} else {
-//			JOptionPane.showMessageDialog(null,
-//					"ERROR! Ya hay un libro con las mismas carácteristicas cargado en el sistema:\n"
-//							+ coincidencia.toString());
+			System.out.println("ERROR! Ya hay un libro con las mismas carácteristicas cargado en el sistema:\n"
+					+ coincidencia.toString());
 			return false;
 		}
 	}
@@ -129,7 +128,7 @@ public class LibroDTO {
 					statement = con.prepareStatement(
 							"UPDATE libro SET titulo=?, autor=?, editorial=?, fecha_publicacion=?, genero=?, idioma=?, publico_objetivo=?, num_paginas=?, firmado=?, edicion_especial=?, tapa=?, saga=?, precio=?, stock=?, estado=?, portada=? WHERE id_libro=?");
 				}
-				
+
 				statement.setString(1, libro.getTitulo());
 				statement.setString(2, libro.getAutor());
 				statement.setString(3, libro.getEditorial());
@@ -148,10 +147,9 @@ public class LibroDTO {
 				if (libro.getPortada() != null) {
 					statement.setBytes(16, libro.getPortada());
 					statement.setInt(17, libro.getId_libro());
-				} else {					
+				} else {
 					statement.setInt(16, libro.getId_libro());
 				}
-
 
 				int filas = statement.executeUpdate();
 				if (filas > 0) {

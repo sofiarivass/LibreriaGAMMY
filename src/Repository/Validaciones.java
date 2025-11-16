@@ -1,10 +1,14 @@
 package Repository;
 
+import java.awt.Image;
 import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
+import UI.Main;
+import UI.PanelInventario.GestionarLibros;
 
 public interface Validaciones {
 
@@ -576,6 +580,15 @@ public interface Validaciones {
 			}
 		}
 
+	}
+
+	public static ImageIcon getScaledImageIcon(String imagePath, int newWidth, int newHeight) {
+
+		ImageIcon originalImageIcon = new ImageIcon(Main.class.getResource(imagePath));
+		Image originalImage = originalImageIcon.getImage();
+		Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+
+		return new ImageIcon(scaledImage);
 	}
 
 }

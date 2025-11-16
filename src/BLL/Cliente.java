@@ -2,7 +2,6 @@ package BLL;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import DLL.ClienteDTO;
-import DLL.UsuarioDTO;
 import Repository.Validaciones;
 
 public class Cliente {
