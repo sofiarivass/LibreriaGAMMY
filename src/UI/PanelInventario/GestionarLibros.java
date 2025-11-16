@@ -8,15 +8,17 @@ import javax.swing.table.DefaultTableModel;
 import BLL.Libro;
 import BLL.Usuario;
 import DLL.LibroDTO;
-
+import Repository.Validaciones;
+import UI.Main;
 import UI.PanelVendedorInternacional;
 
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
 import java.util.LinkedList;
 
 import javax.swing.JTable;
-
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
@@ -26,6 +28,8 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 
 import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 
 public class GestionarLibros extends JFrame {
 
@@ -34,6 +38,7 @@ public class GestionarLibros extends JFrame {
 	private JTable table;
 	private DefaultTableModel model;
 	private Libro libroSeleccionado;
+	private JTextField txtBusqueda;
 
 	/**
 	 * Create the frame.
@@ -90,6 +95,35 @@ public class GestionarLibros extends JFrame {
 		lblExito.setBounds(113, 452, 601, 43);
 		contentPane.add(lblExito);
 
+		txtBusqueda = new JTextField();
+		txtBusqueda.setBounds(26, 515, 183, 21);
+		contentPane.add(txtBusqueda);
+		txtBusqueda.setColumns(10);
+
+//		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("");
+		btnBuscar.setIcon(getScaledImageIcon("/img/lupa.png", 15, 15));
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean flag = Validaciones.validarVacioJframe(txtBusqueda.getText());
+				if (flag) {
+					lblExito.setText("");
+					lblError.setText("Debe escribir algo para realizar la búsqueda");
+				} else {
+					cargarTablaBusqueda(txtBusqueda.getText());
+				}
+			}
+		});
+		btnBuscar.setFont(new Font("Tahoma", Font.ITALIC, 12));
+		btnBuscar.setBounds(215, 512, 34, 27);
+		contentPane.add(btnBuscar);
+
+		JLabel lblBuscar = new JLabel("Buscar título, autor o editorial");
+		lblBuscar.setForeground(new Color(159, 159, 159));
+		lblBuscar.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblBuscar.setBounds(26, 494, 189, 20);
+		contentPane.add(lblBuscar);
+
 		JLabel lblFiltrar = new JLabel("Filtrar por estado");
 		lblFiltrar.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFiltrar.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -115,7 +149,7 @@ public class GestionarLibros extends JFrame {
 		btnInactivo.setFont(new Font("Tahoma", Font.ITALIC, 12));
 		btnInactivo.setBounds(717, 85, 83, 27);
 		contentPane.add(btnInactivo);
-		
+
 		JButton btnCargarLibro = new JButton("Cargar libro");
 		btnCargarLibro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -190,9 +224,9 @@ public class GestionarLibros extends JFrame {
 			if (!e.getValueIsAdjusting()) {
 				int row = table.getSelectedRow();
 				if (row != -1) {
-					
+
 					libroSeleccionado = LibroDTO.libroPorID((int) model.getValueAt(row, 0));
-					
+
 					lblSeleccionado.setText("ID: " + libroSeleccionado.getId_libro() + ", TITULO: "
 							+ libroSeleccionado.getTitulo() + ", AUTOR: " + libroSeleccionado.getAutor()
 							+ ", EDITORIAL: " + libroSeleccionado.getEditorial() + ", IDIOMA: "
@@ -218,7 +252,7 @@ public class GestionarLibros extends JFrame {
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnVolver.setBounds(704, 512, 109, 27);
 		contentPane.add(btnVolver);
-		
+
 		JButton btnRecargar = new JButton("Recargar");
 		btnRecargar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -251,5 +285,37 @@ public class GestionarLibros extends JFrame {
 						(libro.getEstado() == true ? "Activo" : "Inactivo") });
 			}
 		}
+	}
+
+	private void cargarTablaBusqueda(String buscar) {
+		model.setRowCount(0);
+		String busqueda = buscar.toLowerCase();
+		LinkedList<Libro> listaLibros = LibroDTO.mostrarLibros();
+		for (Libro libro : listaLibros) {
+			if (libro.getTitulo().toLowerCase().contains(busqueda) || libro.getAutor().toLowerCase().contains(busqueda)
+					|| libro.getEditorial().toLowerCase().contains(busqueda)) {
+				model.addRow(new Object[] { libro.getId_libro(), libro.getTitulo(), libro.getAutor(),
+						libro.getEditorial(), libro.getIdioma(), "$" + libro.getPrecio(), libro.getStock(),
+						(libro.getEstado() == true ? "Activo" : "Inactivo") });
+			}
+		}
+	}
+
+	public static ImageIcon getScaledImageIcon(String imagePath, int newWidth, int newHeight) {
+		// Create an ImageIcon from the original image path
+		ImageIcon originalImageIcon = new ImageIcon(GestionarLibros.class.getResource(imagePath));
+
+		// Get the Image object from the ImageIcon
+		Image originalImage = originalImageIcon.getImage();
+
+		// Scale the image to the desired dimensions
+		// Image.SCALE_SMOOTH is recommended for better quality
+		Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+
+		// JOptionPane.showMessageDialog(null, "","",JOptionPane.DEFAULT_OPTION, new
+		// ImageIcon(scaledImage));
+
+		// Create a new ImageIcon from the scaled Image
+		return new ImageIcon(scaledImage);
 	}
 }
