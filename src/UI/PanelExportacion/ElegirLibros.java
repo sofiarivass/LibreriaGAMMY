@@ -126,7 +126,7 @@ public class ElegirLibros extends JFrame {
 		JLabel lblError = new JLabel("");
 		lblError.setForeground(Color.RED);
 		lblError.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
-		lblError.setBounds(10, 249, 360, 13);
+		lblError.setBounds(10, 249, 507, 13);
 		panel.add(lblError);
 		
 		JLabel lblErrorOrigen = new JLabel("");
@@ -146,6 +146,13 @@ public class ElegirLibros extends JFrame {
 		lblMensaje.setForeground(Color.RED);
 		lblMensaje.setBounds(448, 184, 197, 13);
 		panel.add(lblMensaje);
+		
+		selector.addActionListener(e-> {
+			lblMensaje.setText("");
+			if (selector.getSelectedItem() != "Selección") {
+				lblError.setText("");
+			}
+		});
 		
 		JButton btnAceptar = new JButton("Agregar");
 		btnAceptar.addActionListener(new ActionListener() {
@@ -280,7 +287,8 @@ public class ElegirLibros extends JFrame {
 				if (selectorDestino.getSelectedItem().equals(selectorOrigen.getSelectedItem())) {
 					lblErrorOrigen.setText("Error elija otra Sucursal!!");
 				} else {
-					lblErrorOrigen.setText("");					
+					lblErrorOrigen.setText("");
+					lblErrorDestino.setText("");
 				}
 			}
 		});
@@ -290,7 +298,8 @@ public class ElegirLibros extends JFrame {
 				if (selectorOrigen.getSelectedItem().equals(selectorDestino.getSelectedItem())) {
 					lblErrorDestino.setText("Error elija otra Sucursal!!");
 				} else {
-					lblErrorDestino.setText("");					
+					lblErrorDestino.setText("");
+					lblErrorOrigen.setText("");
 				}
 			}
 		});
@@ -400,6 +409,7 @@ public class ElegirLibros extends JFrame {
 				if (nombreLibro.equalsIgnoreCase("selección")) {
 					lblError.setText("Elijá un Libro!!");
 				} else {
+					int stockLibro = 0;
 					boolean encontrado = true, sinStock = false;
 					
 					lblError.setText("");
@@ -409,15 +419,18 @@ public class ElegirLibros extends JFrame {
 							if (nombreLibro.equalsIgnoreCase(libro.getTitulo()) && libro.getStock() >= Integer.parseInt(textCantidad.getText())) {
 								librosCarrito.add(new CarritoDetalle(Integer.parseInt(textCantidad.getText()),libro));
 								libro.setStock(libro.getStock()-Integer.parseInt(textCantidad.getText()));
-								sinStock = false;									
+								sinStock = false;
+								stockLibro = libro.getStock();
 								break;
-							} else {
+							} else if (nombreLibro.equalsIgnoreCase(libro.getTitulo())) {
 								sinStock = true;
+								stockLibro = libro.getStock();
+								System.out.println("soy el primer syso: " +stockLibro);
 							}
 						}
 						
 						if (sinStock) {
-							lblError.setText("No tenemos Stock del libro: \"" + nombreLibro + "\"");
+							lblError.setText("No tenemos Stock del libro: \"" + nombreLibro + "\", Stock disp: " + stockLibro + " libros.");
 						}
 						textCantidad.setText("");
 						selector.setSelectedItem("Selección");
@@ -427,9 +440,12 @@ public class ElegirLibros extends JFrame {
 							if (nombreLibro.equalsIgnoreCase(libro.getTitulo()) && libro.getStock() >= Integer.parseInt(textCantidad.getText())) {
 								libro.setStock(libro.getStock()-Integer.parseInt(textCantidad.getText()));
 								sinStock = false;
+								stockLibro = libro.getStock();
 								break;									
-							} else {
+							} else if (nombreLibro.equalsIgnoreCase(libro.getTitulo())) {
 								sinStock = true;
+								stockLibro = libro.getStock();
+								System.out.println(stockLibro);
 							}
 						}
 						
@@ -456,7 +472,7 @@ public class ElegirLibros extends JFrame {
 							textCantidad.setText("");
 							selector.setSelectedItem("Selección");
 						} else {
-							lblError.setText("No tenemos Stock del libro: \"" + nombreLibro + "\"");
+							lblError.setText("No tenemos Stock del libro: \"" + nombreLibro + "\", Stock disp: " + stockLibro + " libros.");
 						}
 					}
 					librosElegidos(librosCarrito);
