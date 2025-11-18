@@ -218,31 +218,7 @@ public class NuevoUsuario extends JFrame {
 				}
 				
 				
-			}
-				
-				/*
-				usuarioV = Repository.Validaciones.validarStringJframe(textField_Usuario.getText());
-				nombreV = Repository.Validaciones.validarStringJframe(textField_Nombre.getText());
-				passV = Repository.Validaciones.validarVacioJframe(passwordField_Pass.getText());
-				passRepV = Repository.Validaciones.validarVacioJframe(passwordField_PassRep.getText());
-				if (usuarioV.equals("vacio") && nombreV.equals("vacio") && passV == true && passRepV == true ) {
-					lblError_Usuario.setText("Por favor complete los campos obligatorios");
-					lblError_Nombre.setText("Por favor complete los campos obligatorios");
-					lblError_Pass.setText("Por favor complete los campos obligatorios");
-					lblError_PassRep.setText("Por favor complete los campos obligatorios");
-				}else if(nombreV.equals("vacio") && passV == true && passRepV == true ){
-					
-					usuario = textField_Usuario.getText();
-					lblError_Usuario.setText("");
-					if(nombreV.equals("numero")) {
-						lblError_Nombre.setText("El nombre no puede contener números");
-					}else {
-						nombre = textField_Nombre.getText();
-						lblError_Nombre.setText("");
-						
-					}
-				}*/
-					
+			}		
 				
 		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 16));
