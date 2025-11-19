@@ -55,6 +55,24 @@ public class UsuarioDTO {
 		
 	}*/
 	
+	/*
+	public static boolean buscarUsuarioExistente (String usuario){
+		boolean flag;
+		LinkedList<Usuario> usuarios = UsuarioDTO.mostrarUsuarios();
+		
+		flag = false;
+		for (Usuario userSys : usuarios) {
+			if(userSys.getUsuario().equalsIgnoreCase(usuario)) {
+				flag = true;
+				System.out.println("El usuario esta tomado");
+			}
+			break;
+		}while(flag);
+		
+		return flag;
+		
+	}
+	*/
 	public static TipoEmpleado buscarEmpleado(int fkEmpleado) {
 		TipoEmpleado empleado = null;
 		

@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import java.awt.Color;
@@ -163,7 +164,8 @@ public class NuevoUsuario extends JFrame {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				
-				boolean passV, passRepV;
+				LinkedList<Usuario> usuariosSerch = UsuarioDTO.mostrarUsuarios();
+				boolean passV, passRepV, flag;
 				String usuarioV, nombreV;
 				String usuario, nombre, pass = "", passRep = "", rol;
 				
@@ -172,7 +174,19 @@ public class NuevoUsuario extends JFrame {
 					lblError_Usuario.setText("Por favor complete los campos obligatorios");
 				}else {
 					usuario = textField_Usuario.getText();
-					lblError_Usuario.setText("");
+					flag = false;
+					for (Usuario userCheck: usuariosSerch) {
+						if (userCheck.getUsuario().equalsIgnoreCase(usuario)) {
+							lblError_Usuario.setText("Usuario Existente");
+							System.out.println("Este Usuario existe");
+							flag = true;
+						}else {
+							lblError_Usuario.setText("");
+							
+						}
+					}while (flag);
+					
+					
 				}
 				
 				nombreV = Repository.Validaciones.validarStringJframe(textField_Nombre.getText());
