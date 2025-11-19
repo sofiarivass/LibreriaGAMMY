@@ -72,10 +72,6 @@ public class Login extends JFrame {
 
 				boolean usuario = Repository.Validaciones.validarVacioJframe(txtUsuario.getText());
 				boolean contrasenia = Repository.Validaciones.validarVacioJframe(txtContrasenia.getText());
-				System.out.println("soy usuario: " + txtUsuario.getText());
-				System.out.println("soy contrasenia: " + txtContrasenia.getText());
-				System.out.println("soy usuario: " + usuario);
-				System.out.println("soy contrasenia: " + contrasenia);
 				
 				if (usuario == true || contrasenia == true) {
 					lblError.setText("Por favor complete los campos");

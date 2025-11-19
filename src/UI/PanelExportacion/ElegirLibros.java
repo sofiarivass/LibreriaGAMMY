@@ -147,10 +147,24 @@ public class ElegirLibros extends JFrame {
 		lblMensaje.setBounds(448, 184, 197, 13);
 		panel.add(lblMensaje);
 		
+		JLabel lblStock = new JLabel("");
+		lblStock.setForeground(new Color(14, 162, 2));
+		lblStock.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
+		lblStock.setBounds(285, 201, 85, 13);
+		panel.add(lblStock);
+		
 		selector.addActionListener(e-> {
 			lblMensaje.setText("");
 			if (selector.getSelectedItem() != "Selección") {
 				lblError.setText("");
+				for (Libro libro : listaLibros) {
+					if (libro.getTitulo().equals(selector.getSelectedItem())) {
+						lblStock.setText("disp: " + libro.getStock() + " libros.");
+						break;
+					}
+				}
+			} else {
+				lblStock.setText("");
 			}
 		});
 		
@@ -175,9 +189,7 @@ public class ElegirLibros extends JFrame {
             	lblMensaje.setText("");
                 int row = table.getSelectedRow();
                 if (row != -1) {
-                	
                 	// buscar dentro del carrito el libro que tenga el mismo id que el de la tabla
-                	
                 	for (CarritoDetalle libro : librosCarrito) {    // esto es la fila del id
 						if (libro.getFkLibro().getId_libro() == (int)model.getValueAt(row, 0)) {
 							//cargamos el objeto carritoSeleccionado
@@ -199,11 +211,19 @@ public class ElegirLibros extends JFrame {
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (carritoSeleccionado != null) {
+					for (Libro libro : listaLibros) {
+						if (libro.equals(carritoSeleccionado.getFkLibro())) {
+							libro.setStock(libro.getStock()+ carritoSeleccionado.getCantidad());
+							selector.setSelectedItem("Selección");
+							break;
+						}
+					}
 					librosCarrito.remove(carritoSeleccionado);
 					// actualizamos la lista
 					librosElegidos(librosCarrito);
 					lblMensaje.setText("Libro eliminado Correctamente!!");
 					lblMensaje.setForeground(new Color(20,122,5));
+					carritoSeleccionado = null;
 				} else {
 					lblMensaje.setText("No selecciono un Libro!!");
 				}
@@ -409,6 +429,7 @@ public class ElegirLibros extends JFrame {
 				if (nombreLibro.equalsIgnoreCase("selección")) {
 					lblError.setText("Elijá un Libro!!");
 				} else {
+					int cant = Integer.parseInt(textCantidad.getText());
 					int stockLibro = 0;
 					boolean encontrado = true, sinStock = false;
 					
@@ -416,9 +437,9 @@ public class ElegirLibros extends JFrame {
 					
 					if (librosCarrito.isEmpty()) {
 						for (Libro libro : listaLibros) {
-							if (nombreLibro.equalsIgnoreCase(libro.getTitulo()) && libro.getStock() >= Integer.parseInt(textCantidad.getText())) {
-								librosCarrito.add(new CarritoDetalle(Integer.parseInt(textCantidad.getText()),libro));
-								libro.setStock(libro.getStock()-Integer.parseInt(textCantidad.getText()));
+							if (nombreLibro.equalsIgnoreCase(libro.getTitulo()) && libro.getStock() >= cant) {
+								librosCarrito.add(new CarritoDetalle(cant,libro));
+								libro.setStock(libro.getStock()-cant);
 								sinStock = false;
 								stockLibro = libro.getStock();
 								break;
@@ -437,15 +458,14 @@ public class ElegirLibros extends JFrame {
 					} else {
 						// descontamos de la lista principal de libros la cantidad de libros que estan comprando
 						for (Libro libro : listaLibros) {
-							if (nombreLibro.equalsIgnoreCase(libro.getTitulo()) && libro.getStock() >= Integer.parseInt(textCantidad.getText())) {
-								libro.setStock(libro.getStock()-Integer.parseInt(textCantidad.getText()));
+							if (nombreLibro.equalsIgnoreCase(libro.getTitulo()) && libro.getStock() >= cant) {
+								libro.setStock(libro.getStock()-cant);
 								sinStock = false;
 								stockLibro = libro.getStock();
 								break;									
 							} else if (nombreLibro.equalsIgnoreCase(libro.getTitulo())) {
 								sinStock = true;
 								stockLibro = libro.getStock();
-								System.out.println(stockLibro);
 							}
 						}
 						
@@ -453,7 +473,7 @@ public class ElegirLibros extends JFrame {
 						if (sinStock != true) {
 							for (CarritoDetalle carrito : librosCarrito) {
 								if (carrito.getFkLibro().getTitulo().equalsIgnoreCase(nombreLibro)) {
-									carrito.setCantidad(carrito.getCantidad() + Integer.parseInt(textCantidad.getText()));
+									carrito.setCantidad(carrito.getCantidad() + cant);
 									encontrado = false;
 									break;
 								} 
@@ -463,8 +483,8 @@ public class ElegirLibros extends JFrame {
 							if (encontrado) {
 								for (Libro libro : listaLibros) {
 									if (nombreLibro.equalsIgnoreCase(libro.getTitulo())) {
-										librosCarrito.add(new CarritoDetalle(Integer.parseInt(textCantidad.getText()),libro));
-										libro.setStock(libro.getStock()-Integer.parseInt(textCantidad.getText()));
+										librosCarrito.add(new CarritoDetalle(cant,libro));
+										libro.setStock(libro.getStock()-cant);
 										break;
 									}
 								}
