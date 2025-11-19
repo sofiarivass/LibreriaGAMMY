@@ -215,10 +215,10 @@ public class ElegirLibros extends JFrame {
 						if (libro.equals(carritoSeleccionado.getFkLibro())) {
 							libro.setStock(libro.getStock()+ carritoSeleccionado.getCantidad());
 							selector.setSelectedItem("Selección");
+							librosCarrito.remove(carritoSeleccionado);
 							break;
 						}
 					}
-					librosCarrito.remove(carritoSeleccionado);
 					// actualizamos la lista
 					librosElegidos(librosCarrito);
 					lblMensaje.setText("Libro eliminado Correctamente!!");
@@ -438,20 +438,22 @@ public class ElegirLibros extends JFrame {
 					if (librosCarrito.isEmpty()) {
 						for (Libro libro : listaLibros) {
 							if (nombreLibro.equalsIgnoreCase(libro.getTitulo()) && libro.getStock() >= cant) {
-								librosCarrito.add(new CarritoDetalle(cant,libro));
 								libro.setStock(libro.getStock()-cant);
+								librosCarrito.add(new CarritoDetalle(cant,libro));
 								sinStock = false;
-								stockLibro = libro.getStock();
+//								stockLibro = libro.getStock();
 								break;
 							} else if (nombreLibro.equalsIgnoreCase(libro.getTitulo())) {
 								sinStock = true;
 								stockLibro = libro.getStock();
-								System.out.println("soy el primer syso: " +stockLibro);
+								System.out.println("soy el primer syso: " + stockLibro);
 							}
 						}
 						
 						if (sinStock) {
 							lblError.setText("No tenemos Stock del libro: \"" + nombreLibro + "\", Stock disp: " + stockLibro + " libros.");
+							textCantidad.setText("");
+							selector.setSelectedItem("Selección");
 						}
 						textCantidad.setText("");
 						selector.setSelectedItem("Selección");
@@ -459,9 +461,8 @@ public class ElegirLibros extends JFrame {
 						// descontamos de la lista principal de libros la cantidad de libros que estan comprando
 						for (Libro libro : listaLibros) {
 							if (nombreLibro.equalsIgnoreCase(libro.getTitulo()) && libro.getStock() >= cant) {
-								libro.setStock(libro.getStock()-cant);
 								sinStock = false;
-								stockLibro = libro.getStock();
+//								stockLibro = libro.getStock();
 								break;									
 							} else if (nombreLibro.equalsIgnoreCase(libro.getTitulo())) {
 								sinStock = true;
@@ -493,6 +494,8 @@ public class ElegirLibros extends JFrame {
 							selector.setSelectedItem("Selección");
 						} else {
 							lblError.setText("No tenemos Stock del libro: \"" + nombreLibro + "\", Stock disp: " + stockLibro + " libros.");
+							textCantidad.setText("");
+							selector.setSelectedItem("Selección");
 						}
 					}
 					librosElegidos(librosCarrito);
