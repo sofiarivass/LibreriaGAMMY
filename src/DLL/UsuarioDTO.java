@@ -280,7 +280,7 @@ public class UsuarioDTO {
 			}
 			return empleado;
 		}
-	}
+	}*/	
 	
 	public static boolean agregarUsuario(Usuario nuevo) {
 			try {
@@ -310,7 +310,7 @@ public class UsuarioDTO {
 	}
 	
 	
-	
+	/*
 	public static void eliminarEmpleados() {
 		LinkedList<Usuario> usuarios = Admin.mostrarEmpleados();
 		LinkedList<Usuario> empleadosDisp = new LinkedList<Usuario>();
@@ -347,11 +347,7 @@ public class UsuarioDTO {
 		}
 		
 	}
-	
-	
-	
-	
-	
+
 	
 */	
 }

@@ -504,7 +504,7 @@ public interface Validaciones {
 //
 //		return flag;
 //	}
-
+	
 	public static String validarStringJframe(String input) {
 
 		boolean flag = validarVacioJframe(input);
