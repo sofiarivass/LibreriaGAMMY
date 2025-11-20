@@ -161,7 +161,7 @@ public class NuevoUsuario extends JFrame {
 		
 		JButton btnNewButton_1 = new JButton("Registrar");
 		btnNewButton_1.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
+//			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				
 				LinkedList<Usuario> usuariosSerch = UsuarioDTO.mostrarUsuarios();
