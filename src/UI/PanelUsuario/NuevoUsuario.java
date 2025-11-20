@@ -226,6 +226,12 @@ public class NuevoUsuario extends JFrame {
 				} else {
 					lblError_Rol.setText("");
 				}
+				
+				if(lblError_Usuario.getText()=="" && lblError_Nombre.getText()=="" && lblError_Pass.getText()=="" && lblError_PassRep.getText()=="" && lblError_Rol.getText()=="" ) {
+					ConfirmarNuevoUsuario confrimarEmpleado = new ConfirmarNuevoUsuario(usuario, nombre, pass, rol);
+					confrimarEmpleado.setVisible(true);
+					dispose();
+				}
 			}
 
 		});
