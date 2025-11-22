@@ -163,7 +163,7 @@ public class NuevoUsuario extends JFrame {
 				System.out.println(usuariosSerch.toString());
 				boolean passV, passRepV, usuarioV, flag;
 				String nombreV;
-				String usuario, nombre, pass = "", passRep = "", rol;
+				String usuario = "", nombre = "", pass = "", passRep = "", rol;
 
 				// estabas usando la validacion validarStringJframe que no permite numeros
 				usuarioV = Repository.Validaciones.validarVacioJframe(textField_Usuario.getText());
@@ -228,7 +228,7 @@ public class NuevoUsuario extends JFrame {
 				}
 				
 				if(lblError_Usuario.getText()=="" && lblError_Nombre.getText()=="" && lblError_Pass.getText()=="" && lblError_PassRep.getText()=="" && lblError_Rol.getText()=="" ) {
-					ConfirmarNuevoUsuario confrimarEmpleado = new ConfirmarNuevoUsuario(usuario, nombre, pass, rol);
+					ConfirmarNuevoUsuario confrimarEmpleado = new ConfirmarNuevoUsuario(usuario, nombre, pass, rol, user);
 					confrimarEmpleado.setVisible(true);
 					dispose();
 				}

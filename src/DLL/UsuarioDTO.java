@@ -9,7 +9,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import com.mysql.jdbc.Statement;
 import BLL.Admin;
-import BLL.Libro;
 import BLL.Usuario;
 import Repository.Validaciones;
 
@@ -300,7 +299,8 @@ public class UsuarioDTO {
 				}
 				
 				if (filas > 0) {
-					JOptionPane.showMessageDialog(null, "Usuario agregado correctamente\n" + nuevo.toString());
+					
+					//JOptionPane.showMessageDialog(null, "Usuario agregado correctamente\n" + nuevo.toString());
 					return true;
 				}
 			} catch (Exception e) {
