@@ -8,10 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
-import BLL.Libro;
 import BLL.Usuario;
-import DLL.LibroDTO;
 import DLL.UsuarioDTO;
 import UI.PanelAdmin;
 
@@ -113,6 +110,22 @@ public class PanelUsuarios extends JFrame {
 		btnDarDeBaja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				lblExito.setText("");
+				
+				if(usuarioSeleccionado ==null) {
+					lblError.setText("");
+					lblError.setText("Debe seleccionar un Usuario para darlo de baja/alta");
+				}else {
+					if (usuarioSeleccionado.getId_usuario() == user.getId_usuario()) {
+						lblError.setText("No se puede cambiar el estado de este usuario");
+					}else {
+						lblError.setText("");
+						lblExito.setText(UsuarioDTO.estadoUsuarioJFrame(usuarioSeleccionado));
+						cargarTabla();
+						usuarioSeleccionado = null;
+					}
+				}
+				//	EL ERROR PASABA POR QUE ESTABA MAL EL ORDEN DEL CODIGO
+				/*
 				if (usuarioSeleccionado.getId_usuario() == user.getId_usuario()) {
 					lblError.setText("No se puede cambiar el estado de este usuario");
 				}else {
@@ -127,7 +140,7 @@ public class PanelUsuarios extends JFrame {
 						lblError.setText("Debe seleccionar un Usuario para darlo de baja/alta");
 					}
 					
-				}
+				}*/
 			}
 		});
 		btnDarDeBaja.setFont(new Font("Tahoma", Font.BOLD, 11));
