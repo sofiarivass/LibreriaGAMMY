@@ -95,6 +95,11 @@ public class NuevaExportacion extends JFrame {
 		contentPane.add(btnContinuarVenta);
 		
 		JButton btnRegistrarCliente = new JButton("registrar cliente");
+		btnRegistrarCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// funcion para registrar al cliente antes de continuar con la venta
+			}
+		});
 		btnRegistrarCliente.setBounds(152, 135, 137, 21);
 		contentPane.add(btnRegistrarCliente);
 		
