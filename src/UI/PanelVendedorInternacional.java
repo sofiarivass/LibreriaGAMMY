@@ -4,8 +4,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import BLL.Usuario;
+import UI.PanelCliente.GestionarCliente;
 import UI.PanelExportacion.PanelGestionarExport;
 import UI.PanelInventario.GestionarLibros;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -36,6 +38,9 @@ public class PanelVendedorInternacional extends JFrame {
 		JButton btnGestionarClientes = new JButton("Gestionar Clientes");
 		btnGestionarClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				GestionarCliente gestionarCliente = new GestionarCliente(user);
+				gestionarCliente.setVisible(true);
+				dispose();
 			}
 		});
 		btnGestionarClientes.setFont(new Font("Tahoma", Font.BOLD, 10));

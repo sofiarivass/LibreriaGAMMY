@@ -126,7 +126,7 @@ public class ClienteDTO {
 	}
 	
 	public static LinkedList<Cliente> mostrarClientes(){
-		LinkedList<Cliente> cliente = new LinkedList<Cliente>();
+		LinkedList<Cliente> clientes = new LinkedList<Cliente>();
 		try {
 			PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente");
 			ResultSet rs = stmt.executeQuery();
@@ -139,17 +139,44 @@ public class ClienteDTO {
                 String email = rs.getString("mail");
                 boolean estado= rs.getBoolean("estado");
 				
-				cliente.add( new Cliente(id,dni_cliente,nombre,telefono,email,estado));
+				clientes.add( new Cliente(id,dni_cliente,nombre,telefono,email,estado));
 			
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return cliente;
+		return clientes;
 		
 	}
 	
+	
+	public static LinkedList<Cliente> filtrarClientes(int filtro){
+		LinkedList<Cliente> clientes = new LinkedList<Cliente>();
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE id_cliente IN (SELECT c.fk_cliente FROM carrito c JOIN venta v ON v.fk_carrito = c.id_carrito WHERE v.fk_tipo_venta = ?)");
+			stmt.setInt(1, filtro);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				int id = rs.getInt("id_cliente");
+            	int dni_cliente = rs.getInt("dni");
+                String nombre = rs.getString("nombre");
+                String telefono = rs.getString("telefono");
+                String email = rs.getString("mail");
+                boolean estado= rs.getBoolean("estado");
+				
+				clientes.add( new Cliente(id,dni_cliente,nombre,telefono,email,estado));
+			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return clientes;
+		
+	}
 	
 	public static Cliente clientePorID(LinkedList<Cliente> clienteDisp) {
 		int id_cliente = 0;

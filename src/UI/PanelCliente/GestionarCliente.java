@@ -1,4 +1,4 @@
-package UI.PanelVentas;
+package UI.PanelCliente;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -49,9 +49,14 @@ public class GestionarCliente extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblTitulo = new JLabel("Gestionar Clientes");
+		JLabel lblTitulo = new JLabel("");
+		if (user.getFkTipoEmpleado().getTipoEmpleado().equals("Vendedor Local")) {
+			lblTitulo = new JLabel("Gestionar Clientes (minoristas)");
+		} else {
+			lblTitulo = new JLabel("Gestionar Clientes (mayoristas)");
+		}
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitulo.setBounds(286, 17, 254, 32);
+		lblTitulo.setBounds(207, 17, 413, 32);
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 20));
 		contentPane.add(lblTitulo);
 
@@ -93,9 +98,11 @@ public class GestionarCliente extends JFrame {
 		btnVerDetalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (clienteSeleccionado != null) {
-
+					InfoCliente infoCliente = new InfoCliente(user, clienteSeleccionado, "ver");
+					infoCliente.setVisible(true);
 					dispose();
 				} else {
+					lblExito.setText("");
 					lblError.setText("Debe seleccionar un cliente para ver su detalle");
 				}
 			}
@@ -108,9 +115,11 @@ public class GestionarCliente extends JFrame {
 		btnEditarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (clienteSeleccionado != null) {
-
+					CargarDatosCliente modificarCliente = new CargarDatosCliente(user, clienteSeleccionado);
+					modificarCliente.setVisible(true);
 					dispose();
 				} else {
+					lblExito.setText("");
 					lblError.setText("Debe seleccionar un cliente para modificar sus datos");
 				}
 
@@ -127,7 +136,7 @@ public class GestionarCliente extends JFrame {
 				if (clienteSeleccionado != null) {
 					lblError.setText("");
 					lblExito.setText(ClienteDTO.eliminarClienteJFrame(clienteSeleccionado));
-					cargarTabla();
+					cargarTabla(user);
 					clienteSeleccionado = null;
 					// PROBLEMA: MENSAJES SE SUPERPONEN
 				} else {
@@ -167,7 +176,7 @@ public class GestionarCliente extends JFrame {
 		});
 
 		// Cargar datos
-		cargarTabla();
+		cargarTabla(user);
 
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
@@ -184,9 +193,14 @@ public class GestionarCliente extends JFrame {
 
 	}
 
-	private void cargarTabla() {
+	private void cargarTabla(Usuario user) {
 		model.setRowCount(0);
-		LinkedList<Cliente> listaClientes = ClienteDTO.mostrarClientes();
+		LinkedList<Cliente> listaClientes;
+		if (user.getFkTipoEmpleado().getTipoEmpleado().equals("Vendedor Local")) {
+			listaClientes = ClienteDTO.filtrarClientes(1);
+		} else {
+			listaClientes = ClienteDTO.filtrarClientes(2);
+		}
 		for (Cliente cliente : listaClientes) {
 			model.addRow(new Object[] { cliente.getIdCliente(), cliente.getNombre(), cliente.getTelefono(),
 					cliente.getMail(), cliente.getDni(), (cliente.getEstado() == true ? "Activo" : "Inactivo") });

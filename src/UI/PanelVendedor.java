@@ -1,6 +1,5 @@
 package UI;
 
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,12 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import BLL.Usuario;
-import UI.PanelExportacion.PanelGestionarExport;
-import UI.PanelInventario.GestionarLibros;
-import UI.PanelVentas.GestionarCliente;
+import UI.PanelCliente.GestionarCliente;
 
 import javax.swing.SwingConstants;
-import java.awt.Color;
 
 public class PanelVendedor extends JFrame {
 
@@ -45,8 +41,7 @@ public class PanelVendedor extends JFrame {
 		JButton btnGestionarClientes = new JButton("Gestionar Clientes");
 		btnGestionarClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				GestionarCliente gestionarCliente=new GestionarCliente(user);
+				GestionarCliente gestionarCliente = new GestionarCliente(user);
 				gestionarCliente.setVisible(true);
 				dispose();
 
