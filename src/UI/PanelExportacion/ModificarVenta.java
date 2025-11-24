@@ -93,7 +93,7 @@ public class ModificarVenta extends JFrame {
 		lblCliente.setBounds(10, 11, 596, 16);
 		panel.add(lblCliente);
 		
-		JLabel lblSelecVenta = new JLabel("Venta:");
+		JLabel lblSelecVenta = new JLabel("");
 		lblSelecVenta.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblSelecVenta.setBounds(10, 168, 596, 16);
 		panel.add(lblSelecVenta);
@@ -157,9 +157,9 @@ public class ModificarVenta extends JFrame {
 					lblCliente.setText(cliente.toString());
 					lblCliente.setForeground(Color.black);
 					
-//					if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
+					if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
 						fkTipoVenta = new TipoVenta(2,"Mayorista");					
-//					}
+					}
 					
 					LinkedList<Carrito> listaCarrito = Carrito.obtenerCarrito(cliente);
 					if (listaCarrito != null) {
@@ -210,9 +210,9 @@ public class ModificarVenta extends JFrame {
                 	TipoVenta fkTipoVenta = null;
     				Exportacion ventaExport = null;
                 	
-//					if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
+					if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
 						fkTipoVenta = new TipoVenta(2,"Mayorista");					
-//					}
+					}
 					
 					LinkedList<Carrito> listaCarrito = Carrito.obtenerCarrito(cliente);
 					if (listaCarrito != null) {
