@@ -10,23 +10,26 @@ public class Cliente {
 	private String nombre;
 	private String telefono;
 	private String mail;
+	private boolean estado;
 	private LinkedList<Libro> listaProductos = new LinkedList<>();
 	
-	public Cliente(int idCliente, int dni, String nombre, String telefono, String mail) {
+	public Cliente(int idCliente, int dni, String nombre, String telefono, String mail, boolean estado) {
 		super();
 		this.idCliente = idCliente;
 		this.dni = dni;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.mail = mail;
+		this.estado = estado;
 		this.listaProductos = new LinkedList<Libro>();
 	}
 	
-	public Cliente(int dni, String nombre, String telefono, String mail) {
+	public Cliente(int dni, String nombre, String telefono, String mail, boolean estado) {
 		this.dni = dni;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.mail = mail;
+		this.estado = estado;
 		this.listaProductos = new LinkedList<Libro>();
 	}
 
@@ -80,7 +83,15 @@ public class Cliente {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
+	
+	public boolean getEstado() {
+		return estado;
+	}
 
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+	
 	public LinkedList<Libro> getListaProductos() {
 		return listaProductos;
 	}
@@ -130,7 +141,7 @@ public class Cliente {
 				mail = Validaciones.validarString("Ingrese su mail", "Registrando un Cliente", null);
 			} while (!Validaciones.validarMail(mail));
 			
-			Cliente nuevo = new Cliente(dni,nombre,telefono,mail);
+			Cliente nuevo = new Cliente(dni,nombre,telefono,mail,true);
 			
 			if (ClienteDTO.registrarCliente(nuevo)) {
 				return ClienteDTO.buscarCliente(nuevo.getDni());

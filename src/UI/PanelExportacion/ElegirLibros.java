@@ -48,7 +48,7 @@ public class ElegirLibros extends JFrame {
     	EventQueue.invokeLater(new Runnable() {
     		public void run() {
     			try {
-    				ElegirLibros frame = new ElegirLibros(null,new Cliente(1,1,"","",""));
+    				ElegirLibros frame = new ElegirLibros(null,new Cliente(1,1,"","","",true));
     				frame.setVisible(true);
     			} catch (Exception e) {
     				e.printStackTrace();
@@ -396,6 +396,8 @@ public class ElegirLibros extends JFrame {
 		btnRealizarVenta.setBounds(527, 515, 118, 23);
 		panel.add(btnRealizarVenta);
 		
+		// segundo panel
+		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Detalles", null, panel_2, null);
 		tabbedPane.setEnabledAt(1, false);
@@ -423,50 +425,50 @@ public class ElegirLibros extends JFrame {
 		btnRealizarVenta.addActionListener(e ->{
 			lblLibros.setText(mostrarDetallesLibro(librosCarrito));
 			lblPago.setText(mostrarDetallesPago(selectorPago,selectorMoneda,selectorOrigen,selectorDestino));
-			
-			JButton btnCancelar = new JButton("Cancelar Venta");
-			btnCancelar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					PanelGestionarExport gestionExport = new PanelGestionarExport(user);
-					gestionExport.setVisible(true);
-					dispose();
-				}
-			});
-			btnCancelar.setBounds(10, 516, 142, 21);
-			panel_2.add(btnCancelar);
-			
-			JLabel lblVentaMensaje = new JLabel("");
-			lblVentaMensaje.setHorizontalAlignment(SwingConstants.CENTER);
-			lblVentaMensaje.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
-			lblVentaMensaje.setForeground(Color.RED);
-			lblVentaMensaje.setBounds(77, 476, 500, 25);
-			panel_2.add(lblVentaMensaje);
-			
-			JButton btnConfirmarVenta = new JButton("Confirmar Venta");
-			btnConfirmarVenta.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					boolean flag = cargarVenta(librosCarrito, user, cliente, selectorPago, selectorMoneda, selectorOrigen, selectorDestino);
-					String datosVenta = mostrarDetallesLibro(librosCarrito);
-					String datosPago = mostrarDetallesPago(selectorPago,selectorMoneda,selectorOrigen,selectorDestino);
-					
-					if (flag) {
-						DetallesVenta detalles = new DetallesVenta(datosVenta,datosPago,user);
-						detalles.setVisible(true);
-						dispose();
-					} else {
-						lblVentaMensaje.setText("Ocurrio un Error inesperado!!");
-					}
-				}
-			});
-			btnConfirmarVenta.setBounds(503, 516, 142, 21);
-			panel_2.add(btnConfirmarVenta);
-			
-			JLabel lblTituloDetallesPago = new JLabel("Detalles del Pago");
-			lblTituloDetallesPago.setHorizontalAlignment(SwingConstants.CENTER);
-			lblTituloDetallesPago.setFont(new Font("Tahoma", Font.BOLD, 15));
-			lblTituloDetallesPago.setBounds(248, 283, 159, 25);
-			panel_2.add(lblTituloDetallesPago);
 		});
+		
+		JButton btnCancelar = new JButton("Cancelar Venta");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelGestionarExport gestionExport = new PanelGestionarExport(user);
+				gestionExport.setVisible(true);
+				dispose();
+			}
+		});
+		btnCancelar.setBounds(10, 516, 142, 21);
+		panel_2.add(btnCancelar);
+		
+		JLabel lblVentaMensaje = new JLabel("");
+		lblVentaMensaje.setHorizontalAlignment(SwingConstants.CENTER);
+		lblVentaMensaje.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
+		lblVentaMensaje.setForeground(Color.RED);
+		lblVentaMensaje.setBounds(77, 476, 500, 25);
+		panel_2.add(lblVentaMensaje);
+		
+		JButton btnConfirmarVenta = new JButton("Confirmar Venta");
+		btnConfirmarVenta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean flag = cargarVenta(librosCarrito, user, cliente, selectorPago, selectorMoneda, selectorOrigen, selectorDestino);
+				String datosVenta = mostrarDetallesLibro(librosCarrito);
+				String datosPago = mostrarDetallesPago(selectorPago,selectorMoneda,selectorOrigen,selectorDestino);
+				
+				if (flag) {
+					DetallesVenta detalles = new DetallesVenta(datosVenta,datosPago,user);
+					detalles.setVisible(true);
+					dispose();
+				} else {
+					lblVentaMensaje.setText("Ocurrio un Error inesperado!!");
+				}
+			}
+		});
+		btnConfirmarVenta.setBounds(503, 516, 142, 21);
+		panel_2.add(btnConfirmarVenta);
+		
+		JLabel lblTituloDetallesPago = new JLabel("Detalles del Pago");
+		lblTituloDetallesPago.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTituloDetallesPago.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblTituloDetallesPago.setBounds(248, 283, 159, 25);
+		panel_2.add(lblTituloDetallesPago);
 	}
 	// funciones
 	public void librosElegidos(LinkedList<CarritoDetalle> lista) {
@@ -632,6 +634,6 @@ public class ElegirLibros extends JFrame {
 		
 		Libro.actualizarStock(librosCarrito);
 		
-		return VentasExportDTO.nuevaVentaExportJframe(venta, null);
+		return VentasExportDTO.nuevaVentaExportJframe(venta);
 	}
 }

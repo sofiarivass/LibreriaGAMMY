@@ -4,6 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
+
+import com.mysql.jdbc.Statement;
+
 import BLL.Cliente;
 
 public class ClienteDTO {
@@ -28,8 +31,9 @@ public class ClienteDTO {
                 String nombre = rs.getString("nombre");
                 String telefono = rs.getString("telefono");
                 String email = rs.getString("mail");
+                boolean estado = rs.getBoolean("estado");
 
-                encontrado = new Cliente(id,dni_cliente,nombre,telefono,email);
+                encontrado = new Cliente(id,dni_cliente,nombre,telefono,email,estado);
                 }
         } catch (Exception e) {
         	
@@ -51,8 +55,9 @@ public class ClienteDTO {
                 String telefono = rs.getString("telefono");
                 String mail = rs.getString("mail");
                 int dni = rs.getInt("dni");
+                boolean estado = rs.getBoolean("estado");
                 
-                listaClientes.add(new Cliente(id_cliente,dni,nombre,telefono,mail));
+                listaClientes.add(new Cliente(id_cliente,dni,nombre,telefono,mail,estado));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,5 +102,42 @@ public class ClienteDTO {
 			JOptionPane.showMessageDialog(null, "El Cliente " + cliente.getNombre() + ", Ya existe!!");
 			return false;			
 		}
+	}
+	
+	/**
+	 * funcion para registrar un nuevo Cliente en la BD con Jframe.
+	 * @param cliente
+	 * @return
+	 */
+	public static Cliente registrarClienteJframe(Cliente cliente) {
+		Cliente creado = null;
+		try {
+			PreparedStatement statement = con.prepareStatement(
+					"INSERT INTO cliente (nombre, telefono, mail, dni, estado) VALUES (?, ?, ?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+			statement.setString(1, cliente.getNombre());
+			statement.setString(2, cliente.getTelefono());
+			statement.setString(3, cliente.getMail());
+			statement.setInt(4, cliente.getDni());
+			statement.setBoolean(5, cliente.getEstado());
+			
+			int filas = statement.executeUpdate();
+			ResultSet rs = statement.getGeneratedKeys();
+	
+			if (rs.next()) {
+				int idGenerado = rs.getInt(1);
+				cliente.setIdCliente(idGenerado);
+			}
+			
+			if (filas > 0) {
+				System.out.println("Cliente Registrado correctamente!!");
+				creado = cliente;
+			} else {
+				creado = null;
+			}
+		} catch (Exception e) {
+			System.out.println("no se pudo registrar al cliente!! " + e);
+		}			
+		return creado;
 	}
 }

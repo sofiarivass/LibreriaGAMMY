@@ -43,11 +43,11 @@ public class VentasExportDTO {
 		}
 	}
 	/**
-	 * funcion para cargar una venta en la BD.
+	 * funcion para cargar una venta en la BD con Jframe.
 	 * @param venta
 	 * @param detalles
 	 */
-	public static boolean nuevaVentaExportJframe(Exportacion venta, String detalles) {
+	public static boolean nuevaVentaExportJframe(Exportacion venta) {
 		boolean flag = false;
 		try {
 			PreparedStatement statement = con.prepareStatement(
@@ -68,7 +68,6 @@ public class VentasExportDTO {
 			
 			int filas = statement.executeUpdate();
 			if (filas > 0) {
-//				JOptionPane.showMessageDialog(null, "Venta Realizada con Exito!!\n\n" + detalles);
 				flag = true;
 			}
 		} catch (Exception e) {
