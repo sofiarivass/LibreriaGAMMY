@@ -66,7 +66,7 @@ public class DetallesModificacion extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ModificarVenta modificar = new ModificarVenta(user,venta,datosPasados);
+				ModificarVenta modificar = new ModificarVenta(user,venta,datosPasados,false);
 				modificar.setVisible(true);
 				dispose();
 			}
@@ -78,7 +78,7 @@ public class DetallesModificacion extends JFrame {
 		btnConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VentasExportDTO.actualizarVentaExportJframe(venta);
-				ModificarVenta modificar = new ModificarVenta(user,null,null);
+				ModificarVenta modificar = new ModificarVenta(user,null,null,true);
 				modificar.setVisible(true);
 				dispose();
 			}

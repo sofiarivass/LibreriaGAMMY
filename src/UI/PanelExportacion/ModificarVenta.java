@@ -46,7 +46,7 @@ public class ModificarVenta extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ModificarVenta frame = new ModificarVenta(null,null,null);
+					ModificarVenta frame = new ModificarVenta(null,null,null,false);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,7 +58,7 @@ public class ModificarVenta extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ModificarVenta(Usuario user, Exportacion v, String datos) {
+	public ModificarVenta(Usuario user, Exportacion v, String datos, boolean mensaje) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 655, 440);
 		contentPane = new JPanel();
@@ -116,6 +116,13 @@ public class ModificarVenta extends JFrame {
 		lblMensajeErrorCliente.setBounds(133, 199, 114, 13);
 		panel.add(lblMensajeErrorCliente);
 		
+		JLabel lblExito = new JLabel("");
+		lblExito.setHorizontalAlignment(SwingConstants.CENTER);
+		lblExito.setForeground(new Color(61, 166, 15));
+		lblExito.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblExito.setBounds(246, 283, 335, 30);
+		panel.add(lblExito);
+		
 		JComboBox selectorCliente = new JComboBox();
 		selectorCliente.setBounds(10, 216, 123, 24);
 		selectorCliente.addItem("Selección");
@@ -134,6 +141,7 @@ public class ModificarVenta extends JFrame {
 		JButton btnSelecCliente = new JButton("Aceptar");
 		btnSelecCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				lblExito.setText("");
 				lblMensajeError.setText("");
 				lblSelecVenta.setText("");
 				venta = null;
@@ -230,13 +238,6 @@ public class ModificarVenta extends JFrame {
 							//cargamos la venta
 							venta = libro; //Venta
 							lblSelecVenta.setText(venta.toString());
-							
-							JLabel lblExito = new JLabel("");
-							lblExito.setHorizontalAlignment(SwingConstants.CENTER);
-							lblExito.setForeground(new Color(61, 166, 15));
-							lblExito.setFont(new Font("Tahoma", Font.BOLD, 15));
-							lblExito.setBounds(246, 283, 335, 30);
-							panel.add(lblExito);
 							break;
 						}
 					}
@@ -491,6 +492,10 @@ public class ModificarVenta extends JFrame {
 			selectorMoneda.setSelectedItem(v.getMoneda());
 			selectorOrigen.setSelectedItem(v.getOrigen());
 			selectorDestino.setSelectedItem(v.getDestino());
+		}
+		
+		if (mensaje) {
+			lblExito.setText("Venta Actulizada con Exito!!");
 		}
 	}
 	
