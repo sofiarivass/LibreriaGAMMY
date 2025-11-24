@@ -141,6 +141,32 @@ public class VentasExportDTO {
 	}
 	
 	/**
+	 * funcion para actualizar los datos de una Venta especifica en la BD con Jframe.
+	 * @param venta
+	 * @param detalles
+	 */
+	public static void actualizarVentaExportJframe(Exportacion venta) {
+		try {
+			PreparedStatement statement = con.prepareStatement(
+					"UPDATE venta SET metodo_pago =?, moneda =?, estado =?, origen =?, destino =? WHERE id_venta =?"
+					);
+			statement.setString(1, venta.getMetodoPago());
+			statement.setString(2, venta.getMoneda());
+			statement.setString(3, venta.getEstado());
+			statement.setString(4, venta.getOrigen());
+			statement.setString(5, venta.getDestino());
+			statement.setInt(6, venta.getIdVenta());
+			
+			
+			int filas = statement.executeUpdate();
+			if (filas > 0) {
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * funcion para anular una venta especifica en la BD.
 	 * @param venta
 	 * @param detalles

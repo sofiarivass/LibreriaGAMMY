@@ -48,7 +48,7 @@ public class PanelGestionarExport extends JFrame {
 		JButton btnModificarExportacion = new JButton("Modificar Exportación");
 		btnModificarExportacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ModificarVenta modificar = new ModificarVenta(user);
+				ModificarVenta modificar = new ModificarVenta(user,null,null);
 				modificar.setVisible(true);
 				dispose();
 			}
