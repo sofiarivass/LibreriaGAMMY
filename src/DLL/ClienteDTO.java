@@ -322,4 +322,50 @@ public class ClienteDTO {
 		}
 		return cliente;
 	}
+	
+	
+	public static boolean modificarCliente(Cliente cliente) {
+		boolean flag = true;
+		Cliente coincidencia = null;
+		for (Cliente elemento : ClienteDTO.mostrarClientes()) {
+			System.out.println(
+					"Comparando elemento.id=" + elemento.getIdCliente() + " con cliente.id=" + cliente.getIdCliente());
+			if (elemento.getDni()==cliente.getDni() && elemento.getIdCliente() !=cliente.getIdCliente()){
+				flag = false;
+				coincidencia = elemento;
+				break;
+			}
+		}
+		if (flag) {
+			try {
+				PreparedStatement statement;
+				
+					statement = con.prepareStatement(
+							"UPDATE cliente SET nombre=?, telefono=? ,mail=?,dni=?,estado=? WHERE id_cliente=?");
+			
+				statement.setString(1, cliente.getNombre());
+				statement.setString(2, cliente.getTelefono());
+				statement.setString(3, cliente.getMail());
+				statement.setInt(4, cliente.getDni());
+				statement.setBoolean(5, cliente.getEstado());				
+				statement.setInt(6, cliente.getIdCliente());
+
+				int filas = statement.executeUpdate();
+				if (filas > 0) {
+					System.out.println("Cliente editado correctamente");
+					return true;
+				} else {
+					return false;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+		} else {
+			System.out.println(
+					"Ya hay un cliente con las mismas caracteristicas cargado en el sistema: " + coincidencia.toString());
+			return false;
+		}
+	}
+	
 }

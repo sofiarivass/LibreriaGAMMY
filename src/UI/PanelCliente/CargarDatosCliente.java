@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 
 import BLL.Cliente;
 import BLL.Usuario;
+import DLL.ClienteDTO;
 
 import javax.swing.JLabel;
 
@@ -53,7 +54,7 @@ public class CargarDatosCliente extends JFrame {
 		JLabel lblMail = new JLabel("Mail");
 		lblMail.setBounds(57, 207, 46, 14);
 		contentPane.add(lblMail);
-		
+
 		JLabel lblDNI = new JLabel("DNI");
 		lblDNI.setBounds(57, 262, 46, 14);
 		contentPane.add(lblDNI);
@@ -79,7 +80,7 @@ public class CargarDatosCliente extends JFrame {
 		txtMail.setColumns(10);
 		txtMail.setBounds(57, 222, 217, 30);
 		contentPane.add(txtMail);
-		
+
 		txtDNI = new JTextField("" + cliente.getDni());
 		txtDNI.setColumns(10);
 		txtDNI.setBounds(57, 277, 217, 30);
@@ -89,117 +90,60 @@ public class CargarDatosCliente extends JFrame {
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-//				lblError.setText("");
-//
-//				boolean tituloV, editorialV;
-//				String autorV, numPaginasV, stockV, precioV;
-//				String titulo, editorial, autor, genero, idioma, publicoObjetivo, tapa;
-//				int numPaginas, stock;
-//				double precio;
-//				boolean firmado, edicionEspecial, saga, estado;
-//
-//				tituloV = Repository.Validaciones.validarVacioJframe(txtNombre.getText());
-//				editorialV = Repository.Validaciones.validarVacioJframe(txtTelefono.getText());
-//				if (tituloV == true || editorialV == true) {
-//					lblError.setText("Por favor complete los campos obligatorios");
-//				} else {
-//					titulo = txtNombre.getText();
-//					editorial = txtTelefono.getText();
-//					autorV = Repository.Validaciones.validarStringJframe(txtMail.getText());
-//					if (autorV.equals("vacio")) {
-//						lblError.setText("Por favor complete los campos obligatorios");
-//					} else if (autorV.equals("numero")) {
-//						lblError.setText("El nombre del autor no puede contener números");
-//					} else {
-//						autor = txtMail.getText();
-//						lblError.setText("");
-//						numPaginasV = Repository.Validaciones.validarIntJframe(txtPaginas.getText());
-//						if (numPaginasV.equals("vacio")) {
-//							lblError.setText("Por favor complete los campos obligatorios");
-//						} else if (numPaginasV.equals("letra")) {
-//							lblError.setText("La cantidad de páginas debe ser un número entero y positivo");
-//						} else if (numPaginasV.equals("tamaño")) {
-//							lblError.setText("La cantidad de páginas debe ser un número más pequeño");
-//						} else {
-//							numPaginas = Integer.parseInt(txtPaginas.getText());
-//							lblError.setText("");
-//							precioV = Repository.Validaciones.validarDoubleJframe(txtPrecio.getText());
-//							if (precioV.equals("vacio")) {
-//								lblError.setText("Por favor complete los campos obligatorios");
-//							} else if (precioV.equals("letra")) {
-//								lblError.setText("El precio debe ser un número");
-//							} else if (precioV.equals("tamaño")) {
-//								lblError.setText("El precio debe ser un número más pequeño");
-//							} else if (precioV.equals("negativo")) {
-//								lblError.setText("El precio debe ser un número positivo");
-//							} else {
-//								precio = Double.parseDouble(txtPrecio.getText());
-//								lblError.setText("");
-//								stockV = Repository.Validaciones.validarIntJframe(txtStock.getText());
-//								if (stockV.equals("vacio")) {
-//									lblError.setText("Por favor complete los campos obligatorios");
-//								} else if (stockV.equals("letra")) {
-//									lblError.setText("El stock debe ser un número entero y positivo");
-//								} else if (stockV.equals("tamaño")) {
-//									lblError.setText("El stock debe ser un número más pequeño");
-//								} else {
-//									stock = Integer.parseInt(txtStock.getText());
-//									lblError.setText("");
-//									genero = comboBoxGenero.getSelectedItem().toString();
-//									idioma = comboBoxIdioma.getSelectedItem().toString();
-//									publicoObjetivo = comboBoxPublico.getSelectedItem().toString();
-//									tapa = comboBoxTapa.getSelectedItem().toString();
-//									firmado = chckbxFirmado.isSelected();
-//									edicionEspecial = chckbxEdicion.isSelected();
-//									saga = chckbxSaga.isSelected();
-//
-//									java.util.Date selectedDate = txtFecha.getDate();
-//									Date fechaPublicacion = null;
-//
-//									if (selectedDate != null) {
-//										fechaPublicacion = new Date(selectedDate.getTime());
-//									}
-//
-//									Cliente clienteNuevo = new Cliente(titulo, autor, editorial, fechaPublicacion,
-//											genero, idioma, publicoObjetivo, numPaginas, firmado, edicionEspecial, tapa,
-//											saga, precio, stock, true, portada);
-//
-//									if (funcion.equals("crear")) {
-//										boolean coincidencia = ClienteDTO.agregarCliente(clienteNuevo);
-//										if (coincidencia == false) {
-//											lblError.setText("Ese cliente ya está cargado en el sistema");
-//										} else {
-//											System.out.println("todo ok");
-//											InfoCliente frame = new InfoCliente(user, clienteNuevo, "crear");
-//											frame.setVisible(true);
-//											dispose();
-//										}
-//									} else {
-//										clienteNuevo.setId_cliente(cliente.getId_cliente());
-//										boolean coincidencia = ClienteDTO.editarCliente(clienteNuevo);
-//										if (coincidencia == false) {
-//											lblError.setText("Ese cliente ya está cargado en el sistema");
-//										} else {
-//											System.out.println("todo ok");
-//											InfoCliente frame = new InfoCliente(user, clienteNuevo, "");
-//											frame.setVisible(true);
-//											dispose();
-//										}
-//									}
-//
-//								}
-//							}
-//						}
-//					}
-//				}
+				lblError.setText("");
+
+				boolean nombreV, dniV, mailV;
+				String nombre = "", telefono = "", mail = "";
+				int dni = 0;
+				boolean estado;
+
+				nombreV = Repository.Validaciones.validarVacioJframe(txtNombre.getText());
+				dniV = Repository.Validaciones.validarDniJframe(txtDNI.getText());
+				mailV = Repository.Validaciones.validarMail(txtMail.getText());
+				telefono = Repository.Validaciones.validarIntJframe(txtTelefono.getText());
+				if (telefono.equals("vacio")) {
+					lblError.setText("Por favor complete los campos obligatorios");
+				} else if (telefono.equals("letra")) {
+					lblError.setText("El telefono debe ser un número entero y positivo");
+				} else if (telefono.equals("tamaño")) {
+					lblError.setText("El telefono debe ser un número más pequeño");
+				} else if (nombreV == true) {
+					lblError.setText("Por favor complete los campos obligatorios");
+				} else if (mailV == false) {
+					lblError.setText("Ingrese un Mail Válido");
+				} else if (dniV == true) {
+					lblError.setText("Ingrese un DNI Válido");
+				} else {
+					nombre = txtNombre.getText();
+					telefono = txtTelefono.getText();
+					mail = txtMail.getText();
+					dni = Integer.parseInt(txtDNI.getText());
+
+					Cliente clienteNuevo = new Cliente(dni, nombre, telefono, mail, cliente.getEstado());
+
+					clienteNuevo.setIdCliente(cliente.getIdCliente());
+					boolean coincidencia = ClienteDTO.modificarCliente(clienteNuevo);
+					if (coincidencia == false) {
+						lblError.setText("Ese cliente ya está cargado en el sistema");
+					} else {
+						System.out.println("todo ok");
+						InfoCliente frame = new InfoCliente(user, clienteNuevo, "");
+						frame.setVisible(true);
+						dispose();
+					}
+				}
 			}
-		});
+
+		}
+
+		);
 		btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnGuardar.setBounds(111, 393, 109, 27);
 		contentPane.add(btnGuardar);
 
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 				GestionarCliente frame = new GestionarCliente(user);
 				frame.setVisible(true);
@@ -211,7 +155,6 @@ public class CargarDatosCliente extends JFrame {
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnCancelar.setBounds(111, 430, 109, 27);
 		contentPane.add(btnCancelar);
-
 
 	}
 }
