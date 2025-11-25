@@ -1,16 +1,12 @@
 package DLL;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import BLL.TipoEmpleado;
 import java.util.LinkedList;
-import java.util.List;
 import javax.swing.JOptionPane;
 import com.mysql.jdbc.Statement;
-import BLL.Admin;
 import BLL.Usuario;
-import Repository.Validaciones;
 
 public class UsuarioDTO {
 	private static Connection con = Conexion.getInstance().getConnection();

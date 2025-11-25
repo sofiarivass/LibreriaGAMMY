@@ -236,7 +236,6 @@ public class GestionarLibros extends JFrame {
 		// Cargar datos
 		cargarTabla();
 
-//		JButton btnVolver = new JButton("Volver");
 		JButton btnVolver = new JButton("");
 		btnVolver.setIcon(Validaciones.getScaledImageIcon("/img/volver.png", 22, 22));
 		btnVolver.addActionListener(new ActionListener() {
@@ -246,7 +245,6 @@ public class GestionarLibros extends JFrame {
 				dispose();
 			}
 		});
-//		btnVolver.setForeground(new Color(153, 17, 20));
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnVolver.setBounds(777, 512, 36, 27);
 		contentPane.add(btnVolver);

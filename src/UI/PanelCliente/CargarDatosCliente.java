@@ -48,7 +48,7 @@ public class CargarDatosCliente extends JFrame {
 		contentPane.add(lblNombre);
 
 		JLabel lblTelefono = new JLabel("Teléfono");
-		lblTelefono.setBounds(173, 151, 46, 14);
+		lblTelefono.setBounds(173, 151, 79, 14);
 		contentPane.add(lblTelefono);
 
 		JLabel lblMail = new JLabel("Mail");
@@ -92,34 +92,32 @@ public class CargarDatosCliente extends JFrame {
 
 				lblError.setText("");
 
-				boolean nombreV, dniV, mailV;
+				boolean telefonoV, dniV, mailV;
 				String nombre = "", telefono = "", mail = "";
 				int dni = 0;
-				boolean estado;
+				boolean estado = cliente.getEstado();
 
-				nombreV = Repository.Validaciones.validarVacioJframe(txtNombre.getText());
-				dniV = Repository.Validaciones.validarDniJframe(txtDNI.getText());
+				nombre = Repository.Validaciones.validarStringJframe(txtNombre.getText());
+				telefonoV = Repository.Validaciones.validarTelJframe(txtTelefono.getText());
 				mailV = Repository.Validaciones.validarMail(txtMail.getText());
-				telefono = Repository.Validaciones.validarIntJframe(txtTelefono.getText());
-				if (telefono.equals("vacio")) {
+				dniV = Repository.Validaciones.validarDniJframe(txtDNI.getText());
+				if (nombre.equals("vacio") || txtTelefono.getText().isEmpty() || txtMail.getText().isEmpty() || txtDNI.getText().isEmpty()) {
 					lblError.setText("Por favor complete los campos obligatorios");
-				} else if (telefono.equals("letra")) {
-					lblError.setText("El telefono debe ser un número entero y positivo");
-				} else if (telefono.equals("tamaño")) {
-					lblError.setText("El telefono debe ser un número más pequeño");
-				} else if (nombreV == true) {
-					lblError.setText("Por favor complete los campos obligatorios");
+				} else if (nombre.equals("numero")) {
+					lblError.setText("El nombre no puede contener números");
+				} else if (telefonoV == true) {
+					lblError.setText("Ingrese un teléfono válido (10 dígitos)");
 				} else if (mailV == false) {
-					lblError.setText("Ingrese un Mail Válido");
+					lblError.setText("Ingrese un mail válido");
 				} else if (dniV == true) {
-					lblError.setText("Ingrese un DNI Válido");
+					lblError.setText("Ingrese un DNI válido (8 dígitos)");
 				} else {
 					nombre = txtNombre.getText();
 					telefono = txtTelefono.getText();
 					mail = txtMail.getText();
 					dni = Integer.parseInt(txtDNI.getText());
 
-					Cliente clienteNuevo = new Cliente(dni, nombre, telefono, mail, cliente.getEstado());
+					Cliente clienteNuevo = new Cliente(dni, nombre, telefono, mail, estado);
 
 					clienteNuevo.setIdCliente(cliente.getIdCliente());
 					boolean coincidencia = ClienteDTO.modificarCliente(clienteNuevo);

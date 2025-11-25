@@ -10,7 +10,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import BLL.Cliente;
 import BLL.Usuario;
-import UI.PanelVendedorInternacional;
 
 import java.awt.Font;
 import java.awt.Color;

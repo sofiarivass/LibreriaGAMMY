@@ -47,8 +47,10 @@ public class CargarDatosLibro extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		if (funcion.equals("editar")) {			
+			portada = libro.getPortada();
+		}
 		contentPane.setLayout(null);
-		portada = libro.getPortada();
 		JLabel lblCargarDatos = new JLabel();
 		lblCargarDatos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCargarDatos.setBounds(118, 28, 355, 25);

@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -23,25 +22,25 @@ public class ClienteDTO {
 	 */
 	public static Cliente buscarCliente(int dni) {
 		Cliente encontrado = null;
-		
-		try {
-            PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE dni = ?");
-            stmt.setInt(1, dni);
-  
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-            	int id = rs.getInt("id_cliente");
-            	int dni_cliente = rs.getInt("dni");
-                String nombre = rs.getString("nombre");
-                String telefono = rs.getString("telefono");
-                String email = rs.getString("mail");
-                boolean estado = rs.getBoolean("estado");
 
-                encontrado = new Cliente(id,dni_cliente,nombre,telefono,email,estado);
-                }
-        } catch (Exception e) {
-        	
-        }
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE dni = ?");
+			stmt.setInt(1, dni);
+
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				int id = rs.getInt("id_cliente");
+				int dni_cliente = rs.getInt("dni");
+				String nombre = rs.getString("nombre");
+				String telefono = rs.getString("telefono");
+				String email = rs.getString("mail");
+				boolean estado = rs.getBoolean("estado");
+
+				encontrado = new Cliente(id, dni_cliente, nombre, telefono, email, estado);
+			}
+		} catch (Exception e) {
+
+		}
 		return encontrado;
 	}
 
@@ -50,22 +49,22 @@ public class ClienteDTO {
 		LinkedList<Cliente> listaClientes = new LinkedList<Cliente>();
 
 		try {
-            PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente");
-            ResultSet rs = stmt.executeQuery();
-            
-            while (rs.next()) {
-                int id_cliente = rs.getInt("id_cliente");
-                String nombre = rs.getString("nombre");
-                String telefono = rs.getString("telefono");
-                String mail = rs.getString("mail");
-                int dni = rs.getInt("dni");
-                boolean estado = rs.getBoolean("estado");
-                
-                listaClientes.add(new Cliente(id_cliente,dni,nombre,telefono,mail,estado));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente");
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				int id_cliente = rs.getInt("id_cliente");
+				String nombre = rs.getString("nombre");
+				String telefono = rs.getString("telefono");
+				String mail = rs.getString("mail");
+				int dni = rs.getInt("dni");
+				boolean estado = rs.getBoolean("estado");
+
+				listaClientes.add(new Cliente(id_cliente, dni, nombre, telefono, mail, estado));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return listaClientes;
 	}
 
@@ -108,14 +107,14 @@ public class ClienteDTO {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * funcion para registrar un nuevo Cliente en la BD con Jframe.
+	 * 
 	 * @param cliente
 	 * @return
 	 */
 	public static Cliente registrarClienteJframe(Cliente cliente) {
-		Cliente creado = null;
 		try {
 			PreparedStatement statement = con.prepareStatement(
 					"INSERT INTO cliente (nombre, telefono, mail, dni, estado) VALUES (?, ?, ?, ?, ?)",
@@ -125,7 +124,7 @@ public class ClienteDTO {
 			statement.setString(3, cliente.getMail());
 			statement.setInt(4, cliente.getDni());
 			statement.setBoolean(5, cliente.getEstado());
-			
+
 			int filas = statement.executeUpdate();
 			if (filas > 0) {
 				JOptionPane.showMessageDialog(null, "cliente dio de baja correctamente.");
@@ -133,63 +132,63 @@ public class ClienteDTO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return cliente;
 	}
-	
-	public static LinkedList<Cliente> mostrarClientes(){
+
+	public static LinkedList<Cliente> mostrarClientes() {
 		LinkedList<Cliente> clientes = new LinkedList<Cliente>();
 		try {
 			PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente");
 			ResultSet rs = stmt.executeQuery();
-			
+
 			while (rs.next()) {
 				int id = rs.getInt("id_cliente");
-            	int dni_cliente = rs.getInt("dni");
-                String nombre = rs.getString("nombre");
-                String telefono = rs.getString("telefono");
-                String email = rs.getString("mail");
-                boolean estado= rs.getBoolean("estado");
-				
-				clientes.add( new Cliente(id,dni_cliente,nombre,telefono,email,estado));
-			
+				int dni_cliente = rs.getInt("dni");
+				String nombre = rs.getString("nombre");
+				String telefono = rs.getString("telefono");
+				String email = rs.getString("mail");
+				boolean estado = rs.getBoolean("estado");
+
+				clientes.add(new Cliente(id, dni_cliente, nombre, telefono, email, estado));
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return clientes;
-		
+
 	}
-	
-	
-	public static LinkedList<Cliente> filtrarClientes(int filtro){
+
+	public static LinkedList<Cliente> filtrarClientes(int filtro) {
 		LinkedList<Cliente> clientes = new LinkedList<Cliente>();
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE id_cliente IN (SELECT c.fk_cliente FROM carrito c JOIN venta v ON v.fk_carrito = c.id_carrito WHERE v.fk_tipo_venta = ?)");
+			PreparedStatement stmt = con.prepareStatement(
+					"SELECT * FROM cliente WHERE id_cliente IN (SELECT c.fk_cliente FROM carrito c JOIN venta v ON v.fk_carrito = c.id_carrito WHERE v.fk_tipo_venta = ?)");
 			stmt.setInt(1, filtro);
-			
+
 			ResultSet rs = stmt.executeQuery();
-			
+
 			while (rs.next()) {
 				int id = rs.getInt("id_cliente");
-            	int dni_cliente = rs.getInt("dni");
-                String nombre = rs.getString("nombre");
-                String telefono = rs.getString("telefono");
-                String email = rs.getString("mail");
-                boolean estado= rs.getBoolean("estado");
-				
-				clientes.add( new Cliente(id,dni_cliente,nombre,telefono,email,estado));
-			
+				int dni_cliente = rs.getInt("dni");
+				String nombre = rs.getString("nombre");
+				String telefono = rs.getString("telefono");
+				String email = rs.getString("mail");
+				boolean estado = rs.getBoolean("estado");
+
+				clientes.add(new Cliente(id, dni_cliente, nombre, telefono, email, estado));
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return clientes;
-		
+
 	}
-	
+
 	public static Cliente clientePorID(int id) {
 		Cliente cliente = null;
 		try {
@@ -201,21 +200,20 @@ public class ClienteDTO {
 
 			if (rs.next()) {
 
-            	int dni_cliente = rs.getInt("dni");
-                String nombre = rs.getString("nombre");
-                String telefono = rs.getString("telefono");
-                String email = rs.getString("mail");
-                boolean estado= rs.getBoolean("estado");
-				
-                cliente = new Cliente(id,dni_cliente,nombre,telefono,email,estado);	
+				int dni_cliente = rs.getInt("dni");
+				String nombre = rs.getString("nombre");
+				String telefono = rs.getString("telefono");
+				String email = rs.getString("mail");
+				boolean estado = rs.getBoolean("estado");
+
+				cliente = new Cliente(id, dni_cliente, nombre, telefono, email, estado);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return cliente;
 	}
-	
-	
+
 	public static String eliminarClienteJFrame(Cliente cliente) {
 		boolean nuevoEstado;
 		String texto;
@@ -233,25 +231,24 @@ public class ClienteDTO {
 			statement.setInt(2, cliente.getIdCliente());
 
 			int filas = statement.executeUpdate();
-			
+
 			if (filas > 0) {
 //				System.out.println("Cliente Registrado correctamente!!");
-				
+
 			}
 		} catch (Exception e) {
 //			System.out.println("no se pudo registrar al cliente!! " + e);
-		}			
+		}
 		return texto;
 	}
-	
-	
+
 	public static boolean modificarCliente(Cliente cliente) {
 		boolean flag = true;
 		Cliente coincidencia = null;
 		for (Cliente elemento : ClienteDTO.mostrarClientes()) {
 			System.out.println(
 					"Comparando elemento.id=" + elemento.getIdCliente() + " con cliente.id=" + cliente.getIdCliente());
-			if (elemento.getDni()==cliente.getDni() && elemento.getIdCliente() !=cliente.getIdCliente()){
+			if (elemento.getDni() == cliente.getDni() || elemento.getTelefono() == cliente.getTelefono() || elemento.getMail() == cliente.getMail() && elemento.getIdCliente() != cliente.getIdCliente()) {
 				flag = false;
 				coincidencia = elemento;
 				break;
@@ -260,15 +257,15 @@ public class ClienteDTO {
 		if (flag) {
 			try {
 				PreparedStatement statement;
-				
-					statement = con.prepareStatement(
-							"UPDATE cliente SET nombre=?, telefono=? ,mail=?,dni=?,estado=? WHERE id_cliente=?");
-			
+
+				statement = con.prepareStatement(
+						"UPDATE cliente SET nombre=?, telefono=? ,mail=?,dni=?,estado=? WHERE id_cliente=?");
+
 				statement.setString(1, cliente.getNombre());
 				statement.setString(2, cliente.getTelefono());
 				statement.setString(3, cliente.getMail());
 				statement.setInt(4, cliente.getDni());
-				statement.setBoolean(5, cliente.getEstado());				
+				statement.setBoolean(5, cliente.getEstado());
 				statement.setInt(6, cliente.getIdCliente());
 
 				int filas = statement.executeUpdate();
@@ -283,10 +280,10 @@ public class ClienteDTO {
 				return false;
 			}
 		} else {
-			System.out.println(
-					"Ya hay un cliente con las mismas caracteristicas cargado en el sistema: " + coincidencia.toString());
+			System.out.println("Ya hay un cliente con las mismas caracteristicas cargado en el sistema: "
+					+ coincidencia.toString());
 			return false;
 		}
 	}
-	
+
 }

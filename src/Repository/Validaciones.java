@@ -8,7 +8,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import UI.Main;
-import UI.PanelInventario.GestionarLibros;
 
 public interface Validaciones {
 
@@ -488,26 +487,43 @@ public interface Validaciones {
 
 		return num;
 	}
+	
+	/**
+	 * funcion que no permite campos vacios ni letras solo numeros
+	 * 
+	 * @param numero
+	 * @return
+	 */
+	public static boolean validarTelJframe(String numero) {
+		boolean num;
+		int contL = 0;
 
-//	public static String validarStringJframe(String input) {
-//		boolean flag;
-//
-//			int contN = 0;
-//
-//			for (int i = 0; i < input.length(); i++) {
-//				if (Character.isDigit(input.charAt(i))) {
-//					contN++;
-//				}
-//			}
-//
-//			if (contN > 0) {
-//				flag = false;
-//			} else {
-//				flag = true;
-//			}
-//
-//		return flag;
-//	}
+		for (int i = 0; i < numero.length(); i++) {
+			if (Character.isAlphabetic(numero.charAt(i))) {
+				contL++;
+			}
+		}
+
+		if (contL == 0) {
+			if (numero.length() == 10) {
+				if (Integer.parseInt(numero) > 0) {
+					num = false;
+				} else {
+					System.out.println("numero no es mayor a 0");
+					num = true;
+				}
+			} else {
+				System.out.println("numero no es menor o = a 8");
+				num = true;
+			}
+		} else {
+			System.out.println("contL es mayor a 0");
+			num = true;
+		}
+
+		return num;
+	}
+	
 	
 	public static String validarStringJframe(String input) {
 

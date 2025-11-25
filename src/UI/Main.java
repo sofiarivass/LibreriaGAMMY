@@ -114,19 +114,15 @@ public class Main extends JFrame {
 				break;
 			// MENU VENDEDOR
 			case 2:
-//				MenuVendedor.Menu(user);
-				
 				PanelVendedor vendedor = new PanelVendedor(user);
 				vendedor.setVisible(true);
 				dispose();
-//				MenuVendedorInternacional.Menu(user);
 				break;
 			// MENU VENDEDOR INTERNACIONAL
 			case 3:
 				PanelVendedorInternacional vendedorInt = new PanelVendedorInternacional(user);
 				vendedorInt.setVisible(true);
 				dispose();
-//				MenuVendedorInternacional.Menu(user);
 				break;
 			}
 		}

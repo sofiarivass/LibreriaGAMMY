@@ -13,6 +13,8 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import javax.swing.SwingConstants;
 
 public class PanelVendedorInternacional extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -88,5 +90,12 @@ public class PanelVendedorInternacional extends JFrame {
 		btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnCerrarSesion.setBounds(182, 228, 141, 32);
 		contentPane.add(btnCerrarSesion);
+		
+		JLabel lblPrximamente = new JLabel("Próximamente...");
+		lblPrximamente.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPrximamente.setForeground(new Color(0, 0, 128));
+		lblPrximamente.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
+		lblPrximamente.setBounds(280, 194, 166, 13);
+		contentPane.add(lblPrximamente);
 	}
 }
