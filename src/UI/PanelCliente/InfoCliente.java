@@ -34,28 +34,28 @@ public class InfoCliente extends JFrame {
 		JLabel lblID = new JLabel();
 		lblID.setHorizontalAlignment(SwingConstants.CENTER);
 		lblID.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblID.setBounds(98, 277, 101, 32);
+		lblID.setBounds(79, 277, 101, 32);
 		lblID.setText("ID: " + cliente.getIdCliente());
 		contentPane.add(lblID);
 
 		JLabel lblTitulo = new JLabel();
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblTitulo.setBounds(-5, 158, 306, 32);
+		lblTitulo.setBounds(-24, 158, 306, 32);
 		lblTitulo.setText("Nombre: " + cliente.getNombre());
 		contentPane.add(lblTitulo);
 
 		JLabel lblAutor = new JLabel();
 		lblAutor.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAutor.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblAutor.setBounds(-7, 201, 310, 32);
+		lblAutor.setBounds(-26, 201, 310, 32);
 		lblAutor.setText("DNI: " + cliente.getDni());
 		contentPane.add(lblAutor);
 
 		JLabel lblEditorial = new JLabel();
 		lblEditorial.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEditorial.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblEditorial.setBounds(285, 158, 353, 32);
+		lblEditorial.setBounds(235, 158, 353, 32);
 		lblEditorial.setText("Mail: " + cliente.getMail());
 		contentPane.add(lblEditorial);
 
@@ -70,7 +70,7 @@ public class InfoCliente extends JFrame {
 		JLabel lblTapa = new JLabel();
 		lblTapa.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTapa.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblTapa.setBounds(330, 201, 262, 32);
+		lblTapa.setBounds(280, 201, 262, 32);
 		lblTapa.setText("Teléfono: " + cliente.getTelefono());
 		contentPane.add(lblTapa);
 
@@ -78,7 +78,7 @@ public class InfoCliente extends JFrame {
 		lblEstado.setForeground(new Color(0, 0, 128));
 		lblEstado.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEstado.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblEstado.setBounds(343, 277, 237, 32);
+		lblEstado.setBounds(293, 277, 237, 32);
 		lblEstado.setText("Estado: " + (cliente.getEstado() == true ? "Activo" : "Inactivo"));
 		contentPane.add(lblEstado);
 

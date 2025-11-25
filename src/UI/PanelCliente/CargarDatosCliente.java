@@ -31,7 +31,7 @@ public class CargarDatosCliente extends JFrame {
 	 */
 	public CargarDatosCliente(Usuario user, Cliente cliente) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 346, 521);
+		setBounds(100, 100, 582, 521);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -39,51 +39,51 @@ public class CargarDatosCliente extends JFrame {
 
 		JLabel lblCargarDatos = new JLabel("Editar Datos de un Cliente");
 		lblCargarDatos.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCargarDatos.setBounds(34, 28, 263, 25);
+		lblCargarDatos.setBounds(151, 28, 263, 25);
 		lblCargarDatos.setFont(new Font("Tahoma", Font.BOLD, 20));
 		contentPane.add(lblCargarDatos);
 
 		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(57, 92, 46, 14);
+		lblNombre.setBounds(173, 92, 46, 14);
 		contentPane.add(lblNombre);
 
 		JLabel lblTelefono = new JLabel("Teléfono");
-		lblTelefono.setBounds(57, 151, 46, 14);
+		lblTelefono.setBounds(173, 151, 46, 14);
 		contentPane.add(lblTelefono);
 
 		JLabel lblMail = new JLabel("Mail");
-		lblMail.setBounds(57, 207, 46, 14);
+		lblMail.setBounds(173, 207, 46, 14);
 		contentPane.add(lblMail);
 
 		JLabel lblDNI = new JLabel("DNI");
-		lblDNI.setBounds(57, 262, 46, 14);
+		lblDNI.setBounds(173, 262, 46, 14);
 		contentPane.add(lblDNI);
 
 		JLabel lblError = new JLabel("");
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
 		lblError.setForeground(new Color(159, 0, 0));
 		lblError.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
-		lblError.setBounds(10, 332, 275, 43);
+		lblError.setBounds(10, 332, 546, 43);
 		contentPane.add(lblError);
 
 		txtNombre = new JTextField(cliente.getNombre());
 		txtNombre.setColumns(10);
-		txtNombre.setBounds(57, 107, 217, 30);
+		txtNombre.setBounds(174, 107, 217, 30);
 		contentPane.add(txtNombre);
 
 		txtTelefono = new JTextField(cliente.getTelefono());
 		txtTelefono.setColumns(10);
-		txtTelefono.setBounds(57, 166, 217, 30);
+		txtTelefono.setBounds(174, 166, 217, 30);
 		contentPane.add(txtTelefono);
 
 		txtMail = new JTextField(cliente.getMail());
 		txtMail.setColumns(10);
-		txtMail.setBounds(57, 222, 217, 30);
+		txtMail.setBounds(174, 222, 217, 30);
 		contentPane.add(txtMail);
 
 		txtDNI = new JTextField("" + cliente.getDni());
 		txtDNI.setColumns(10);
-		txtDNI.setBounds(57, 277, 217, 30);
+		txtDNI.setBounds(174, 277, 217, 30);
 		contentPane.add(txtDNI);
 
 		JButton btnGuardar = new JButton("Guardar");
@@ -138,7 +138,7 @@ public class CargarDatosCliente extends JFrame {
 
 		);
 		btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnGuardar.setBounds(111, 393, 109, 27);
+		btnGuardar.setBounds(228, 393, 109, 27);
 		contentPane.add(btnGuardar);
 
 		JButton btnCancelar = new JButton("Cancelar");
@@ -153,7 +153,7 @@ public class CargarDatosCliente extends JFrame {
 
 		btnCancelar.setForeground(new Color(153, 17, 20));
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnCancelar.setBounds(111, 430, 109, 27);
+		btnCancelar.setBounds(228, 430, 109, 27);
 		contentPane.add(btnCancelar);
 
 	}

@@ -126,7 +126,7 @@ public class ClienteDTO {
 			statement.setInt(4, cliente.getDni());
 			statement.setBoolean(5, cliente.getEstado());
 			
-			int filas = stmt.executeUpdate();
+			int filas = statement.executeUpdate();
 			if (filas > 0) {
 				JOptionPane.showMessageDialog(null, "cliente dio de baja correctamente.");
 			}
@@ -134,7 +134,7 @@ public class ClienteDTO {
 			e.printStackTrace();
 		}
 		
-		return true;
+		return cliente;
 	}
 	
 	public static LinkedList<Cliente> mostrarClientes(){
@@ -190,73 +190,29 @@ public class ClienteDTO {
 		
 	}
 	
-	public static Cliente clientePorID(LinkedList<Cliente> clienteDisp) {
-		int id_cliente = 0;
-		List<Cliente> clientes = ClienteDTO.mostrarClientes();
-		
-		if(clienteDisp == null) {
-			String[] clienteArray = new String[clientes.size()];
-			for (int i = 0; i < clienteArray.length; i++) {
-				clienteArray[i] = clientes.get(i).getIdCliente() + " - " + clientes.get(i).getNombre(); 
+	public static Cliente clientePorID(int id) {
+		Cliente cliente = null;
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE id_cliente = ?");
+			stmt.setInt(1, id);
+
+			// executequery se utiliza cuando no hay cambios en la bdd
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+
+            	int dni_cliente = rs.getInt("dni");
+                String nombre = rs.getString("nombre");
+                String telefono = rs.getString("telefono");
+                String email = rs.getString("mail");
+                boolean estado= rs.getBoolean("estado");
+				
+                cliente = new Cliente(id,dni_cliente,nombre,telefono,email,estado);	
 			}
-			String elegido = (String) JOptionPane.showInputDialog(null, "Elija cliente:", null, 0, null, clienteArray, clienteArray[0]);
-			id_cliente = Integer.parseInt(elegido.split(" - ")[0]);
-			Cliente cliente = null;
-			
-			try {
-				PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE id_cliente = ?");
-				stmt.setInt(1, id_cliente);
-				
-				ResultSet rs = stmt.executeQuery();
-				
-				if (rs.next()) {
-					int id = rs.getInt("id_cliente");
-	            	int dni_cliente = rs.getInt("dni");
-	                String nombre = rs.getString("nombre");
-	                String telefono = rs.getString("telefono");
-	                String email = rs.getString("mail");
-	                boolean estado= rs.getBoolean("estado");
-					
-	                cliente = new Cliente(id,dni_cliente,nombre,telefono,email,estado);
-					
-				
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return cliente;
-		}else {
-			String [] clientesArray = new String[clienteDisp.size()];
-			for (int i = 0; i < clientesArray.length; i++) {
-				clientesArray[i] = clienteDisp.get(i).getIdCliente() + " - " + clienteDisp.get(i).getNombre();
-			}
-			String elegido = (String) JOptionPane.showInputDialog(null, "Elija cliente:", null, 0, null, clientesArray, clientesArray[0]);
-			id_cliente = Integer.parseInt(elegido.split(" - ")[0]);
-			Cliente cliente = null;
-			try {
-				PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE id_cliente = ?");
-				stmt.setInt(1, id_cliente);
-				
-				ResultSet rs = stmt.executeQuery();
-				
-				if (rs.next()) {
-					
-					int id = rs.getInt("id_cliente");
-	            	int dni_cliente = rs.getInt("dni");
-	                String nombre = rs.getString("nombre");
-	                String telefono = rs.getString("telefono");
-	                String email = rs.getString("mail");
-	                boolean estado= rs.getBoolean("estado");
-					
-	                cliente = new Cliente(id,dni_cliente,nombre,telefono,email,estado);	
-				
-				
-				} 
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-			return cliente;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return cliente;
 	}
 	
 	
@@ -277,23 +233,15 @@ public class ClienteDTO {
 			statement.setInt(2, cliente.getIdCliente());
 
 			int filas = statement.executeUpdate();
-			ResultSet rs = statement.getGeneratedKeys();
-	
-			if (rs.next()) {
-				int idGenerado = rs.getInt(1);
-				cliente.setIdCliente(idGenerado);
-			}
 			
 			if (filas > 0) {
-				System.out.println("Cliente Registrado correctamente!!");
-				creado = cliente;
-			} else {
-				creado = null;
+//				System.out.println("Cliente Registrado correctamente!!");
+				
 			}
 		} catch (Exception e) {
-			System.out.println("no se pudo registrar al cliente!! " + e);
+//			System.out.println("no se pudo registrar al cliente!! " + e);
 		}			
-		return creado;
+		return texto;
 	}
 	
 	
