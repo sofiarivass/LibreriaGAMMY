@@ -28,15 +28,27 @@ public class Admin extends Usuario {
 		return "Admin [listaEmpleados=" + listaEmpleados + "]";
 	}
 	
+//	public static LinkedList<Usuario> mostrarEmpleados() {
+//		LinkedList<Usuario> usuario = UsuarioDTO.mostrarUsuarios();
+//		
+//		if (usuario == null || usuario.isEmpty()) {
+//			JOptionPane.showMessageDialog(null, "No hay empleados para mostrar.");
+//		}else {
+//			JOptionPane.showMessageDialog(null, UsuarioDTO.usuarioPorID(usuario));
+//		}
+//		return usuario;
+//	}
+	
 	public static LinkedList<Usuario> mostrarEmpleados() {
-		LinkedList<Usuario> usuario = UsuarioDTO.mostrarUsuarios();
+		LinkedList<Usuario> usuarios = UsuarioDTO.mostrarUsuarios();
 		
-		if (usuario == null || usuario.isEmpty()) {
+		if (usuarios == null || usuarios.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "No hay empleados para mostrar.");
+			return null;
 		}else {
-			JOptionPane.showMessageDialog(null, UsuarioDTO.usuarioPorID(usuario));
+//			JOptionPane.showMessageDialog(null, UsuarioDTO.usuarioPorID(usuario));
+			return usuarios;
 		}
-		return usuario;
 	}
 	
 	public static Usuario cargarDatosUsuario(String accion) {

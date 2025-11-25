@@ -1,5 +1,6 @@
 package DLL;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import BLL.TipoEmpleado;
@@ -53,6 +54,24 @@ public class UsuarioDTO {
 		
 	}*/
 	
+	/*
+	public static boolean buscarUsuarioExistente (String usuario){
+		boolean flag;
+		LinkedList<Usuario> usuarios = UsuarioDTO.mostrarUsuarios();
+		
+		flag = false;
+		for (Usuario userSys : usuarios) {
+			if(userSys.getUsuario().equalsIgnoreCase(usuario)) {
+				flag = true;
+				System.out.println("El usuario esta tomado");
+			}
+			break;
+		}while(flag);
+		
+		return flag;
+		
+	}
+	*/
 	public static TipoEmpleado buscarEmpleado(int fkEmpleado) {
 		TipoEmpleado empleado = null;
 		
@@ -115,7 +134,7 @@ public class UsuarioDTO {
 				TipoEmpleado empleado = buscarEmpleado(tipo_empleado);
 				
 				
-				usuario.add(new Usuario(id_usuario, usuario_empleado, nom_empleado, estado, empleado));
+				usuario.add(new Usuario(id_usuario, nom_empleado, usuario_empleado, estado, empleado));
 				
 			}
 		} catch (Exception e) {
@@ -124,6 +143,33 @@ public class UsuarioDTO {
 		
 		return usuario;
 		
+	}
+	
+	public static String estadoUsuarioJFrame(Usuario user) {
+		boolean nuevoEstado;
+		String texto;
+		if (user.getEstado() == true) {
+			nuevoEstado = false;
+			texto = "El usuario fue dado de baja correctamente";
+		} else {
+			nuevoEstado = true;
+			texto = "El usuario fue dado de alta correctamente";
+		}
+
+		try {
+			PreparedStatement statement = con.prepareStatement("UPDATE usuario SET estado = ? WHERE id_usuario = ?");
+			statement.setBoolean(1, nuevoEstado);
+			statement.setInt(2, user.getId_usuario());
+
+			int filas = statement.executeUpdate();
+			if (filas > 0) {
+				System.out.println("se cambió el estado");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return texto;
 	}
 	
 	public static boolean eliminarUsuarioPorID(int usuario) {
@@ -143,11 +189,36 @@ public class UsuarioDTO {
 		return true;
 	}
 	
-	public static Usuario usuarioPorID(LinkedList<Usuario> usuarioDisp) {
+	public static Usuario usuarioPorID(int id) {
+		Usuario usuario = null;
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM usuario WHERE id_usuario = ?");
+			stmt.setInt(1, id);
+
+			// executequery se utiliza cuando no hay cambios en la bdd
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				String usuario_empleado = rs.getString("usuario");
+				String nom_empleado = rs.getString("nombre");
+				boolean estado = rs.getBoolean("estado");
+				int tipo_empleado = rs.getInt("fk_tipo_empleado");
+				
+				TipoEmpleado empleado2 = buscarEmpleado(tipo_empleado);
+				
+				
+				usuario = new Usuario(id, nom_empleado, usuario_empleado, estado, empleado2);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return usuario;
+	}
+	/*
 		int id_usuario = 0;
 		List<Usuario> usuario = UsuarioDTO.mostrarUsuarios();
 		
-		if(usuarioDisp == null) {
+		if(j == null) {
 			String[] usuarioArray = new String[usuario.size()];
 			for (int i = 0; i < usuarioArray.length; i++) {
 				usuarioArray[i] = usuario.get(i).getId_usuario() + " - " + usuario.get(i).getUsuario(); 
@@ -179,9 +250,9 @@ public class UsuarioDTO {
 			}
 			return empleado;
 		}else {
-			String [] usuariosArray = new String[usuarioDisp.size()];
+			String [] usuariosArray = new String[j.size()];
 			for (int i = 0; i < usuariosArray.length; i++) {
-				usuariosArray[i] = usuarioDisp.get(i).getId_usuario() + " - " + usuarioDisp.get(i).getUsuario();
+				usuariosArray[i] = j.get(i).getId_usuario() + " - " + j.get(i).getUsuario();
 			}
 			String elegido = (String) JOptionPane.showInputDialog(null, "Elija usuario:", null, 0, null, usuariosArray, usuariosArray[0]);
 			id_usuario = Integer.parseInt(elegido.split(" - ")[0]);
@@ -208,7 +279,7 @@ public class UsuarioDTO {
 			}
 			return empleado;
 		}
-	}
+	}*/	
 	
 	public static boolean agregarUsuario(Usuario nuevo) {
 			try {
@@ -228,7 +299,8 @@ public class UsuarioDTO {
 				}
 				
 				if (filas > 0) {
-					JOptionPane.showMessageDialog(null, "Usuario agregado correctamente\n" + nuevo.toString());
+					
+					//JOptionPane.showMessageDialog(null, "Usuario agregado correctamente\n" + nuevo.toString());
 					return true;
 				}
 			} catch (Exception e) {
@@ -238,7 +310,7 @@ public class UsuarioDTO {
 	}
 	
 	
-	
+	/*
 	public static void eliminarEmpleados() {
 		LinkedList<Usuario> usuarios = Admin.mostrarEmpleados();
 		LinkedList<Usuario> empleadosDisp = new LinkedList<Usuario>();
@@ -275,12 +347,8 @@ public class UsuarioDTO {
 		}
 		
 	}
+
 	
-	
-	
-	
-	
-	
-	
+*/	
 }
 	

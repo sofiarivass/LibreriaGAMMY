@@ -5,6 +5,9 @@ import BLL.Usuario;
 import Enums.*;
 
 public class MenuAdmin {
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public static void Menu(Usuario user) {
 		
 		int opcionAdmin, opcionAdmin1,opcionAdmin2,opcionAdmin3;
