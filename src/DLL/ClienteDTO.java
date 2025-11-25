@@ -126,6 +126,156 @@ public class ClienteDTO {
 			statement.setInt(4, cliente.getDni());
 			statement.setBoolean(5, cliente.getEstado());
 			
+			int filas = stmt.executeUpdate();
+			if (filas > 0) {
+				JOptionPane.showMessageDialog(null, "cliente dio de baja correctamente.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return true;
+	}
+	
+	public static LinkedList<Cliente> mostrarClientes(){
+		LinkedList<Cliente> clientes = new LinkedList<Cliente>();
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente");
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				int id = rs.getInt("id_cliente");
+            	int dni_cliente = rs.getInt("dni");
+                String nombre = rs.getString("nombre");
+                String telefono = rs.getString("telefono");
+                String email = rs.getString("mail");
+                boolean estado= rs.getBoolean("estado");
+				
+				clientes.add( new Cliente(id,dni_cliente,nombre,telefono,email,estado));
+			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return clientes;
+		
+	}
+	
+	
+	public static LinkedList<Cliente> filtrarClientes(int filtro){
+		LinkedList<Cliente> clientes = new LinkedList<Cliente>();
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE id_cliente IN (SELECT c.fk_cliente FROM carrito c JOIN venta v ON v.fk_carrito = c.id_carrito WHERE v.fk_tipo_venta = ?)");
+			stmt.setInt(1, filtro);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				int id = rs.getInt("id_cliente");
+            	int dni_cliente = rs.getInt("dni");
+                String nombre = rs.getString("nombre");
+                String telefono = rs.getString("telefono");
+                String email = rs.getString("mail");
+                boolean estado= rs.getBoolean("estado");
+				
+				clientes.add( new Cliente(id,dni_cliente,nombre,telefono,email,estado));
+			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return clientes;
+		
+	}
+	
+	public static Cliente clientePorID(LinkedList<Cliente> clienteDisp) {
+		int id_cliente = 0;
+		List<Cliente> clientes = ClienteDTO.mostrarClientes();
+		
+		if(clienteDisp == null) {
+			String[] clienteArray = new String[clientes.size()];
+			for (int i = 0; i < clienteArray.length; i++) {
+				clienteArray[i] = clientes.get(i).getIdCliente() + " - " + clientes.get(i).getNombre(); 
+			}
+			String elegido = (String) JOptionPane.showInputDialog(null, "Elija cliente:", null, 0, null, clienteArray, clienteArray[0]);
+			id_cliente = Integer.parseInt(elegido.split(" - ")[0]);
+			Cliente cliente = null;
+			
+			try {
+				PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE id_cliente = ?");
+				stmt.setInt(1, id_cliente);
+				
+				ResultSet rs = stmt.executeQuery();
+				
+				if (rs.next()) {
+					int id = rs.getInt("id_cliente");
+	            	int dni_cliente = rs.getInt("dni");
+	                String nombre = rs.getString("nombre");
+	                String telefono = rs.getString("telefono");
+	                String email = rs.getString("mail");
+	                boolean estado= rs.getBoolean("estado");
+					
+	                cliente = new Cliente(id,dni_cliente,nombre,telefono,email,estado);
+					
+				
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return cliente;
+		}else {
+			String [] clientesArray = new String[clienteDisp.size()];
+			for (int i = 0; i < clientesArray.length; i++) {
+				clientesArray[i] = clienteDisp.get(i).getIdCliente() + " - " + clienteDisp.get(i).getNombre();
+			}
+			String elegido = (String) JOptionPane.showInputDialog(null, "Elija cliente:", null, 0, null, clientesArray, clientesArray[0]);
+			id_cliente = Integer.parseInt(elegido.split(" - ")[0]);
+			Cliente cliente = null;
+			try {
+				PreparedStatement stmt = con.prepareStatement("SELECT * FROM cliente WHERE id_cliente = ?");
+				stmt.setInt(1, id_cliente);
+				
+				ResultSet rs = stmt.executeQuery();
+				
+				if (rs.next()) {
+					
+					int id = rs.getInt("id_cliente");
+	            	int dni_cliente = rs.getInt("dni");
+	                String nombre = rs.getString("nombre");
+	                String telefono = rs.getString("telefono");
+	                String email = rs.getString("mail");
+	                boolean estado= rs.getBoolean("estado");
+					
+	                cliente = new Cliente(id,dni_cliente,nombre,telefono,email,estado);	
+				
+				
+				} 
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return cliente;
+		}
+	}
+	
+	
+	public static String eliminarClienteJFrame(Cliente cliente) {
+		boolean nuevoEstado;
+		String texto;
+		if (cliente.getEstado() == true) {
+			nuevoEstado = false;
+			texto = "El cliente fue dado de baja correctamente";
+		} else {
+			nuevoEstado = true;
+			texto = "El cliente fue dado de alta correctamente";
+		}
+
+		try {
+			PreparedStatement statement = con.prepareStatement("UPDATE cliente SET estado = ? WHERE id_cliente = ?");
+			statement.setBoolean(1, nuevoEstado);
+			statement.setInt(2, cliente.getIdCliente());
+
 			int filas = statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
 	
@@ -145,4 +295,50 @@ public class ClienteDTO {
 		}			
 		return creado;
 	}
+	
+	
+	public static boolean modificarCliente(Cliente cliente) {
+		boolean flag = true;
+		Cliente coincidencia = null;
+		for (Cliente elemento : ClienteDTO.mostrarClientes()) {
+			System.out.println(
+					"Comparando elemento.id=" + elemento.getIdCliente() + " con cliente.id=" + cliente.getIdCliente());
+			if (elemento.getDni()==cliente.getDni() && elemento.getIdCliente() !=cliente.getIdCliente()){
+				flag = false;
+				coincidencia = elemento;
+				break;
+			}
+		}
+		if (flag) {
+			try {
+				PreparedStatement statement;
+				
+					statement = con.prepareStatement(
+							"UPDATE cliente SET nombre=?, telefono=? ,mail=?,dni=?,estado=? WHERE id_cliente=?");
+			
+				statement.setString(1, cliente.getNombre());
+				statement.setString(2, cliente.getTelefono());
+				statement.setString(3, cliente.getMail());
+				statement.setInt(4, cliente.getDni());
+				statement.setBoolean(5, cliente.getEstado());				
+				statement.setInt(6, cliente.getIdCliente());
+
+				int filas = statement.executeUpdate();
+				if (filas > 0) {
+					System.out.println("Cliente editado correctamente");
+					return true;
+				} else {
+					return false;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+		} else {
+			System.out.println(
+					"Ya hay un cliente con las mismas caracteristicas cargado en el sistema: " + coincidencia.toString());
+			return false;
+		}
+	}
+	
 }
