@@ -10,6 +10,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class PanelAdmin extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -20,16 +21,19 @@ public class PanelAdmin extends JFrame {
 	 */
 	public PanelAdmin(Usuario user) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 344, 330);
+		setBounds(100, 100, 403, 411);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTitulo = new JLabel("Bienvenido " + user.getNombre());
+		//user.getNombre()
+		
+		JLabel lblTitulo = new JLabel("Bienvenido:");
+		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblTitulo.setBounds(44, 19, 250, 32);
+		lblTitulo.setBounds(63, 21, 250, 32);
 		contentPane.add(lblTitulo);
 		
 		JButton btnGestionarClientes = new JButton("Gestionar Empleados");
@@ -40,8 +44,14 @@ public class PanelAdmin extends JFrame {
 				dispose();
 			}
 		});
+		
+		JLabel lblUsuario = new JLabel(user.getNombre());
+		lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+		lblUsuario.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblUsuario.setBounds(63, 50, 250, 32);
+		contentPane.add(lblUsuario);
 		btnGestionarClientes.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnGestionarClientes.setBounds(80, 72, 165, 32);
+		btnGestionarClientes.setBounds(109, 115, 165, 32);
 		contentPane.add(btnGestionarClientes);
 		
 		JButton btnGestionarExportaciones = new JButton("Estadistica de Ventas");
@@ -50,7 +60,7 @@ public class PanelAdmin extends JFrame {
 			}
 		});
 		btnGestionarExportaciones.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnGestionarExportaciones.setBounds(80, 115, 165, 32);
+		btnGestionarExportaciones.setBounds(109, 173, 165, 32);
 		contentPane.add(btnGestionarExportaciones);
 		
 		JButton btnSeguimientoDeEnvios = new JButton("Gestion de Descuentos");
@@ -59,7 +69,7 @@ public class PanelAdmin extends JFrame {
 			}
 		});
 		btnSeguimientoDeEnvios.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnSeguimientoDeEnvios.setBounds(80, 158, 165, 32);
+		btnSeguimientoDeEnvios.setBounds(109, 233, 165, 32);
 		contentPane.add(btnSeguimientoDeEnvios);
 		
 		JButton btnCerrarSesion = new JButton("Cerrar Sesión");
@@ -71,7 +81,7 @@ public class PanelAdmin extends JFrame {
 			}
 		});
 		btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnCerrarSesion.setBounds(91, 236, 141, 32);
+		btnCerrarSesion.setBounds(122, 302, 141, 32);
 		contentPane.add(btnCerrarSesion);
 	}
 }
