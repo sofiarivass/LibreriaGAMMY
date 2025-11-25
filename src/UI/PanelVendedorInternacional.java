@@ -60,6 +60,7 @@ public class PanelVendedorInternacional extends JFrame {
 		contentPane.add(btnGestionarExportaciones);
 
 		JButton btnSeguimientoDeEnvios = new JButton("Seguimiento de Envios");
+		btnSeguimientoDeEnvios.setEnabled(false);
 		btnSeguimientoDeEnvios.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnSeguimientoDeEnvios.setBounds(281, 162, 165, 32);
 		contentPane.add(btnSeguimientoDeEnvios);

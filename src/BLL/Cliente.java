@@ -10,6 +10,7 @@ public class Cliente {
 	private String nombre;
 	private String telefono;
 	private String mail;
+	private boolean estado;
 	private LinkedList<Libro> listaProductos = new LinkedList<>();
 	private boolean estado;
 	
@@ -20,15 +21,17 @@ public class Cliente {
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.mail = mail;
+		this.estado = estado;
 		this.listaProductos = new LinkedList<Libro>();
 		this.estado= estado;
 	}
 	
-	public Cliente(int dni, String nombre, String telefono, String mail,boolean estado) {
+	public Cliente(int dni, String nombre, String telefono, String mail, boolean estado) {
 		this.dni = dni;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.mail = mail;
+		this.estado = estado;
 		this.listaProductos = new LinkedList<Libro>();
 		this.estado= estado;
 	}
@@ -85,11 +88,9 @@ public class Cliente {
 	public boolean getEstado() {
 		return estado;
 	}
-	
 	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
-	
 	
 	public LinkedList<Libro> getListaProductos() {
 		return listaProductos;

@@ -46,6 +46,13 @@ public class PanelGestionarExport extends JFrame {
 		contentPane.add(btnNuevaExportacion);
 		
 		JButton btnModificarExportacion = new JButton("Modificar Exportación");
+		btnModificarExportacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ModificarVenta modificar = new ModificarVenta(user,null,null,false);
+				modificar.setVisible(true);
+				dispose();
+			}
+		});
 		btnModificarExportacion.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnModificarExportacion.setBounds(281, 99, 165, 32);
 		contentPane.add(btnModificarExportacion);
@@ -56,6 +63,11 @@ public class PanelGestionarExport extends JFrame {
 		contentPane.add(btnMostrarExportaciones);
 		
 		JButton btnAnularExportacion = new JButton("Anular Exportación");
+		btnAnularExportacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// anular exportacion
+			}
+		});
 		btnAnularExportacion.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnAnularExportacion.setBounds(58, 156, 165, 32);
 		contentPane.add(btnAnularExportacion);

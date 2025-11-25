@@ -95,6 +95,13 @@ public class NuevaExportacion extends JFrame {
 		contentPane.add(btnContinuarVenta);
 		
 		JButton btnRegistrarCliente = new JButton("registrar cliente");
+		btnRegistrarCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistroCliente registrar = new RegistroCliente(user);
+				registrar.setVisible(true);
+				dispose();
+			}
+		});
 		btnRegistrarCliente.setBounds(152, 135, 137, 21);
 		contentPane.add(btnRegistrarCliente);
 		
@@ -117,11 +124,15 @@ public class NuevaExportacion extends JFrame {
 				cliente = Cliente.buscarClienteJframe(dniCliente.getText());
 				
 				if (cliente != null) {
-					lblClienteEncontrado.setText(
-							"Cliente: [id: " + cliente.getIdCliente()
-							+ ", dni: " + cliente.getDni()
-							+ ", nombre: " + cliente.getNombre() 
-							+ ", tel: " + cliente.getTelefono() + "]");
+					if (cliente.getEstado() != false) {
+						lblClienteEncontrado.setText(
+								"Cliente: [id: " + cliente.getIdCliente()
+								+ ", dni: " + cliente.getDni()
+								+ ", nombre: " + cliente.getNombre() 
+								+ ", tel: " + cliente.getTelefono() + "]");						
+					} else {
+						lblError.setText("Cliente dado de Baja!!");
+					}
 				} else {
 					lblError.setText("Cliente No Registrado!!");
 				}						
