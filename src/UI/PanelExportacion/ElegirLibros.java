@@ -44,19 +44,6 @@ public class ElegirLibros extends JFrame {
 	private JTextField textCantidad;
 	private CarritoDetalle carritoSeleccionado;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ElegirLibros frame = new ElegirLibros(null, new Cliente(1, 1, "", "", "", true));
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
     public static void main(String[] args) {
     	EventQueue.invokeLater(new Runnable() {
     		public void run() {

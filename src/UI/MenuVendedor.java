@@ -22,10 +22,10 @@ public class MenuVendedor {
 							GestionarClientes.values(), GestionarClientes.values());
 					switch (opcionVenta1) {
 					case 0: // Modificar o eliminar datos de un cliente
-						Cliente.eliminarCliente(user);
+//						Cliente.eliminarCliente(user);
 						break;
 					case 1: // Mostrar Clientes
-						Cliente.mostrarClientes();
+//						Cliente.mostrarClientes();
 						break;
 					}
 				} while (opcionVenta1 != 2);

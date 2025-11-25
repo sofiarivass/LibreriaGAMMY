@@ -136,7 +136,7 @@ public class NuevoUsuario extends JFrame {
 
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(10, 371, 259, 30);
-		comboBox.addItem("");
+		comboBox.addItem("Seleccionar Rol de Empleado");
 		for (TipoEmpleado rol : UsuarioDTO.seleccionarTipoEmpleado()) {
 			comboBox.addItem(rol.getTipoEmpleado());
 		}
@@ -221,7 +221,7 @@ public class NuevoUsuario extends JFrame {
 				}
 
 				rol = comboBox.getSelectedItem().toString();
-				if (rol == "") {
+				if (rol == "Seleccionar Rol de Empleado") {
 					lblError_Rol.setText("Por favor complete los campos obligatorios");
 				} else {
 					lblError_Rol.setText("");

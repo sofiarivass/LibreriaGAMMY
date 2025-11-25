@@ -27,11 +27,11 @@ public class MenuVendedorInternacional {
 					switch (opcionVI1) {
 					case 0: // Modificar o eliminar datos de un cliente
 						
-						Cliente.eliminarCliente(user);
+//						Cliente.eliminarCliente(user);
 						break;
 					case 1: // Mostrar Clientes
 						
-						Cliente.mostrarClientes();
+//						Cliente.mostrarClientes();
 						
 						break;
 					}

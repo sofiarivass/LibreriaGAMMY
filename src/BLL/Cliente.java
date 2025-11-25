@@ -10,7 +10,6 @@ public class Cliente {
 	private String nombre;
 	private String telefono;
 	private String mail;
-	private boolean estado;
 	private LinkedList<Libro> listaProductos = new LinkedList<>();
 	private boolean estado;
 	
@@ -152,46 +151,46 @@ public class Cliente {
 	}
 	
 	
-	public static void eliminarCliente(Usuario admin) {
-		String elegido;
-		String []elegido2;
-		int clienteElegido;
-		LinkedList<Cliente> clientes = ClienteDTO.consultarClientes();
-		LinkedList<Cliente> clientesActivos = new LinkedList<Cliente>();
-		
-		for (Cliente cliente : clientes) {
-			if (cliente.getEstado() != false ) {
-				System.out.println("entre porque mi estado es true");
-				clientesActivos.add(cliente);					
-			}
-		}
-		
-		if (clientesActivos.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "No hay más Clientes Activos!!");
-		} else {
-			String[] elegirCliente = new String[clientesActivos.size()];
-			
-			for (int i = 0; i < elegirCliente.length; i++) {
-				elegirCliente[i] = clientesActivos.get(i).getIdCliente() + "," + clientesActivos.get(i).getNombre();
-			}
-			
-			elegido = (String) JOptionPane.showInputDialog(null, "Elija el Cliente", "", 0, null, elegirCliente, elegirCliente[0]);
-			elegido2 = elegido.split(",");
-			
-			clienteElegido = Integer.parseInt(elegido2[0]);
-			ClienteDTO.eliminarClientePorID(clienteElegido);			
-		}
-	}
-	
-	public static LinkedList<Cliente> mostrarClientes() {
-		LinkedList<Cliente> cliente = ClienteDTO.mostrarClientes();
-		
-		if (cliente == null || cliente.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "No hay clientes para mostrar.");
-		}else {
-			JOptionPane.showMessageDialog(null, ClienteDTO.clientePorID(cliente));
-		}
-		return cliente;
-	}
+//	public static void eliminarCliente(Usuario admin) {
+//		String elegido;
+//		String []elegido2;
+//		int clienteElegido;
+//		LinkedList<Cliente> clientes = ClienteDTO.consultarClientes();
+//		LinkedList<Cliente> clientesActivos = new LinkedList<Cliente>();
+//		
+//		for (Cliente cliente : clientes) {
+//			if (cliente.getEstado() != false ) {
+//				System.out.println("entre porque mi estado es true");
+//				clientesActivos.add(cliente);					
+//			}
+//		}
+//		
+//		if (clientesActivos.isEmpty()) {
+//			JOptionPane.showMessageDialog(null, "No hay más Clientes Activos!!");
+//		} else {
+//			String[] elegirCliente = new String[clientesActivos.size()];
+//			
+//			for (int i = 0; i < elegirCliente.length; i++) {
+//				elegirCliente[i] = clientesActivos.get(i).getIdCliente() + "," + clientesActivos.get(i).getNombre();
+//			}
+//			
+//			elegido = (String) JOptionPane.showInputDialog(null, "Elija el Cliente", "", 0, null, elegirCliente, elegirCliente[0]);
+//			elegido2 = elegido.split(",");
+//			
+//			clienteElegido = Integer.parseInt(elegido2[0]);
+//			ClienteDTO.eliminarClientePorID(clienteElegido);			
+//		}
+//	}
+//	
+//	public static LinkedList<Cliente> mostrarClientes() {
+//		LinkedList<Cliente> cliente = ClienteDTO.mostrarClientes();
+//		
+//		if (cliente == null || cliente.isEmpty()) {
+//			JOptionPane.showMessageDialog(null, "No hay clientes para mostrar.");
+//		}else {
+//			JOptionPane.showMessageDialog(null, ClienteDTO.clientePorID(cliente));
+//		}
+//		return cliente;
+//	}
 	
 }
