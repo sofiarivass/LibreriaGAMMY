@@ -204,6 +204,13 @@ public class ModificarVenta extends JFrame {
 		panel.add(btnModificar);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelGestionarExport gestionExport = new PanelGestionarExport(user);
+				gestionExport.setVisible(true);
+				dispose();
+			}
+		});
 		btnVolver.setBounds(10, 295, 85, 21);
 		panel.add(btnVolver);
 		
