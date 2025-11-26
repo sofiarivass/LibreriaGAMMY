@@ -14,6 +14,7 @@ import BLL.Usuario;
 import UI.PanelCliente.GestionarCliente;
 
 import javax.swing.SwingConstants;
+import java.awt.Color;
 
 public class PanelVendedor extends JFrame {
 
@@ -73,6 +74,13 @@ public class PanelVendedor extends JFrame {
 		btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnCerrarSesion.setBounds(182, 178, 141, 32);
 		contentPane.add(btnCerrarSesion);
+		
+		JLabel lblVendedorLocal = new JLabel("(Vendedor Local)");
+		lblVendedorLocal.setHorizontalAlignment(SwingConstants.CENTER);
+		lblVendedorLocal.setForeground(new Color(157, 157, 157));
+		lblVendedorLocal.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
+		lblVendedorLocal.setBounds(170, 56, 166, 13);
+		contentPane.add(lblVendedorLocal);
 	}
 
 }

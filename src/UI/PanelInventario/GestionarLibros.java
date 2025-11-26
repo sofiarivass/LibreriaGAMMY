@@ -147,6 +147,7 @@ public class GestionarLibros extends JFrame {
 		contentPane.add(btnInactivo);
 
 		JButton btnCargarLibro = new JButton("Cargar libro");
+		btnCargarLibro.setIcon(Validaciones.getScaledImageIcon("/img/nuevo.png", 14, 14));
 		btnCargarLibro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CargarDatosLibro frame = new CargarDatosLibro(user, "crear", null);
@@ -155,10 +156,11 @@ public class GestionarLibros extends JFrame {
 			}
 		});
 		btnCargarLibro.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnCargarLibro.setBounds(24, 63, 123, 27);
+		btnCargarLibro.setBounds(24, 63, 135, 27);
 		contentPane.add(btnCargarLibro);
 
 		JButton btnVerDetalle = new JButton("Ver detalle");
+		btnVerDetalle.setIcon(Validaciones.getScaledImageIcon("/img/info.png", 17, 17));
 		btnVerDetalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (libroSeleccionado != null) {
@@ -172,10 +174,11 @@ public class GestionarLibros extends JFrame {
 			}
 		});
 		btnVerDetalle.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnVerDetalle.setBounds(77, 392, 172, 35);
+		btnVerDetalle.setBounds(59, 392, 196, 35);
 		contentPane.add(btnVerDetalle);
 
 		JButton btnEditarDatos = new JButton("Modificar datos");
+		btnEditarDatos.setIcon(Validaciones.getScaledImageIcon("/img/editar.png", 17, 17));
 		btnEditarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (libroSeleccionado != null) {
@@ -191,10 +194,11 @@ public class GestionarLibros extends JFrame {
 			}
 		});
 		btnEditarDatos.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnEditarDatos.setBounds(326, 392, 172, 35);
+		btnEditarDatos.setBounds(314, 392, 196, 35);
 		contentPane.add(btnEditarDatos);
 
 		JButton btnDeshabilitar = new JButton("Dar de baja/alta");
+		btnDeshabilitar.setIcon(Validaciones.getScaledImageIcon("/img/altabaja.png", 19, 19));
 		btnDeshabilitar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				lblExito.setText("");
@@ -211,7 +215,7 @@ public class GestionarLibros extends JFrame {
 			}
 		});
 		btnDeshabilitar.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnDeshabilitar.setBounds(575, 392, 172, 35);
+		btnDeshabilitar.setBounds(569, 392, 196, 35);
 		contentPane.add(btnDeshabilitar);
 
 		// Acción al seleccionar fila

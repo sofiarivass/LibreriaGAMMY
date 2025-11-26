@@ -97,5 +97,12 @@ public class PanelVendedorInternacional extends JFrame {
 		lblPrximamente.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
 		lblPrximamente.setBounds(280, 194, 166, 13);
 		contentPane.add(lblPrximamente);
+		
+		JLabel lblVendedorInternacional = new JLabel("(Vendedor Internacional)");
+		lblVendedorInternacional.setHorizontalAlignment(SwingConstants.CENTER);
+		lblVendedorInternacional.setForeground(new Color(157, 157, 157));
+		lblVendedorInternacional.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
+		lblVendedorInternacional.setBounds(170, 43, 166, 13);
+		contentPane.add(lblVendedorInternacional);
 	}
 }

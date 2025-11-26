@@ -8,7 +8,8 @@ import javax.swing.table.DefaultTableModel;
 import BLL.Cliente;
 import BLL.Usuario;
 import DLL.ClienteDTO;
-
+import Repository.Validaciones;
+import UI.PanelVendedor;
 import UI.PanelVendedorInternacional;
 
 import javax.swing.JLabel;
@@ -95,6 +96,7 @@ public class GestionarCliente extends JFrame {
 		contentPane.add(lblExito);
 
 		JButton btnVerDetalle = new JButton("Ver detalle");
+		btnVerDetalle.setIcon(Validaciones.getScaledImageIcon("/img/info.png", 17, 17));
 		btnVerDetalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (clienteSeleccionado != null) {
@@ -108,10 +110,11 @@ public class GestionarCliente extends JFrame {
 			}
 		});
 		btnVerDetalle.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnVerDetalle.setBounds(77, 380, 172, 35);
+		btnVerDetalle.setBounds(64, 380, 190, 35);
 		contentPane.add(btnVerDetalle);
 
 		JButton btnEditarDatos = new JButton("Modificar datos");
+		btnEditarDatos.setIcon(Validaciones.getScaledImageIcon("/img/editar.png", 17, 17));
 		btnEditarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (clienteSeleccionado != null) {
@@ -126,10 +129,11 @@ public class GestionarCliente extends JFrame {
 			}
 		});
 		btnEditarDatos.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnEditarDatos.setBounds(326, 380, 172, 35);
+		btnEditarDatos.setBounds(318, 380, 190, 35);
 		contentPane.add(btnEditarDatos);
 
 		JButton btnDeshabilitar = new JButton("Dar de baja/alta");
+		btnDeshabilitar.setIcon(Validaciones.getScaledImageIcon("/img/altabaja.png", 19, 19));
 		btnDeshabilitar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				lblExito.setText("");
@@ -147,7 +151,7 @@ public class GestionarCliente extends JFrame {
 			}
 		});
 		btnDeshabilitar.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnDeshabilitar.setBounds(575, 380, 172, 35);
+		btnDeshabilitar.setBounds(572, 380, 190, 35);
 		contentPane.add(btnDeshabilitar);
 
 		JLabel lblDasd = new JLabel("");
@@ -177,19 +181,23 @@ public class GestionarCliente extends JFrame {
 
 		// Cargar datos
 		cargarTabla(user);
-
-		JButton btnVolver = new JButton("Volver");
-		btnVolver.addActionListener(new ActionListener() {
+		
+		JButton btnRegresar = new JButton("");
+		btnRegresar.setIcon(Validaciones.getScaledImageIcon("/img/volver.png", 22, 22));
+		btnRegresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PanelVendedorInternacional frame = new PanelVendedorInternacional(user);
-				frame.setVisible(true);
+				if (user.getFkTipoEmpleado().getTipoEmpleado().equals("Vendedor Local")) {
+					PanelVendedor frame = new PanelVendedor(user);
+					frame.setVisible(true);
+				} else {
+					PanelVendedorInternacional frame = new PanelVendedorInternacional(user);
+					frame.setVisible(true);
+				}
 				dispose();
 			}
 		});
-		btnVolver.setForeground(new Color(153, 17, 20));
-		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnVolver.setBounds(705, 489, 109, 27);
-		contentPane.add(btnVolver);
+		btnRegresar.setBounds(775, 485, 35, 29);
+		contentPane.add(btnRegresar);
 
 	}
 

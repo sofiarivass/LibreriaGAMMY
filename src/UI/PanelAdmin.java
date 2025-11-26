@@ -52,7 +52,7 @@ public class PanelAdmin extends JFrame {
 		lblUsuario.setBounds(69, 50, 250, 32);
 		contentPane.add(lblUsuario);
 		btnGestionarClientes.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnGestionarClientes.setBounds(112, 115, 165, 32);
+		btnGestionarClientes.setBounds(112, 124, 165, 32);
 		contentPane.add(btnGestionarClientes);
 		
 		JButton btnGestionarExportaciones = new JButton("Estadistica de Ventas");
@@ -62,7 +62,7 @@ public class PanelAdmin extends JFrame {
 			}
 		});
 		btnGestionarExportaciones.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnGestionarExportaciones.setBounds(112, 173, 165, 32);
+		btnGestionarExportaciones.setBounds(112, 178, 165, 32);
 		contentPane.add(btnGestionarExportaciones);
 		
 		JButton btnSeguimientoDeEnvios = new JButton("Gestion de Descuentos");
@@ -72,7 +72,7 @@ public class PanelAdmin extends JFrame {
 			}
 		});
 		btnSeguimientoDeEnvios.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnSeguimientoDeEnvios.setBounds(112, 233, 165, 32);
+		btnSeguimientoDeEnvios.setBounds(112, 236, 165, 32);
 		contentPane.add(btnSeguimientoDeEnvios);
 		
 		JButton btnCerrarSesion = new JButton("Cerrar Sesión");
@@ -91,15 +91,22 @@ public class PanelAdmin extends JFrame {
 		lblPrximamente.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPrximamente.setForeground(new Color(0, 0, 128));
 		lblPrximamente.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
-		lblPrximamente.setBounds(111, 206, 166, 13);
+		lblPrximamente.setBounds(111, 211, 166, 13);
 		contentPane.add(lblPrximamente);
 		
 		JLabel lblPrximamente_1 = new JLabel("Próximamente...");
 		lblPrximamente_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPrximamente_1.setForeground(new Color(0, 0, 128));
 		lblPrximamente_1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
-		lblPrximamente_1.setBounds(111, 266, 166, 13);
+		lblPrximamente_1.setBounds(111, 269, 166, 13);
 		contentPane.add(lblPrximamente_1);
+		
+		JLabel lblAdmin = new JLabel("(Admin)");
+		lblAdmin.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAdmin.setForeground(new Color(157, 157, 157));
+		lblAdmin.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
+		lblAdmin.setBounds(111, 85, 166, 13);
+		contentPane.add(lblAdmin);
 	}
 }
 
