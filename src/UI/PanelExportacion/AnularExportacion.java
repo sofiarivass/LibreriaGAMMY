@@ -34,21 +34,6 @@ public class AnularExportacion extends JFrame {
 	private Cliente cliente;
 	private Exportacion venta;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AnularExportacion frame = new AnularExportacion(new Usuario("","","",true,(new TipoEmpleado(2,"Vendedor Internacional"))));
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -113,14 +98,15 @@ public class AnularExportacion extends JFrame {
 		selectorCliente.addItem("Selección");
 		panel.add(selectorCliente);
 		
-		LinkedList<Cliente>listaClientes = ClienteDTO.consultarClientes();
+		LinkedList<Cliente>listaClientes = ClienteDTO.filtrarClientes(2);
 		if (listaClientes.isEmpty()) {
 			lblCliente.setText("No hay Clientes Disponibles!!");
-			lblCliente.setForeground(Color.black);
+			lblCliente.setForeground(Color.red);
 		} else {
 			for (Cliente c : listaClientes) {
 				selectorCliente.addItem(c.getIdCliente() + " - " + c.getNombre());
 			}
+			lblCliente.setForeground(Color.black);
 		}
 		
 		JButton btnSelecCliente = new JButton("Aceptar");
@@ -148,7 +134,6 @@ public class AnularExportacion extends JFrame {
 						}
 					}
 					lblCliente.setText(cliente.toString());
-					lblCliente.setForeground(Color.black);
 					
 					if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
 						fkTipoVenta = new TipoVenta(2,"Mayorista");					
@@ -240,7 +225,7 @@ public class AnularExportacion extends JFrame {
                 int row = table.getSelectedRow();
                 if (row != -1) {
                 	
-                	lblCliente.setForeground(Color.black);
+//                	lblCliente.setForeground(Color.black);
                 	lblCliente.setText(cliente.toString());
                 	lblExito.setText("");
                 	lblErrorSeleccion.setText("");

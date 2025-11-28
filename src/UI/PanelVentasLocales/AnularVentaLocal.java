@@ -35,22 +35,6 @@ public class AnularVentaLocal extends JFrame {
 	private Venta venta;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AnularVentaLocal frame = new AnularVentaLocal(new Usuario("","","",true,(new TipoEmpleado(1,"Vendedor Local"))));
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
 	public AnularVentaLocal(Usuario user) {
@@ -113,10 +97,10 @@ public class AnularVentaLocal extends JFrame {
 		selectorCliente.addItem("Selección");
 		panel.add(selectorCliente);
 		
-		LinkedList<Cliente>listaClientes = ClienteDTO.consultarClientes();
+		LinkedList<Cliente>listaClientes = ClienteDTO.filtrarClientes(1);
 		if (listaClientes.isEmpty()) {
 			lblCliente.setText("No hay Clientes Disponibles!!");
-			lblCliente.setForeground(Color.black);
+			lblCliente.setForeground(Color.red);
 		} else {
 			for (Cliente c : listaClientes) {
 				selectorCliente.addItem(c.getIdCliente() + " - " + c.getNombre());

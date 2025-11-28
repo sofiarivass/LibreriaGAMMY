@@ -105,7 +105,7 @@ public class Login extends JFrame {
 				dispose();
 			}
 		});
-		btnRegresar.setBounds(389, 262, 35, 29);
+		btnRegresar.setBounds(389, 267, 35, 29);
 		contentPane.add(btnRegresar);
 
 	}

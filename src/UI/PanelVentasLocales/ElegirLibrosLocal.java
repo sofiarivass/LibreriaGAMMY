@@ -46,19 +46,6 @@ public class ElegirLibrosLocal extends JFrame {
 	private JTextField textCantidad;
 	private CarritoDetalle carritoSeleccionado;
 
-    public static void main(String[] args) {
-    	EventQueue.invokeLater(new Runnable() {
-    		public void run() {
-    			try {
-    				ElegirLibrosLocal frame = new ElegirLibrosLocal(null,new Cliente(1,1,"","","",true));
-    				frame.setVisible(true);
-    			} catch (Exception e) {
-    				e.printStackTrace();
-    			}
-    		}
-    	});
-    }
-    
 	/**
 	 * Create the frame.
 	 */

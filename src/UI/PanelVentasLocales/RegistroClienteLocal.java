@@ -31,22 +31,6 @@ public class RegistroClienteLocal extends JFrame {
 	private Cliente cliente;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegistroClienteLocal frame = new RegistroClienteLocal(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
 	public RegistroClienteLocal(Usuario user) {

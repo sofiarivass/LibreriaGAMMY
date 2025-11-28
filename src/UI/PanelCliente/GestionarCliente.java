@@ -13,6 +13,8 @@ import UI.PanelVendedor;
 import UI.PanelVendedorInternacional;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.util.LinkedList;
 
@@ -181,6 +183,13 @@ public class GestionarCliente extends JFrame {
 
 		// Cargar datos
 		cargarTabla(user);
+		if (cargarTabla(user) == false) {
+			JLabel lblActualmenteNoHay = new JLabel("Actualmente no hay clientes para mostrar");
+			lblActualmenteNoHay.setForeground(new Color(255, 0, 0));
+			lblActualmenteNoHay.setFont(new Font("Tahoma", Font.ITALIC, 13));
+			lblActualmenteNoHay.setBounds(245, 84, 289, 21);
+			contentPane.add(lblActualmenteNoHay);
+		}
 		
 		JButton btnRegresar = new JButton("");
 		btnRegresar.setIcon(Validaciones.getScaledImageIcon("/img/volver.png", 22, 22));
@@ -201,7 +210,7 @@ public class GestionarCliente extends JFrame {
 
 	}
 
-	private void cargarTabla(Usuario user) {
+	private boolean cargarTabla(Usuario user) {
 		model.setRowCount(0);
 		LinkedList<Cliente> listaClientes;
 		if (user.getFkTipoEmpleado().getTipoEmpleado().equals("Vendedor Local")) {
@@ -212,6 +221,11 @@ public class GestionarCliente extends JFrame {
 		for (Cliente cliente : listaClientes) {
 			model.addRow(new Object[] { cliente.getIdCliente(), cliente.getNombre(), cliente.getTelefono(),
 					cliente.getMail(), cliente.getDni(), (cliente.getEstado() == true ? "Activo" : "Inactivo") });
+		}
+		if (model.getRowCount() == 0) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 }

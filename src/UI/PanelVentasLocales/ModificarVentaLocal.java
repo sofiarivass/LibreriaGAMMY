@@ -40,22 +40,6 @@ public class ModificarVentaLocal extends JFrame {
 	private boolean bandera = false;
 	
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ModificarVentaLocal frame = new ModificarVentaLocal(new Usuario("","","",true,(new TipoEmpleado(1,"Vendedor Local"))));
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
 	public ModificarVentaLocal(Usuario user) {
@@ -128,10 +112,10 @@ public class ModificarVentaLocal extends JFrame {
 		selectorCliente.addItem("Selección");
 		panel.add(selectorCliente);
 		
-		LinkedList<Cliente>listaClientes = ClienteDTO.consultarClientes();
+		LinkedList<Cliente>listaClientes = ClienteDTO.filtrarClientes(1);
 		if (listaClientes.isEmpty()) {
 			lblCliente.setText("No hay Clientes Disponibles!!");
-			lblCliente.setForeground(Color.black);
+			lblCliente.setForeground(Color.red);
 		} else {
 			for (Cliente c : listaClientes) {
 				selectorCliente.addItem(c.getIdCliente() + " - " + c.getNombre());

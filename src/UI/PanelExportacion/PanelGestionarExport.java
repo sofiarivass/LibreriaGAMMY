@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import BLL.Usuario;
+import Repository.Validaciones;
 import UI.PanelVendedorInternacional;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -21,7 +22,7 @@ public class PanelGestionarExport extends JFrame {
 	 */
 	public PanelGestionarExport(Usuario user) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 521, 330);
+		setBounds(100, 100, 521, 279);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -57,11 +58,6 @@ public class PanelGestionarExport extends JFrame {
 		btnModificarExportacion.setBounds(281, 99, 165, 32);
 		contentPane.add(btnModificarExportacion);
 		
-		JButton btnMostrarExportaciones = new JButton("Mostrar Exportaciones");
-		btnMostrarExportaciones.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnMostrarExportaciones.setBounds(281, 156, 165, 32);
-		contentPane.add(btnMostrarExportaciones);
-		
 		JButton btnAnularExportacion = new JButton("Anular Exportación");
 		btnAnularExportacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -71,19 +67,19 @@ public class PanelGestionarExport extends JFrame {
 			}
 		});
 		btnAnularExportacion.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnAnularExportacion.setBounds(58, 156, 165, 32);
+		btnAnularExportacion.setBounds(170, 156, 165, 32);
 		contentPane.add(btnAnularExportacion);
 		
-		JButton btnVolver = new JButton("Volver");
-		btnVolver.addActionListener(new ActionListener() {
+		JButton btnRegresar = new JButton("");
+		btnRegresar.setIcon(Validaciones.getScaledImageIcon("/img/volver.png", 22, 22));
+		btnRegresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelVendedorInternacional vendedorInter = new PanelVendedorInternacional(user);
 				vendedorInter.setVisible(true);
 				dispose();
 			}
 		});
-		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 10));
-		btnVolver.setBounds(182, 225, 141, 32);
-		contentPane.add(btnVolver);
+		btnRegresar.setBounds(460, 200, 35, 29);
+		contentPane.add(btnRegresar);
 	}
 }

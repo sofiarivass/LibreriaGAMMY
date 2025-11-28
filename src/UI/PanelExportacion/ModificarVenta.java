@@ -41,22 +41,6 @@ public class ModificarVenta extends JFrame {
 	private boolean bandera = false;
 	
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ModificarVenta frame = new ModificarVenta(new Usuario("","","",true,(new TipoEmpleado(2,"Vendedor Internacional"))));
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
 	public ModificarVenta(Usuario user) {
@@ -129,10 +113,10 @@ public class ModificarVenta extends JFrame {
 		selectorCliente.addItem("Selección");
 		panel.add(selectorCliente);
 		
-		LinkedList<Cliente>listaClientes = ClienteDTO.consultarClientes();
+		LinkedList<Cliente>listaClientes = ClienteDTO.filtrarClientes(2);
 		if (listaClientes.isEmpty()) {
 			lblCliente.setText("No hay Clientes Disponibles!!");
-			lblCliente.setForeground(Color.black);
+			lblCliente.setForeground(Color.red);
 		} else {
 			for (Cliente c : listaClientes) {
 				selectorCliente.addItem(c.getIdCliente() + " - " + c.getNombre());
