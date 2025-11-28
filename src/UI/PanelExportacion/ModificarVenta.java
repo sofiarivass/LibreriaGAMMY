@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import BLL.Carrito;
 import BLL.Cliente;
 import BLL.Exportacion;
+import BLL.TipoEmpleado;
 import BLL.TipoVenta;
 import BLL.Usuario;
 import DLL.ClienteDTO;
@@ -16,7 +17,6 @@ import DLL.VentasExportDTO;
 import Enums.MetodoPago;
 import Enums.Sucursales;
 import Enums.TipoMoneda;
-
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -38,6 +38,7 @@ public class ModificarVenta extends JFrame {
 	private Cliente cliente;
 	private Exportacion venta;
 	private String dato;
+	private boolean bandera = false;
 	
 	/**
 	 * Launch the application.
@@ -46,7 +47,7 @@ public class ModificarVenta extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ModificarVenta frame = new ModificarVenta(null,null,null,false);
+					ModificarVenta frame = new ModificarVenta(new Usuario("","","",true,(new TipoEmpleado(2,"Vendedor Internacional"))));
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,7 +59,7 @@ public class ModificarVenta extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ModificarVenta(Usuario user, Exportacion v, String datos, boolean mensaje) {
+	public ModificarVenta(Usuario user) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 655, 440);
 		contentPane = new JPanel();
@@ -80,7 +81,7 @@ public class ModificarVenta extends JFrame {
 		JLabel lblTitulo = new JLabel("Modificar Ventas");
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblTitulo.setBounds(224, 10, 192, 34);
+		lblTitulo.setBounds(224, 5, 192, 34);
 		contentPane.add(lblTitulo);
 		
 		table = new JTable(model);
@@ -174,7 +175,7 @@ public class ModificarVenta extends JFrame {
 						for (int i = 0; i < listaCarrito.size(); i++) {
 							ventaExport = VentasExportDTO.verVentas(listaCarrito.get(i).getIdCarrito(),fkTipoVenta);
 							if (ventaExport != null) {
-								listaVentas.add(ventaExport);						
+								listaVentas.add(ventaExport);															
 							}
 						}
 					}
@@ -220,6 +221,7 @@ public class ModificarVenta extends JFrame {
                 int row = table.getSelectedRow();
                 if (row != -1) {
                 	
+                	lblExito.setText("");
                 	lblMensajeError.setText("");
                 	LinkedList<Exportacion> listaVentas = new LinkedList<Exportacion>();
                 	TipoVenta fkTipoVenta = null;
@@ -234,14 +236,14 @@ public class ModificarVenta extends JFrame {
 						for (int i = 0; i < listaCarrito.size(); i++) {
 							ventaExport = VentasExportDTO.verVentas(listaCarrito.get(i).getIdCarrito(),fkTipoVenta);
 							if (ventaExport != null) {
-								listaVentas.add(ventaExport);						
+								listaVentas.add(ventaExport);															
 							}
 						}
 					}
                 	
                 	// buscar dentro de las ventas del cliente quien tenga el mismo id que el de la tabla
-                	for (Exportacion libro : listaVentas) {    // esto es la fila del id
-						if (libro.getIdVenta() == (int)model.getValueAt(row, 0)) {
+                	for (Exportacion libro : listaVentas) {
+						if (libro.getIdVenta() == (int)model.getValueAt(row, 0)) { // esto es la fila del id
 							//cargamos la venta
 							venta = libro; //Venta
 							lblSelecVenta.setText(venta.toString());
@@ -253,8 +255,7 @@ public class ModificarVenta extends JFrame {
         });
 		
 		
-		// segundo panel
-		
+		// SEGUNDO PANEL DETALLES DE LA MODIFICACION
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("modificar venta", null, panel_2, null);
 		tabbedPane.setEnabledAt(1, false);
@@ -269,7 +270,7 @@ public class ModificarVenta extends JFrame {
 		JLabel lblDatosActuales = new JLabel("");
 		lblDatosActuales.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDatosActuales.setVerticalAlignment(SwingConstants.TOP);
-		lblDatosActuales.setBounds(30, 47, 555, 90);
+		lblDatosActuales.setBounds(30, 44, 555, 90);
 		panel_2.add(lblDatosActuales);
 		
 		JLabel lblSubtitulo2 = new JLabel("Modificar Datos de la Venta");
@@ -369,6 +370,8 @@ public class ModificarVenta extends JFrame {
 		
 		selectorPago.addActionListener(e -> {
 			lblMensaje.setText("");
+			bandera = actulizarDatos(selectorPago,selectorMoneda,selectorOrigen,selectorDestino,lblErrorOrigen,lblErrorDestino);
+			
 			String pago = (String) selectorPago.getSelectedItem();
 			
 			if (!pago.equals("Seleccionar")) {
@@ -378,6 +381,8 @@ public class ModificarVenta extends JFrame {
 		
 		selectorMoneda.addActionListener(e -> {
 			lblMensaje.setText("");
+			bandera = actulizarDatos(selectorPago,selectorMoneda,selectorOrigen,selectorDestino,lblErrorOrigen,lblErrorDestino);
+			
 			String moneda = (String) selectorMoneda.getSelectedItem();
 			
 			if (!moneda.equals("Seleccionar")) {
@@ -387,6 +392,8 @@ public class ModificarVenta extends JFrame {
 		
 		selectorOrigen.addActionListener(e -> {
 			lblMensaje.setText("");
+			bandera = actulizarDatos(selectorPago,selectorMoneda,selectorOrigen,selectorDestino,lblErrorOrigen,lblErrorDestino);
+			
 			String origen = (String) selectorOrigen.getSelectedItem();
 			String destino = (String) selectorDestino.getSelectedItem();			
 			
@@ -406,6 +413,8 @@ public class ModificarVenta extends JFrame {
 		
 		selectorDestino.addActionListener(e -> {
 			lblMensaje.setText("");
+			bandera = actulizarDatos(selectorPago,selectorMoneda,selectorOrigen,selectorDestino,lblErrorOrigen,lblErrorDestino);
+			
 			String destino = (String) selectorDestino.getSelectedItem();
 			String origen = (String) selectorOrigen.getSelectedItem();
 			
@@ -429,13 +438,16 @@ public class ModificarVenta extends JFrame {
 		JButton btnRegresar = new JButton("Volver");
 		btnRegresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				LinkedList<Exportacion> listaVentas = new LinkedList<Exportacion>();
-				tabbedPane.setEnabledAt(0, true);
-				cliente = null;
+				// resetea los selectores
+				selectorPago.setSelectedItem("Seleccionar");
+				selectorMoneda.setSelectedItem("Seleccionar");
+				selectorOrigen.setSelectedItem("Seleccionar");
+				selectorDestino.setSelectedItem("Seleccionar");
+				
 				venta = null;
-				librosElegidos(listaVentas);
 				lblSelecVenta.setText("");
-				lblCliente.setText("");
+				
+				tabbedPane.setEnabledAt(0, true);
 				tabbedPane.setSelectedIndex(0);
 				tabbedPane.setEnabledAt(1, false);
 			}
@@ -446,64 +458,130 @@ public class ModificarVenta extends JFrame {
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String pago = (String) selectorPago.getSelectedItem();
-				String moneda = (String) selectorMoneda.getSelectedItem();
-				String origen = (String) selectorOrigen.getSelectedItem();
-				String destino = (String) selectorDestino.getSelectedItem();
-				
-				if (!pago.equals("Seleccionar") || !moneda.equals("Seleccionar") || !origen.equals("Seleccionar") || !destino.equals("Seleccionar")) {
-					
-					if (!pago.equals("Seleccionar")) {
-						venta.setMetodoPago(pago);						
-					}
-					if (!moneda.equals("Seleccionar")) {
-						venta.setMoneda(moneda);						
-					}
-					
-					if (origen.equals(destino) && !origen.equals("Seleccionar") && !destino.equals("Seleccionar")) {
-						lblErrorOrigen.setText("Error elija otra Sucursal!!");
-						lblErrorDestino.setText("Error elija otra Sucursal!!");
-					} else if (origen.equals(venta.getDestino())) {
-						lblErrorOrigen.setText("Error elija otra Sucursal!!");									
-					} else if (destino.equals(venta.getOrigen())) {
-						lblErrorDestino.setText("Error elija otra Sucursal!!");								
-					} else {
-						if (!origen.equals("Seleccionar")) {
-							venta.setOrigen(origen);							
-						}
-						if (!destino.equals("Seleccionar")) {
-							venta.setDestino(destino);							
-						}
-						
-						DetallesModificacion detalles = new DetallesModificacion(user,venta,dato);
-						detalles.setVisible(true);
-						dispose();
-					}
+				if (venta != null && bandera) {
+					tabbedPane.setEnabledAt(2, true);
+					tabbedPane.setSelectedIndex(2);
+					tabbedPane.setEnabledAt(1, false);
 				} else {
 					lblMensaje.setText("No realizó ningun cambio!!");
 				}
-				
 			}
 		});
 		btnActualizar.setBounds(511, 295, 95, 21);
 		panel_2.add(btnActualizar);
 		
-		if (v != null) {
-			tabbedPane.setSelectedIndex(1);
-			tabbedPane.setEnabledAt(1, true);
-			tabbedPane.setEnabledAt(0, false);
-			venta = v;
-			dato = datos;
-			lblDatosActuales.setText(dato);
-			selectorPago.setSelectedItem(v.getMetodoPago());
-			selectorMoneda.setSelectedItem(v.getMoneda());
-			selectorOrigen.setSelectedItem(v.getOrigen());
-			selectorDestino.setSelectedItem(v.getDestino());
-		}
 		
-		if (mensaje) {
-			lblExito.setText("Venta Actulizada con Exito!!");
-		}
+		// TERCER PANEL PARA ACTUALIZAR LA VENTA MODIFICADA
+		JPanel panel_3 = new JPanel();
+		tabbedPane.addTab("actualizar venta", null, panel_3, null);
+		tabbedPane.setEnabledAt(2, false);
+		panel_3.setLayout(null);
+		
+		JLabel lblSubtitulo3 = new JLabel("Datos Anteriores");
+		lblSubtitulo3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSubtitulo3.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblSubtitulo3.setBounds(224, 10, 168, 28);
+		panel_3.add(lblSubtitulo3);
+		
+		JLabel lblDatosPasados = new JLabel();
+		lblDatosPasados.setVerticalAlignment(SwingConstants.TOP);
+		lblDatosPasados.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDatosPasados.setBounds(72, 28, 471, 113);
+		panel_3.add(lblDatosPasados);
+		
+		JLabel lblSubtitulo4 = new JLabel("Datos Modificados");
+		lblSubtitulo4.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSubtitulo4.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblSubtitulo4.setBounds(224, 143, 168, 28);
+		panel_3.add(lblSubtitulo4);
+		
+		JLabel lblDatos = new JLabel();
+		lblDatos.setVerticalAlignment(SwingConstants.TOP);
+		lblDatos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDatos.setBounds(72, 175, 471, 113);
+		panel_3.add(lblDatos);
+		
+		//ACTIVADORES
+		btnActualizar.addActionListener(e-> {
+			if (venta != null && bandera) {
+				System.out.println("soy dato de actualizar: \n"+dato);
+				lblDatosPasados.setText(dato);
+				lblDatos.setText(datosVenta(venta));
+				System.out.println("soy venta de actualizar: \n"+datosVenta(venta));
+			}
+		});
+		
+		JButton btnVolver2 = new JButton("Volver");
+		btnVolver2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tabbedPane.setEnabledAt(1, true);
+				tabbedPane.setSelectedIndex(1);
+				tabbedPane.setEnabledAt(2, false);
+				
+				if (venta != null) {
+					lblDatosActuales.setText(dato);
+					selectorPago.setSelectedItem(venta.getMetodoPago());												
+					selectorMoneda.setSelectedItem(venta.getMoneda());												
+					selectorOrigen.setSelectedItem(venta.getOrigen());												
+					selectorDestino.setSelectedItem(venta.getDestino());												
+				}
+			}
+		});
+		btnVolver2.setBounds(14, 298, 85, 21);
+		panel_3.add(btnVolver2);
+		
+		JLabel lblAviso = new JLabel("Revise los cambios antes de confirmar!!");
+		lblAviso.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAviso.setForeground(new Color(20, 68, 235));
+		lblAviso.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblAviso.setBounds(170, 298, 275, 13);
+		panel_3.add(lblAviso);
+		
+		JButton btnConfirmar = new JButton("Confirmar");
+		btnConfirmar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LinkedList<Exportacion> listaVentas = new LinkedList<Exportacion>();
+				TipoVenta fkTipoVenta = null;
+				Exportacion ventaExport = null;
+				venta.setEstado("modificada");
+				boolean flagDos = VentasExportDTO.actualizarVentaExportJframe(venta);
+				
+				selectorPago.setSelectedItem("Seleccionar");
+				selectorMoneda.setSelectedItem("Seleccionar");
+				selectorOrigen.setSelectedItem("Seleccionar");
+				selectorDestino.setSelectedItem("Seleccionar");
+				
+				venta = null;
+				lblSelecVenta.setText("");
+				
+				if (flagDos) {
+					tabbedPane.setSelectedIndex(0);
+					tabbedPane.setEnabledAt(0, true);
+					tabbedPane.setEnabledAt(2, false);
+					
+					if (user.getFkTipoEmpleado().getTipoEmpleado().equalsIgnoreCase("Vendedor Internacional")) {
+						fkTipoVenta = new TipoVenta(2,"Mayorista");					
+					}
+					
+					LinkedList<Carrito> listaCarrito = Carrito.obtenerCarrito(cliente);
+					if (listaCarrito != null) {
+						for (int i = 0; i < listaCarrito.size(); i++) {
+							ventaExport = VentasExportDTO.verVentas(listaCarrito.get(i).getIdCarrito(),fkTipoVenta);
+							if (ventaExport != null) {
+								listaVentas.add(ventaExport);															
+							}
+						}
+					}
+					librosElegidos(listaVentas);
+					
+					lblExito.setText("La Venta se Actualizó con Exito!!");
+				} else {
+					lblMensaje.setText("No se pudo Modificar la venta!!");
+				}
+			}
+		});
+		btnConfirmar.setBounds(510, 298, 96, 21);
+		panel_3.add(btnConfirmar);
 	}
 	
 	// cargar las ventas del cliente
@@ -520,6 +598,50 @@ public class ModificarVenta extends JFrame {
 					L.getDestino() //destino
 			});
 		}
+	}
+	
+	// actualizar los datos seleccionados
+	public boolean actulizarDatos(JComboBox selectorPago,JComboBox selectorMoneda,JComboBox selectorOrigen,JComboBox selectorDestino,JLabel lblErrorOrigen,JLabel lblErrorDestino) {
+		boolean flag;
+		
+		String pago = (String) selectorPago.getSelectedItem();
+		String moneda = (String) selectorMoneda.getSelectedItem();
+		String origen = (String) selectorOrigen.getSelectedItem();
+		String destino = (String) selectorDestino.getSelectedItem();
+		
+		if (!pago.equals("Seleccionar") || !moneda.equals("Seleccionar") || !origen.equals("Seleccionar") || !destino.equals("Seleccionar")) {
+			
+			if (!pago.equals("Seleccionar")) {
+				venta.setMetodoPago(pago);						
+				System.out.println("soy venta y me actualice: " +venta.getMetodoPago());
+			}
+			if (!moneda.equals("Seleccionar")) {
+				venta.setMoneda(moneda);						
+				System.out.println("soy venta y me actualice: " +venta.getMoneda());
+			}
+			
+			if (origen.equals(destino) && !origen.equals("Seleccionar") && !destino.equals("Seleccionar")) {
+				lblErrorOrigen.setText("Error elija otra Sucursal!!");
+				lblErrorDestino.setText("Error elija otra Sucursal!!");
+			} else if (origen.equals(venta.getDestino())) {
+				lblErrorOrigen.setText("Error elija otra Sucursal!!");									
+			} else if (destino.equals(venta.getOrigen())) {
+				lblErrorDestino.setText("Error elija otra Sucursal!!");								
+			} else {
+				if (!origen.equals("Seleccionar")) {
+					venta.setOrigen(origen);							
+					System.out.println("soy venta y me actualice: " +venta.getOrigen());
+				}
+				if (!destino.equals("Seleccionar")) {
+					venta.setDestino(destino);							
+					System.out.println("soy venta y me actualice: " +venta.getDestino());
+				}
+			}
+			flag = true;
+		} else {
+			flag = false;
+		}
+		return flag;
 	}
 	
 	// cargar datos de la venta a modificar
@@ -539,5 +661,4 @@ public class ModificarVenta extends JFrame {
 			    + "</html>";
 		return datos;
 	}
-
 }

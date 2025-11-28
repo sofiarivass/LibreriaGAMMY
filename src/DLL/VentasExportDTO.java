@@ -145,7 +145,7 @@ public class VentasExportDTO {
 	 * @param venta
 	 * @param detalles
 	 */
-	public static void actualizarVentaExportJframe(Exportacion venta) {
+	public static boolean actualizarVentaExportJframe(Exportacion venta) {
 		try {
 			PreparedStatement statement = con.prepareStatement(
 					"UPDATE venta SET metodo_pago =?, moneda =?, estado =?, origen =?, destino =? WHERE id_venta =?"
@@ -160,10 +160,12 @@ public class VentasExportDTO {
 			
 			int filas = statement.executeUpdate();
 			if (filas > 0) {
+				return true;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
 	/**
@@ -188,5 +190,30 @@ public class VentasExportDTO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * funcion para anular una venta especifica en la BD con Jframe.
+	 * @param venta
+	 * @param detalles
+	 */
+	public static boolean anularVentaExportJframe(Exportacion venta) {
+		try {
+			PreparedStatement statement = con.prepareStatement(
+					"UPDATE venta SET estado =? WHERE id_venta =?"
+					);
+			
+			statement.setString(1, venta.getEstado());
+			statement.setInt(2, venta.getIdVenta());
+			
+			
+			int filas = statement.executeUpdate();
+			if (filas > 0) {
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
