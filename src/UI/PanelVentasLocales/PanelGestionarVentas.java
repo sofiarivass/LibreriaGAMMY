@@ -50,9 +50,9 @@ public class PanelGestionarVentas extends JFrame {
 		JButton btnModificarVenta = new JButton("Modificar Venta");
 		btnModificarVenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				ModificarVenta modificar = new ModificarVenta(user);
-//				modificar.setVisible(true);
-//				dispose();
+				ModificarVentaLocal modificar = new ModificarVentaLocal(user);
+				modificar.setVisible(true);
+				dispose();
 			}
 		});
 		btnModificarVenta.setFont(new Font("Tahoma", Font.BOLD, 10));
@@ -67,9 +67,9 @@ public class PanelGestionarVentas extends JFrame {
 		JButton btnAnularVenta = new JButton("Anular Venta");
 		btnAnularVenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				AnularExportacion anularVenta = new AnularExportacion(user);
-//				anularVenta.setVisible(true);
-//				dispose();
+				AnularVentaLocal anularVenta = new AnularVentaLocal(user);
+				anularVenta.setVisible(true);
+				dispose();
 			}
 		});
 		btnAnularVenta.setFont(new Font("Tahoma", Font.BOLD, 10));
