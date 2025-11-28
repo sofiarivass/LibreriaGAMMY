@@ -3,16 +3,14 @@ package UI;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import BLL.Usuario;
 import UI.PanelCliente.GestionarCliente;
-
+import UI.PanelVentasLocales.PanelGestionarVentas;
 import javax.swing.SwingConstants;
 import java.awt.Color;
 
@@ -54,9 +52,9 @@ public class PanelVendedor extends JFrame {
 		JButton btnGestionarExportaciones = new JButton("Gestionar Ventas");
 		btnGestionarExportaciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				PanelGestionarVentas gestionVentas = new PanelGestionarVentas(user);
-//				gestionVentas.setVisible(true);
-//				dispose();
+				PanelGestionarVentas gestionarVenta = new PanelGestionarVentas(user);
+				gestionarVenta.setVisible(true);
+				dispose();
 			}
 		});
 		btnGestionarExportaciones.setFont(new Font("Tahoma", Font.BOLD, 10));

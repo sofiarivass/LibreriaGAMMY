@@ -1,16 +1,14 @@
-package UI.PanelExportacion;
+package UI.PanelVentasLocales;
 
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import BLL.Cliente;
 import BLL.Usuario;
 import DLL.ClienteDTO;
 import Repository.Validaciones;
-
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -22,7 +20,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 
-public class RegistroCliente extends JFrame {
+public class RegistroClienteLocal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -39,7 +37,7 @@ public class RegistroCliente extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RegistroCliente frame = new RegistroCliente(null);
+					RegistroClienteLocal frame = new RegistroClienteLocal(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -51,7 +49,7 @@ public class RegistroCliente extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public RegistroCliente(Usuario user) {
+	public RegistroClienteLocal(Usuario user) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 400, 360);
 		contentPane = new JPanel();
@@ -168,7 +166,7 @@ public class RegistroCliente extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				NuevaExportacion venta = new NuevaExportacion(user);
+				NuevaVenta venta = new NuevaVenta(user);
 				venta.setVisible(true);
 				dispose();
 			}
@@ -235,7 +233,7 @@ public class RegistroCliente extends JFrame {
 							
 							cliente = ClienteDTO.registrarClienteJframe(new Cliente(dni,textNombre.getText(),textTelefono.getText(),textMail.getText(),true)); 
 							if (cliente != null) {
-								ElegirLibros libros = new ElegirLibros(user,cliente);
+								ElegirLibrosLocal libros = new ElegirLibrosLocal(user,cliente);
 								libros.setVisible(true);
 								dispose();						
 							} else {

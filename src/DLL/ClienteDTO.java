@@ -126,14 +126,21 @@ public class ClienteDTO {
 			statement.setBoolean(5, cliente.getEstado());
 
 			int filas = statement.executeUpdate();
+			ResultSet rs = statement.getGeneratedKeys();
+
+			if (rs.next()) {
+				int idGenerado = rs.getInt(1);
+				cliente.setIdCliente(idGenerado);
+			}
+			
 			if (filas > 0) {
-				JOptionPane.showMessageDialog(null, "cliente dio de baja correctamente.");
+				return cliente;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return cliente;
+		return null;
 	}
 
 	public static LinkedList<Cliente> mostrarClientes() {
